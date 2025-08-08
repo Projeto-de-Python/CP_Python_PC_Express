@@ -1,3 +1,11 @@
+<p align="center
+
+logo.png
+
+</p
+
+<h1 align="center
+
 # PC-Express
 Projeto de Python da Aula de Python na FIAP. Uma loja de peça de computadores com estoque e gestão do estoque.
 
