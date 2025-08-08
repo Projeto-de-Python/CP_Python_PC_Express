@@ -1,9 +1,9 @@
 <p align
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/logo-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="assets/logo-light.png">
-  <img alt="PC EXPRESS" src="assets/logo-light.png" width="240">
+  <source media="(prefers-color-scheme: dark)" srcset="logo.png">
+  <source media="(prefers-color-scheme: light)" srcset="logo.png">
+  <img alt="PC EXPRESS" src="logo.png" width="240">
 </picture>
 </
 
