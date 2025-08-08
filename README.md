@@ -1,10 +1,9 @@
-<p align
+<p align="center
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="logo.png">
   <img alt="PC EXPRESS" src="logo.png" width="240">
 </picture>
-</
+</p
 
 # PC-Express
 Projeto de Python da Aula de Python na FIAP. Uma loja de peça de computadores com estoque e gestão do estoque.
