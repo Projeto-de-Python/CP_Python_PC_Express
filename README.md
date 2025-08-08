@@ -2,7 +2,6 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="logo.png">
-  <source media="(prefers-color-scheme: light)" srcset="logo.png">
   <img alt="PC EXPRESS" src="logo.png" width="240">
 </picture>
 </
