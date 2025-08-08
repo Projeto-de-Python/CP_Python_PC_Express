@@ -1,6 +1,7 @@
 <p align="center
 
 <picture>
+  <source srcset="logo.png">
   <img alt="PC EXPRESS" src="logo.png" width="240">
 </picture>
 </p
