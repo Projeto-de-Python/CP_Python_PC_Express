@@ -2,7 +2,7 @@
   
 <picture>
   <source srcset="logo.png">
-  <img alt="PC EXPRESS" src="assets/logo.png" width="240">
+  <img alt="PC EXPRESS" src="logo.png" width="240">
 </picture>
 </p
 
