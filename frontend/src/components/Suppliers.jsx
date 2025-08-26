@@ -20,6 +20,7 @@ import {
   CircularProgress,
   Grid,
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import {
   Add as AddIcon,
   Edit as EditIcon,
@@ -34,6 +35,7 @@ export default function Suppliers({ darkMode }) {
   const [error, setError] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [editingSupplier, setEditingSupplier] = useState(null);
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
@@ -117,7 +119,7 @@ export default function Suppliers({ darkMode }) {
     <Box>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Box display="flex" alignItems="center" gap={2}>
-          <Typography variant="h4" sx={{ color: darkMode ? '#ffffff' : '#000000' }}>Suppliers</Typography>
+          <Typography variant="h4" sx={{ color: darkMode ? '#ffffff' : '#000000' }}>{t('suppliers.title')}</Typography>
           <IconButton
             size="small"
             title="Manage your supplier contacts. Add new suppliers, edit existing ones, and track their information for purchase order management."
@@ -131,7 +133,7 @@ export default function Suppliers({ darkMode }) {
           startIcon={<AddIcon />}
           onClick={() => handleOpenDialog()}
         >
-          Add Supplier
+          {t('suppliers.addSupplier')}
         </Button>
       </Box>
 
@@ -145,13 +147,13 @@ export default function Suppliers({ darkMode }) {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Phone</TableCell>
+              <TableCell>{t('suppliers.supplierName')}</TableCell>
+              <TableCell>{t('suppliers.email')}</TableCell>
+              <TableCell>{t('suppliers.phone')}</TableCell>
               <TableCell>CNPJ</TableCell>
               <TableCell>Notes</TableCell>
               <TableCell>Created</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell>{t('suppliers.actions')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -198,14 +200,14 @@ export default function Suppliers({ darkMode }) {
       {/* Supplier Dialog */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
         <DialogTitle>
-          {editingSupplier ? 'Edit Supplier' : 'Add New Supplier'}
+          {editingSupplier ? t('suppliers.editSupplier') : t('suppliers.addSupplier')}
         </DialogTitle>
         <DialogContent>
           <Grid container spacing={2} sx={{ mt: 1 }}>
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                label="Name"
+                label={t('suppliers.supplierName')}
                 value={formData.nome}
                 onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
                 required
@@ -214,7 +216,7 @@ export default function Suppliers({ darkMode }) {
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                label="Email"
+                label={t('suppliers.email')}
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -223,7 +225,7 @@ export default function Suppliers({ darkMode }) {
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                label="Phone"
+                label={t('suppliers.phone')}
                 value={formData.telefone}
                 onChange={(e) => setFormData({ ...formData, telefone: e.target.value })}
               />
@@ -249,9 +251,9 @@ export default function Suppliers({ darkMode }) {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
+          <Button onClick={() => setOpenDialog(false)}>{t('common.cancel')}</Button>
           <Button onClick={handleSubmit} variant="contained">
-            {editingSupplier ? 'Update' : 'Create'}
+            {editingSupplier ? t('common.save') : t('common.add')}
           </Button>
         </DialogActions>
       </Dialog>

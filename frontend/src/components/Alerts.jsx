@@ -18,17 +18,19 @@ import {
   Button,
   IconButton,
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import {
-  Warning as WarningIcon,
-  Inventory as InventoryIcon,
-  Help as HelpIcon,
-} from '@mui/icons-material';
+  AlertTriangle,
+  Package,
+  HelpCircle,
+} from 'lucide-react';
 import { alertsAPI } from '../services/api';
 
 export default function Alerts() {
   const [lowStockProducts, setLowStockProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchLowStockAlerts();
@@ -66,9 +68,9 @@ export default function Alerts() {
   };
 
   const getStockStatusText = (product) => {
-    if (product.quantidade === 0) return 'Out of Stock';
+    if (product.quantidade === 0) return t('products.outOfStock');
     if (product.quantidade <= product.estoque_minimo / 2) return 'Critical';
-    return 'Low Stock';
+    return t('products.lowStock');
   };
 
   if (loading) {
@@ -83,14 +85,14 @@ export default function Alerts() {
     <Box>
       <Box display="flex" alignItems="center" mb={3}>
         <Box display="flex" alignItems="center" gap={2}>
-          <WarningIcon sx={{ mr: 1, color: 'warning.main' }} />
-          <Typography variant="h4">Low Stock Alerts</Typography>
+          <AlertTriangle size={24} color="#ed6c02" style={{ marginRight: 8 }} />
+          <Typography variant="h4">{t('alerts.title')}</Typography>
           <IconButton
             size="small"
             title="Monitor products that are running low on stock. Critical alerts indicate items that need immediate attention. Use this section to identify which products need restocking."
             sx={{ color: 'rgba(255, 152, 0, 0.8)' }}
           >
-            <HelpIcon />
+            <HelpCircle size={18} />
           </IconButton>
         </Box>
       </Box>
@@ -105,7 +107,7 @@ export default function Alerts() {
         <Card>
           <CardContent>
             <Box textAlign="center" py={4}>
-              <InventoryIcon sx={{ fontSize: 64, color: 'success.main', mb: 2 }} />
+              <Package size={64} color="#4caf50" style={{ marginBottom: 16 }} />
               <Typography variant="h6" color="success.main">
                 No Low Stock Alerts
               </Typography>

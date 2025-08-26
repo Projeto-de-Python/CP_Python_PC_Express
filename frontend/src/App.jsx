@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { AuthProvider } from './contexts/AuthContext';
+import { LanguageProvider } from './contexts/LanguageContext';
+import './i18n';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
@@ -61,12 +63,13 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AuthProvider>
-        <Router>
+      <LanguageProvider>
+        <AuthProvider>
+          <Router>
           <Routes>
             {/* Public routes */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login darkMode={darkMode} />} />
+            <Route path="/register" element={<Register darkMode={darkMode} />} />
             
             {/* Protected routes */}
             <Route path="/" element={
@@ -123,7 +126,8 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Router>
-      </AuthProvider>
+        </AuthProvider>
+      </LanguageProvider>
     </ThemeProvider>
   );
 }

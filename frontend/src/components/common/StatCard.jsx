@@ -61,15 +61,34 @@ export const StatCard = ({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              width: 48,
-              height: 48,
+              width: 56,
+              height: 56,
               borderRadius: '50%',
               background: 'rgba(255,255,255,0.2)',
               backdropFilter: 'blur(10px)',
               transition: 'all 0.3s ease',
+              '&:hover': {
+                background: 'rgba(255,255,255,0.3)',
+                transform: 'scale(1.05)',
+              },
             }}
           >
-            {icon}
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+                height: '100%',
+                '& > *': {
+                  fontSize: '24px',
+                  width: '24px',
+                  height: '24px',
+                },
+              }}
+            >
+              {icon}
+            </Box>
           </Box>
           {trend !== undefined && (
             <Box display="flex" alignItems="center" gap={0.5}>

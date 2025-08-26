@@ -27,6 +27,7 @@ import {
   Snackbar,
   Fade,
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import {
   Package,
   AlertTriangle,
@@ -53,6 +54,7 @@ export default function AutoRestock({ darkMode }) {
   const [restockingProduct, setRestockingProduct] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchData();
@@ -147,7 +149,7 @@ export default function AutoRestock({ darkMode }) {
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
         }}>
-          Smart Auto Restock
+          {t('autoRestock.title')}
         </Typography>
         <Box display="flex" gap={2}>
           <Tooltip title="Refresh Data">
@@ -170,7 +172,7 @@ export default function AutoRestock({ darkMode }) {
               '&:disabled': { background: 'rgba(0,0,0,0.12)' }
             }}
           >
-            {processingRestock ? 'Creating Orders...' : 'Restock All'}
+            {processingRestock ? t('common.loading') : t('autoRestock.restockAll')}
           </Button>
         </Box>
       </Box>
@@ -198,10 +200,23 @@ export default function AutoRestock({ darkMode }) {
                       {stockAnalysis.critical_count}
                     </Typography>
                     <Typography variant="body2" sx={{ color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)' }}>
-                      Critical Items
+                      {t('autoRestock.criticalItems')}
                     </Typography>
                   </Box>
-                  <AlertTriangle size={32} color="#d32f2f" />
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      borderRadius: '50%',
+                      background: 'rgba(211, 47, 47, 0.1)',
+                      border: '1px solid rgba(211, 47, 47, 0.3)',
+                    }}
+                  >
+                    <AlertTriangle size={24} color="#d32f2f" />
+                  </Box>
                 </Box>
               </CardContent>
             </Card>
@@ -221,10 +236,23 @@ export default function AutoRestock({ darkMode }) {
                       {stockAnalysis.high_count}
                     </Typography>
                     <Typography variant="body2" sx={{ color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)' }}>
-                      High Priority
+                      {t('autoRestock.highPriority')}
                     </Typography>
                   </Box>
-                  <Clock size={32} color="#ed6c02" />
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      borderRadius: '50%',
+                      background: 'rgba(237, 108, 2, 0.1)',
+                      border: '1px solid rgba(237, 108, 2, 0.3)',
+                    }}
+                  >
+                    <Clock size={24} color="#ed6c02" />
+                  </Box>
                 </Box>
               </CardContent>
             </Card>
@@ -247,7 +275,20 @@ export default function AutoRestock({ darkMode }) {
                       Medium Priority
                     </Typography>
                   </Box>
-                  <Package size={32} color="#0288d1" />
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      borderRadius: '50%',
+                      background: 'rgba(2, 136, 209, 0.1)',
+                      border: '1px solid rgba(2, 136, 209, 0.3)',
+                    }}
+                  >
+                    <Package size={24} color="#0288d1" />
+                  </Box>
                 </Box>
               </CardContent>
             </Card>
@@ -270,7 +311,20 @@ export default function AutoRestock({ darkMode }) {
                       Total Cost
                     </Typography>
                   </Box>
-                  <DollarSign size={32} color="#2e7d32" />
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      borderRadius: '50%',
+                      background: 'rgba(46, 125, 50, 0.1)',
+                      border: '1px solid rgba(46, 125, 50, 0.3)',
+                    }}
+                  >
+                    <DollarSign size={24} color="#2e7d32" />
+                  </Box>
                 </Box>
               </CardContent>
             </Card>

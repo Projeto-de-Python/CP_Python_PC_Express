@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Typography, IconButton, Tooltip, Chip } from '@mui/material';
 import { HelpCircle } from 'lucide-react';
 import { getChartTheme } from '../../utils/chartUtils';
+import { useTranslation } from 'react-i18next';
 
 export const ChartWrapper = ({ 
   title, 
@@ -15,6 +16,7 @@ export const ChartWrapper = ({
   sx = {} 
 }) => {
   const theme = getChartTheme(darkMode);
+  const { t } = useTranslation();
   
   return (
     <Box
@@ -74,7 +76,7 @@ export const ChartWrapper = ({
         </Box>
         {onToggleExpand && (
           <Chip
-            label={expanded ? 'Click to minimize' : 'Click to expand'}
+            label={expanded ? t('common.clickToMinimize') : t('common.clickToExpand')}
             size="small"
             color="primary"
             variant="outlined"

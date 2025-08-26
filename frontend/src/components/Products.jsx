@@ -30,6 +30,7 @@ import {
   LinearProgress,
   Avatar,
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import {
   Plus,
   Edit,
@@ -57,6 +58,7 @@ export default function Products({ darkMode }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
   const [filterSupplier, setFilterSupplier] = useState('');
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     codigo: '',
     nome: '',
@@ -273,7 +275,7 @@ export default function Products({ darkMode }) {
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
         }}>
-          Products Management
+          {t('products.title')}
         </Typography>
         <Box display="flex" gap={2}>
           <Tooltip title="Refresh Data">
@@ -294,7 +296,7 @@ export default function Products({ darkMode }) {
               '&:hover': { background: 'linear-gradient(45deg, #1565c0, #1976d2)' }
             }}
           >
-            Add Product
+            {t('products.addProduct')}
           </Button>
         </Box>
       </Box>
@@ -370,7 +372,7 @@ export default function Products({ darkMode }) {
             <Grid item xs={12} md={3}>
               <FormControl fullWidth>
                 <InputLabel sx={{ color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)' }}>
-                  Category
+                  {t('products.category')}
                 </InputLabel>
                 <Select
                   value={filterCategory}
@@ -403,7 +405,7 @@ export default function Products({ darkMode }) {
             <Grid item xs={12} md={3}>
               <FormControl fullWidth>
                 <InputLabel sx={{ color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)' }}>
-                  Supplier
+                  {t('products.supplier')}
                 </InputLabel>
                 <Select
                   value={filterSupplier}
@@ -473,14 +475,14 @@ export default function Products({ darkMode }) {
             <Table>
               <TableHead>
                 <TableRow sx={{ background: 'linear-gradient(45deg, #1976d2, #42a5f5)' }}>
-                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Product</TableCell>
+                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>{t('products.productName')}</TableCell>
                   <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Code</TableCell>
-                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Category</TableCell>
-                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Stock</TableCell>
-                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Price</TableCell>
-                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Supplier</TableCell>
+                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>{t('products.category')}</TableCell>
+                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>{t('products.stock')}</TableCell>
+                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>{t('products.price')}</TableCell>
+                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>{t('products.supplier')}</TableCell>
                   <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Status</TableCell>
-                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Actions</TableCell>
+                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>{t('products.actions')}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -586,14 +588,14 @@ export default function Products({ darkMode }) {
                 <TableCell>
                   {product.quantidade === 0 ? (
                     <Chip 
-                      label="Out of Stock" 
+                      label={t('products.outOfStock')} 
                       color="error" 
                       size="small"
                       icon={<AlertTriangle size={14} />}
                     />
                   ) : product.em_estoque_baixo ? (
                     <Chip 
-                      label="Low Stock" 
+                      label={t('products.lowStock')} 
                       color="warning" 
                       size="small"
                       icon={<AlertTriangle size={14} />}

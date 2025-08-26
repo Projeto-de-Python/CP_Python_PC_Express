@@ -25,6 +25,7 @@ import {
   Divider,
   LinearProgress,
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import {
   TrendingUp,
   TrendingDown,
@@ -59,6 +60,7 @@ export default function Insights({ darkMode }) {
   const [generatingData, setGeneratingData] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [productInsights, setProductInsights] = useState(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchData();
@@ -148,7 +150,7 @@ export default function Insights({ darkMode }) {
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
         }}>
-          Business Insights
+          {t('insights.title')}
         </Typography>
         <Box display="flex" gap={2}>
           <Tooltip title="Generate Sample Sales Data">
@@ -163,7 +165,7 @@ export default function Insights({ darkMode }) {
                 '&:hover': { borderColor: '#5a6fd8', backgroundColor: 'rgba(102,126,234,0.1)' }
               }}
             >
-              {generatingData ? 'Generating...' : 'Generate Data'}
+              {generatingData ? t('common.loading') : t('insights.generateData')}
             </Button>
           </Tooltip>
           <Tooltip title="Refresh Insights">
@@ -201,10 +203,23 @@ export default function Insights({ darkMode }) {
                       {overview.inventory_summary?.total_products || 0}
                     </Typography>
                     <Typography variant="body2" sx={{ color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)' }}>
-                      Total Products
+                      {t('insights.totalProducts')}
                     </Typography>
                   </Box>
-                  <Package size={32} color="#667eea" />
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      borderRadius: '50%',
+                      background: 'rgba(102, 126, 234, 0.1)',
+                      border: '1px solid rgba(102, 126, 234, 0.3)',
+                    }}
+                  >
+                    <Package size={24} color="#667eea" />
+                  </Box>
                 </Box>
               </CardContent>
             </Card>
@@ -224,10 +239,23 @@ export default function Insights({ darkMode }) {
                       ${overview.inventory_summary?.total_stock_value?.toFixed(2) || '0.00'}
                     </Typography>
                     <Typography variant="body2" sx={{ color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)' }}>
-                      Stock Value
+                      {t('insights.stockValue')}
                     </Typography>
                   </Box>
-                  <DollarSign size={32} color="#2e7d32" />
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      borderRadius: '50%',
+                      background: 'rgba(46, 125, 50, 0.1)',
+                      border: '1px solid rgba(46, 125, 50, 0.3)',
+                    }}
+                  >
+                    <DollarSign size={24} color="#2e7d32" />
+                  </Box>
                 </Box>
               </CardContent>
             </Card>
@@ -250,7 +278,20 @@ export default function Insights({ darkMode }) {
                       Low Stock Items
                     </Typography>
                   </Box>
-                  <AlertTriangle size={32} color="#ed6c02" />
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      borderRadius: '50%',
+                      background: 'rgba(237, 108, 2, 0.1)',
+                      border: '1px solid rgba(237, 108, 2, 0.3)',
+                    }}
+                  >
+                    <AlertTriangle size={24} color="#ed6c02" />
+                  </Box>
                 </Box>
               </CardContent>
             </Card>
@@ -273,7 +314,20 @@ export default function Insights({ darkMode }) {
                       Recent Sales
                     </Typography>
                   </Box>
-                  <ShoppingCart size={32} color="#0288d1" />
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      borderRadius: '50%',
+                      background: 'rgba(2, 136, 209, 0.1)',
+                      border: '1px solid rgba(2, 136, 209, 0.3)',
+                    }}
+                  >
+                    <ShoppingCart size={24} color="#0288d1" />
+                  </Box>
                 </Box>
               </CardContent>
             </Card>

@@ -11,6 +11,7 @@ import {
   Paper,
   LinearProgress,
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import {
   Package,
   Users,
@@ -51,10 +52,10 @@ export default function Dashboard({ darkMode, onToggleDarkMode }) {
   const [refreshKey, setRefreshKey] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [expandedChart, setExpandedChart] = useState(null);
 
   const theme = useTheme();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchDashboardData();
@@ -121,12 +122,20 @@ export default function Dashboard({ darkMode, onToggleDarkMode }) {
     setActiveIndex(0);
   };
 
-  const handleChartClick = (chartType) => {
-    setExpandedChart(expandedChart === chartType ? null : chartType);
-  };
+
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(selectedCategory === category ? null : category);
+  };
+
+  const handleStockClick = (data) => {
+    // Navigate to products page with filter for this product
+    navigate('/products', { 
+      state: { 
+        filterProduct: data.name,
+        highlightStock: true 
+      } 
+    });
   };
 
   if (loading) {
@@ -143,19 +152,47 @@ export default function Dashboard({ darkMode, onToggleDarkMode }) {
     }, 0),
   };
 
-  // Prepare chart data
-  const stockData = products.length > 0 
-    ? products.slice(0, 8).map(product => ({
-        name: product.nome.length > 15 ? `${product.nome.substring(0, 15)}...` : product.nome,
-        stock: product.quantidade,
-        minimum: product.estoque_minimo,
-        color: product.quantidade <= product.estoque_minimo ? chartColors.error : chartColors.success
-      }))
-    : [
-        { name: 'Sample Product 1', stock: 15, minimum: 5, color: chartColors.success },
-        { name: 'Sample Product 2', stock: 3, minimum: 5, color: chartColors.error },
-        { name: 'Sample Product 3', stock: 25, minimum: 10, color: chartColors.success },
-      ];
+  // Website Traffic Data
+  const websiteTrafficData = [
+    { 
+      metric: t('dashboard.pageViews'), 
+      value: 20500, 
+      target: 25000, 
+      color: chartColors.primary,
+      icon: '📊'
+    },
+    { 
+      metric: t('dashboard.uniqueVisitors'), 
+      value: 12450, 
+      target: 15000, 
+      color: chartColors.success,
+      icon: '👥'
+    },
+    { 
+      metric: t('dashboard.avgSessionTime'), 
+      value: 4.2, 
+      target: 5.0, 
+      color: chartColors.warning,
+      icon: '⏱️',
+      unit: 'min'
+    },
+    { 
+      metric: t('dashboard.bounceRate'), 
+      value: 32.5, 
+      target: 25.0, 
+      color: chartColors.error,
+      icon: '📉',
+      unit: '%'
+    }
+  ];
+
+  // Traffic Sources Data
+  const trafficSourcesData = [
+    { name: t('dashboard.socialMedia'), value: 35, color: '#FF6B6B' },
+    { name: t('dashboard.organicSearch'), value: 28, color: '#4ECDC4' },
+    { name: t('dashboard.directTraffic'), value: 22, color: '#45B7D1' },
+    { name: t('dashboard.referralTraffic'), value: 15, color: '#96CEB4' }
+  ];
 
   const categoryData = products.length > 0 
     ? Object.entries(
@@ -175,16 +212,24 @@ export default function Dashboard({ darkMode, onToggleDarkMode }) {
         { name: 'Storage', value: 6, color: chartColors.chartColors[3] },
       ];
 
-  // Sales Performance Trend Data (last 7 days)
-  const salesTrendData = [
-    { day: 'Mon', sales: 12500, orders: 8, avgOrder: 1562.5 },
-    { day: 'Tue', sales: 18900, orders: 12, avgOrder: 1575.0 },
-    { day: 'Wed', sales: 14200, orders: 9, avgOrder: 1577.8 },
-    { day: 'Thu', sales: 22100, orders: 14, avgOrder: 1578.6 },
-    { day: 'Fri', sales: 26800, orders: 17, avgOrder: 1576.5 },
-    { day: 'Sat', sales: 31200, orders: 20, avgOrder: 1560.0 },
-    { day: 'Sun', sales: 18900, orders: 12, avgOrder: 1575.0 }
-  ];
+  // Stock Levels Data
+  const stockLevelsData = products.length > 0 
+    ? products.slice(0, 8).map(product => ({
+        name: product.nome.length > 15 ? `${product.nome.substring(0, 15)}...` : product.nome,
+        current: product.quantidade,
+        minimum: product.estoque_minimo,
+        color: product.quantidade <= product.estoque_minimo ? chartColors.error : chartColors.success
+      }))
+    : [
+        { name: 'AMD Ryzen 7 5800X', current: 15, minimum: 5, color: chartColors.success },
+        { name: 'NVIDIA RTX 3080', current: 3, minimum: 5, color: chartColors.error },
+        { name: 'Samsung 970 EVO 1TB', current: 25, minimum: 10, color: chartColors.success },
+        { name: 'Corsair Vengeance 16GB', current: 8, minimum: 15, color: chartColors.error },
+        { name: 'ASUS ROG Strix B550', current: 12, minimum: 8, color: chartColors.success },
+        { name: 'Seagate Barracuda 2TB', current: 18, minimum: 12, color: chartColors.success },
+        { name: 'EVGA 750W Gold', current: 6, minimum: 10, color: chartColors.error },
+        { name: 'Logitech G Pro X', current: 22, minimum: 15, color: chartColors.success }
+      ];
 
   // Top Performing Products Data
   const topProductsData = products.length > 0 
@@ -217,7 +262,7 @@ export default function Dashboard({ darkMode, onToggleDarkMode }) {
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
           }}>
-            Dashboard Overview
+            {t('dashboard.title')}
           </Typography>
           <Tooltip title="This dashboard provides real-time insights into your inventory performance, helping you make informed business decisions. Monitor stock levels, track sales trends, and identify opportunities for growth.">
             <IconButton sx={{ 
@@ -232,7 +277,7 @@ export default function Dashboard({ darkMode, onToggleDarkMode }) {
             </IconButton>
           </Tooltip>
         </Box>
-        <Tooltip title="Refresh Data">
+        <Tooltip title={t('common.loading')}>
           <IconButton onClick={handleRefresh} sx={{ 
             background: chartColors.gradientColors.primary,
             color: 'white',
@@ -257,7 +302,7 @@ export default function Dashboard({ darkMode, onToggleDarkMode }) {
       <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid xs={12} sm={6} md={3}>
           <StatCard
-            title="Total Products"
+            title={t('dashboard.totalProducts')}
             value={stats.totalProducts}
             icon={<Package size={24} color="white" />}
             gradient={chartColors.gradientColors.primary}
@@ -268,7 +313,7 @@ export default function Dashboard({ darkMode, onToggleDarkMode }) {
         </Grid>
         <Grid xs={12} sm={6} md={3}>
           <StatCard
-            title="Total Suppliers"
+            title={t('dashboard.totalSuppliers')}
             value={stats.totalSuppliers}
             icon={<Users size={24} color="white" />}
             gradient={chartColors.gradientColors.secondary}
@@ -279,7 +324,7 @@ export default function Dashboard({ darkMode, onToggleDarkMode }) {
         </Grid>
         <Grid xs={12} sm={6} md={3}>
           <StatCard
-            title="Low Stock Items"
+            title={t('dashboard.lowStock')}
             value={stats.lowStockProducts}
             icon={<AlertTriangle size={24} color="white" />}
             gradient={chartColors.gradientColors.warning}
@@ -304,45 +349,97 @@ export default function Dashboard({ darkMode, onToggleDarkMode }) {
       <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid xs={12} lg={5}>
           <ChartWrapper
-            title="Stock Levels"
-            icon={<BarChart3 size={20} style={{ marginRight: 8, verticalAlign: 'middle' }} />}
+            title={t('dashboard.websiteTraffic')}
+            icon={<Activity size={20} style={{ marginRight: 8, verticalAlign: 'middle' }} />}
             darkMode={darkMode}
-            tooltip="Monitor current stock levels vs minimum requirements. Click on bars to see product details. This helps prevent stockouts and optimize inventory levels."
-            expanded={expandedChart === 'stock'}
-            onToggleExpand={() => handleChartClick('stock')}
+            tooltip="Monitor website traffic metrics including page views, unique visitors, session time, and bounce rate. Track your digital marketing performance and user engagement."
+            expanded={false}
+            onToggleExpand={() => {}}
           >
-            <ResponsiveContainer width="100%" height={expandedChart === 'stock' ? 400 : 300}>
-              <BarChart data={stockData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke={darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} />
-                <XAxis dataKey="name" tick={{ fontSize: 11, fill: theme.palette.text.secondary }} />
-                <YAxis tick={{ fontSize: 11, fill: theme.palette.text.secondary }} />
-                <RechartsTooltip />
-                <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
-                <Bar dataKey="stock" fill={chartColors.primary} name="Current Stock" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="minimum" fill={chartColors.warning} name="Minimum Stock" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+            <Box sx={{ p: 2 }}>
+              <Grid container spacing={2}>
+                {websiteTrafficData.map((item, index) => (
+                  <Grid xs={6} key={index}>
+                    <Card
+                      sx={{
+                        p: 2,
+                        background: `linear-gradient(135deg, ${item.color}15 0%, ${item.color}08 100%)`,
+                        border: `1px solid ${item.color}30`,
+                        borderRadius: 2,
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                          transform: 'translateY(-2px)',
+                          boxShadow: `0 4px 20px ${item.color}20`,
+                        },
+                      }}
+                    >
+                      <Box display="flex" alignItems="center" justifyContent="space-between" mb={1}>
+                        <Typography variant="h6" sx={{ color: item.color, fontSize: '1.5rem' }}>
+                          {item.icon}
+                        </Typography>
+                        <Typography variant="caption" sx={{ color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)' }}>
+                          {item.metric}
+                        </Typography>
+                      </Box>
+                      
+                      <Typography variant="h4" fontWeight="bold" sx={{ color: darkMode ? '#ffffff' : '#000000', mb: 0.5 }}>
+                        {item.value >= 1000 ? `${(item.value / 1000).toFixed(1)}k` : item.value}{item.unit || ''}
+                      </Typography>
+                      
+                      <Box display="flex" alignItems="center" gap={1} mb={1}>
+                        <Typography variant="caption" sx={{ color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)' }}>
+                          Target: {item.target >= 1000 ? `${(item.target / 1000).toFixed(1)}k` : item.target}{item.unit || ''}
+                        </Typography>
+                      </Box>
+                      
+                      <LinearProgress
+                        variant="determinate"
+                        value={(item.value / item.target) * 100}
+                        sx={{
+                          height: 6,
+                          borderRadius: 3,
+                          backgroundColor: `${item.color}20`,
+                          '& .MuiLinearProgress-bar': {
+                            background: item.color,
+                            borderRadius: 3,
+                          },
+                        }}
+                      />
+                      
+                      <Typography variant="caption" sx={{ 
+                        color: item.value >= item.target ? chartColors.success : chartColors.warning,
+                        fontWeight: 'bold',
+                        mt: 0.5,
+                        display: 'block'
+                      }}>
+                        {item.value >= item.target ? '✅ On Track' : '⚠️ Below Target'}
+                      </Typography>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
           </ChartWrapper>
         </Grid>
 
         <Grid xs={12} lg={3.5}>
           <ChartWrapper
-            title="Products by Category"
+            title={t('dashboard.productsByCategory')}
             icon={<PieChart size={20} style={{ marginRight: 8, verticalAlign: 'middle' }} />}
             darkMode={darkMode}
             tooltip="Visualize your product distribution across categories. Click on segments to filter other charts. This helps you understand your product portfolio and identify category gaps."
-            expanded={expandedChart === 'category'}
-            onToggleExpand={() => handleChartClick('category')}
+            expanded={false}
+            onToggleExpand={() => {}}
           >
-            <ResponsiveContainer width="100%" height={expandedChart === 'category' ? 400 : 300}>
+            <ResponsiveContainer width="100%" height={300}>
               <BarChart>
                 <Pie
                   activeIndex={activeIndex}
                   data={categoryData}
                   cx="50%"
                   cy="50%"
-                  innerRadius={expandedChart === 'category' ? 60 : 50}
-                  outerRadius={expandedChart === 'category' ? 90 : 75}
+                  innerRadius={50}
+                  outerRadius={75}
                   fill="#8884d8"
                   dataKey="value"
                   onMouseEnter={onPieEnter}
@@ -366,7 +463,7 @@ export default function Dashboard({ darkMode, onToggleDarkMode }) {
                   textAnchor="middle"
                   dominantBaseline="middle"
                   style={{
-                    fontSize: expandedChart === 'category' ? '18px' : '16px',
+                    fontSize: '16px',
                     fontWeight: 'bold',
                     fill: darkMode ? '#ffffff' : '#333333',
                     textShadow: darkMode ? '0 0 10px rgba(255,255,255,0.3)' : '0 0 10px rgba(0,0,0,0.1)'
@@ -376,16 +473,16 @@ export default function Dashboard({ darkMode, onToggleDarkMode }) {
                 </text>
                 <text
                   x="50%"
-                  y={expandedChart === 'category' ? '65%' : '62%'}
+                  y="62%"
                   textAnchor="middle"
                   dominantBaseline="middle"
                   style={{
-                    fontSize: expandedChart === 'category' ? '12px' : '10px',
+                    fontSize: '10px',
                     fill: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)',
                     fontWeight: '500'
                   }}
                 >
-                  Total
+                  {t('dashboard.total')}
                 </text>
               </BarChart>
             </ResponsiveContainer>
@@ -394,21 +491,22 @@ export default function Dashboard({ darkMode, onToggleDarkMode }) {
 
         <Grid xs={12} lg={3.5}>
           <ChartWrapper
-            title="Sales Performance Trend"
-            icon={<TrendingUp size={20} style={{ marginRight: 8, verticalAlign: 'middle' }} />}
+            title={t('dashboard.stockLevels')}
+            icon={<Package size={20} style={{ marginRight: 8, verticalAlign: 'middle' }} />}
             darkMode={darkMode}
-            tooltip="Weekly sales performance showing daily revenue, order count, and average order value. This helps you identify peak sales days and optimize your business strategy."
-            expanded={expandedChart === 'status'}
-            onToggleExpand={() => handleChartClick('status')}
+            tooltip="Monitor current stock levels vs minimum requirements. Click on bars to see product details. This helps prevent stockouts and optimize inventory levels."
+            expanded={false}
+            onToggleExpand={() => {}}
           >
-            <ResponsiveContainer width="100%" height={expandedChart === 'status' ? 400 : 300}>
-              <LineChart data={salesTrendData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={stockLevelsData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke={darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} />
-                <XAxis dataKey="day" tick={{ fontSize: 11, fill: theme.palette.text.secondary }} />
+                <XAxis dataKey="name" tick={{ fontSize: 11, fill: theme.palette.text.secondary }} />
                 <YAxis tick={{ fontSize: 11, fill: theme.palette.text.secondary }} />
                 <RechartsTooltip 
                   content={({ active, payload, label }) => {
                     if (active && payload && payload.length) {
+                      const data = payload[0].payload;
                       return (
                         <Box sx={{
                           background: darkMode ? 'rgba(26, 26, 26, 0.95)' : 'rgba(255, 255, 255, 0.95)',
@@ -422,13 +520,13 @@ export default function Dashboard({ darkMode, onToggleDarkMode }) {
                             {label}
                           </Typography>
                           <Typography variant="body2" sx={{ color: chartColors.primary }}>
-                            Sales: {formatCurrency(payload[0]?.value)}
+                            Current Stock: {data.current}
                           </Typography>
-                          <Typography variant="body2" sx={{ color: chartColors.secondary }}>
-                            Orders: {payload[1]?.value}
+                          <Typography variant="body2" sx={{ color: chartColors.warning }}>
+                            Minimum Stock: {data.minimum}
                           </Typography>
-                          <Typography variant="body2" sx={{ color: chartColors.success }}>
-                            Avg Order: {formatCurrency(payload[2]?.value)}
+                          <Typography variant="body2" sx={{ color: data.current <= data.minimum ? chartColors.error : chartColors.success }}>
+                            Status: {data.current <= data.minimum ? 'Low Stock' : 'In Stock'}
                           </Typography>
                         </Box>
                       );
@@ -436,40 +534,24 @@ export default function Dashboard({ darkMode, onToggleDarkMode }) {
                     return null;
                   }}
                 />
-                <Line 
-                  type="monotone" 
-                  dataKey="sales" 
-                  stroke={chartColors.primary}
-                  strokeWidth={3}
-                  dot={{ fill: chartColors.primary, strokeWidth: 2, r: 4 }}
-                  activeDot={{ r: 6, stroke: chartColors.primary, strokeWidth: 2 }}
-                  name="Daily Sales"
-                  animationDuration={chartAnimation.duration}
-                  animationEasing={chartAnimation.easing}
+                <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
+                <Bar 
+                  dataKey="current" 
+                  fill={chartColors.primary} 
+                  name="Current Stock" 
+                  radius={[4, 4, 0, 0]}
+                  onClick={(data) => handleStockClick(data)}
+                  style={{ cursor: 'pointer' }}
                 />
-                <Line 
-                  type="monotone" 
-                  dataKey="orders" 
-                  stroke={chartColors.secondary}
-                  strokeWidth={2}
-                  dot={{ fill: chartColors.secondary, strokeWidth: 2, r: 3 }}
-                  activeDot={{ r: 5, stroke: chartColors.secondary, strokeWidth: 2 }}
-                  name="Orders"
-                  animationDuration={chartAnimation.duration}
-                  animationEasing={chartAnimation.easing}
+                <Bar 
+                  dataKey="minimum" 
+                  fill={chartColors.warning} 
+                  name="Minimum Stock" 
+                  radius={[4, 4, 0, 0]}
+                  onClick={(data) => handleStockClick(data)}
+                  style={{ cursor: 'pointer' }}
                 />
-                <Line 
-                  type="monotone" 
-                  dataKey="avgOrder" 
-                  stroke={chartColors.success}
-                  strokeWidth={2}
-                  dot={{ fill: chartColors.success, strokeWidth: 2, r: 3 }}
-                  activeDot={{ r: 5, stroke: chartColors.success, strokeWidth: 2 }}
-                  name="Avg Order Value"
-                  animationDuration={chartAnimation.duration}
-                  animationEasing={chartAnimation.easing}
-                />
-              </LineChart>
+              </BarChart>
             </ResponsiveContainer>
           </ChartWrapper>
         </Grid>
@@ -498,7 +580,7 @@ export default function Dashboard({ darkMode, onToggleDarkMode }) {
               <Box display="flex" alignItems="center" gap={1}>
                 <Typography variant="h6" fontWeight="600" sx={{ color: chartColors.success }}>
                   <TrendingUp size={20} style={{ marginRight: 8, verticalAlign: 'middle' }} />
-                  Top Performing Products
+                  {t('dashboard.topPerforming')}
                 </Typography>
                 <Tooltip title="Your highest-value inventory items ranked by total inventory value. This helps you focus on your most profitable products and optimize stock levels.">
                   <IconButton sx={{ 
@@ -603,7 +685,7 @@ export default function Dashboard({ darkMode, onToggleDarkMode }) {
             <Box display="flex" alignItems="center" gap={1}>
               <AlertTriangle size={24} color={chartColors.warning} style={{ marginRight: 8 }} />
               <Typography variant="h6" fontWeight="600" color="warning.main">
-                Low Stock Alerts
+                {t('dashboard.lowStockAlerts')}
               </Typography>
               <Tooltip title="Critical inventory items that need immediate attention. These products are running low or out of stock and require urgent restocking to prevent lost sales.">
                 <IconButton sx={{ 

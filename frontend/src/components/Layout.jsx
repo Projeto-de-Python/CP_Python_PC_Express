@@ -23,6 +23,9 @@ import {
   Chip,
   Paper,
   Divider,
+  Select,
+  FormControl,
+  InputLabel,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -42,18 +45,10 @@ import {
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const drawerWidth = 0; // No left sidebar
-
-const menuItems = [
-  { text: 'Dashboard', icon: <Activity size={20} />, path: '/' },
-  { text: 'Products', icon: <Package size={20} />, path: '/products' },
-  { text: 'Suppliers', icon: <Users size={20} />, path: '/suppliers' },
-  { text: 'Purchase Orders', icon: <ShoppingCart size={20} />, path: '/purchase-orders' },
-  { text: 'Insights', icon: <BarChart3 size={20} />, path: '/insights' },
-  { text: 'Alerts', icon: <AlertTriangle size={20} />, path: '/alerts' },
-  { text: 'Auto Restock', icon: <Sparkles size={20} />, path: '/auto-restock' },
-];
 
 export default function Layout({ children, darkMode, onToggleDarkMode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -63,6 +58,18 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
+  const { currentLanguage, changeLanguage } = useLanguage();
+
+  const menuItems = [
+    { text: t('common.dashboard'), icon: <Activity size={20} />, path: '/' },
+    { text: t('common.products'), icon: <Package size={20} />, path: '/products' },
+    { text: t('common.suppliers'), icon: <Users size={20} />, path: '/suppliers' },
+    { text: t('common.purchaseOrders'), icon: <ShoppingCart size={20} />, path: '/purchase-orders' },
+    { text: t('common.insights'), icon: <BarChart3 size={20} />, path: '/insights' },
+    { text: t('common.alerts'), icon: <AlertTriangle size={20} />, path: '/alerts' },
+    { text: t('common.autoRestock'), icon: <Sparkles size={20} />, path: '/auto-restock' },
+  ];
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -249,6 +256,42 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
               {darkMode ? <Sun size={20} /> : <Moon size={20} />}
             </IconButton>
 
+            {/* Language Selector */}
+            <FormControl size="small" sx={{ minWidth: 120 }}>
+              <Select
+                value={currentLanguage}
+                onChange={(e) => changeLanguage(e.target.value)}
+                sx={{
+                  color: 'white',
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'rgba(255,255,255,0.3)',
+                  },
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'rgba(255,255,255,0.5)',
+                  },
+                  '& .MuiSelect-icon': {
+                    color: 'white',
+                  },
+                  '& .MuiSelect-select': {
+                    color: 'white',
+                    fontSize: '0.875rem',
+                  },
+                }}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      background: darkMode ? 'rgba(30,30,30,0.95)' : 'rgba(255,255,255,0.95)',
+                      backdropFilter: 'blur(20px)',
+                      border: darkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)',
+                    }
+                  }
+                }}
+              >
+                <MenuItem value="en">{t('common.english')}</MenuItem>
+                <MenuItem value="pt">{t('common.portuguese')}</MenuItem>
+              </Select>
+            </FormControl>
+
             {/* Help Button */}
             <IconButton
               sx={{ 
@@ -342,46 +385,59 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
           <ListItemIcon>
             <Settings size={16} />
           </ListItemIcon>
-          Settings
+          {t('common.settings')}
         </MenuItem>
         <MenuItem onClick={handleLogoutOpen}>
           <ListItemIcon>
             <LogOut size={16} />
           </ListItemIcon>
-          Logout
+          {t('common.logout')}
         </MenuItem>
       </Menu>
 
       {/* Settings Dialog */}
       <Dialog open={settingsOpen} onClose={handleSettingsClose} maxWidth="sm" fullWidth>
-        <DialogTitle>Settings</DialogTitle>
+        <DialogTitle>{t('common.settings')}</DialogTitle>
         <DialogContent>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={darkMode}
-                onChange={onToggleDarkMode}
-                color="primary"
-              />
-            }
-            label="Dark Mode"
-          />
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={darkMode}
+                  onChange={onToggleDarkMode}
+                  color="primary"
+                />
+              }
+              label={t('common.darkMode')}
+            />
+            <FormControl fullWidth>
+              <InputLabel>{t('common.language')}</InputLabel>
+              <Select
+                value={currentLanguage}
+                onChange={(e) => changeLanguage(e.target.value)}
+                label={t('common.language')}
+              >
+                <MenuItem value="en">{t('common.english')}</MenuItem>
+                <MenuItem value="pt">{t('common.portuguese')}</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleSettingsClose}>Close</Button>
+          <Button onClick={handleSettingsClose}>{t('common.close')}</Button>
         </DialogActions>
       </Dialog>
 
       {/* Logout Dialog */}
       <Dialog open={logoutOpen} onClose={handleLogoutClose}>
-        <DialogTitle>Confirm Logout</DialogTitle>
+        <DialogTitle>{t('common.confirmLogout')}</DialogTitle>
         <DialogContent>
-          <Typography>Are you sure you want to logout?</Typography>
+          <Typography>{t('common.logoutMessage')}</Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleLogoutClose}>Cancel</Button>
+          <Button onClick={handleLogoutClose}>{t('common.cancel')}</Button>
           <Button onClick={handleLogout} color="primary" variant="contained">
-            Logout
+            {t('common.logout')}
           </Button>
         </DialogActions>
       </Dialog>
