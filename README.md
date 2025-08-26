@@ -1,82 +1,115 @@
-<p align="center
-  
-<picture>
-  <source srcset="logo.png">
-  <img alt="PC EXPRESS" src="logo.png" width="240">
-</picture>
+# PC-Express 🖥️
 
-</p
+A simple and efficient inventory management system for computer parts and electronics.
 
-## **PC-Express**
-**Projeto de Python** da Aula de Python na **FIAP**. Uma loja de peça de computadores com estoque e gestão do estoque.
+## 🚀 Quick Start
 
-**API em FastAPI para gestão de produtos e estoque, com histórico e alertas de baixo estoque.**
+### Prerequisites
+- Python 3.8+
+- Node.js 16+
+- npm
 
-## Requisitos
-- Python 3.10+
-- pip
+### Installation
 
-## Instalação
+1. **Clone and setup**
+```bash
+git clone <repository-url>
+cd PC-Express
+```
+
+2. **Backend Setup**
+```bash
+# Create virtual environment
 python -m venv .venv
-# Linux/Mac
+
+# Activate virtual environment
+# Windows:
+.venv\Scripts\activate
+# Linux/Mac:
 source .venv/bin/activate
-# Windows (PowerShell)
-.venv\Scripts\Activate.ps1
 
-pip install -r requirements.txt
+# Install dependencies
+pip install -r requirement.txt
 
-## Rodando
-uvicorn app.main:app --reload
+# Initialize database
+python scripts/seed.py
+python scripts/migrate_auth.py
+```
 
-Acesse:
-- http://127.0.0.1:8000/health
-- http://127.0.0.1:8000/docs (Swagger)
-- http://127.0.0.1:8000/redoc
+3. **Frontend Setup**
+```bash
+cd frontend
+npm install
+```
 
-## Dados de exemplo (opcional)
-python -m scripts.seed
+### Running the Application
 
-## Endpoints principais
-- Suppliers
-  - POST /suppliers
-  - GET /suppliers
-  - GET /suppliers/{id}
-  - PUT /suppliers/{id}
-  - DELETE /suppliers/{id}
-- Products
-  - POST /products
-  - GET /products?nome=&categoria=&fornecedor_id=&em_estoque_baixo=true
-  - GET /products/{id}
-  - PUT /products/{id}
-  - DELETE /products/{id}
-  - GET /products/low-stock
-- Stock
-  - POST /products/{id}/stock/add
-  - POST /products/{id}/stock/remove
-  - PUT /products/{id}/stock/set
-  - GET /products/{id}/movements
-- Alerts
-  - GET /alerts/low-stock
+**Option 1: Use the simple start script**
+```bash
+python start.py
+```
 
-## Exemplos rápidos (HTTP)
-- Criar produto:
-  POST /products
-  {
-    "codigo": "COOLER-001",
-    "nome": "Cooler CPU Hyper 212",
-    "categoria": "cooler",
-    "quantidade": 15,
-    "preco": 199.90,
-    "estoque_minimo": 5
-  }
+**Option 2: Start manually**
+```bash
+# Terminal 1 - Backend
+python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
-- Remover 2 unidades (venda):
-  POST /products/1/stock/remove
-  { "quantidade": 2, "motivo": "Venda balcão" }
+# Terminal 2 - Frontend
+cd frontend
+npm run dev
+```
 
-- Produtos com baixo estoque:
-  GET /products/low-stock
+### Access the Application
+- **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:8000
+- **API Documentation**: http://localhost:8000/docs
 
-## Observações
-- Estoque nunca fica negativo; remoção acima do disponível retorna 400.
-- Código do produto é único; duplicado retorna 409.
+### Default Login
+- **Email**: admin@pc-express.com
+- **Password**: admin123
+
+## 📋 Features
+
+- **Product Management**: Add, edit, and track computer parts
+- **Stock Control**: Monitor inventory levels and movements
+- **Supplier Management**: Manage supplier information
+- **Purchase Orders**: Create and track orders
+- **Auto-Restock**: Automatic restock suggestions based on stock levels
+- **Business Insights**: Sales analytics and stock health monitoring
+- **User Authentication**: Secure login system
+
+## 🏗️ Architecture
+
+- **Backend**: FastAPI + SQLAlchemy + SQLite
+- **Frontend**: React + Material-UI
+- **Database**: SQLite (included)
+
+## 📁 Project Structure
+
+```
+PC-Express/
+├── app/                    # Backend application
+│   ├── routers/           # API endpoints
+│   ├── models.py          # Database models
+│   ├── crud.py            # Database operations
+│   └── main.py            # FastAPI app
+├── frontend/              # React frontend
+│   └── src/
+│       ├── components/    # React components
+│       └── services/      # API services
+├── scripts/               # Database setup scripts
+└── start.py              # Simple startup script
+```
+
+## 🔧 Development
+
+The application uses a simple architecture:
+- **Models**: Define database structure
+- **CRUD**: Handle database operations
+- **Routers**: Define API endpoints
+- **Components**: React UI components
+- **Services**: Frontend API communication
+
+## 📝 License
+
+This project is for educational and personal use.
