@@ -17,9 +17,11 @@ Um sistema completo de gerenciamento de inventário desenvolvido com FastAPI (ba
 
 ## 📋 Pré-requisitos
 
-- **Python 3.8+**
-- **Node.js 16+**
+- **Python 3.8+** - [Download](https://www.python.org/downloads/)
+- **Node.js 16+** - [Download](https://nodejs.org/)
 - **npm** (incluído com Node.js)
+
+> **💡 Dica:** O script de inicialização verifica automaticamente se estes pré-requisitos estão instalados.
 
 ## 🛠️ Instalação
 
@@ -29,59 +31,60 @@ git clone <url-do-repositorio>
 cd PCexpress
 ```
 
-### 2. Configuração do Backend
-
-#### Crie um ambiente virtual Python
+### 2. Inicialização Automática (Recomendado)
 ```bash
+.\start.bat
+```
+
+**O script fará automaticamente:**
+- ✅ Verificação de pré-requisitos
+- ✅ Criação do ambiente virtual Python
+- ✅ Instalação de dependências
+- ✅ Configuração do banco de dados
+- ✅ Inicialização dos servidores
+
+### 3. Configuração Manual (Opcional)
+
+Se preferir configurar manualmente, siga os passos abaixo:
+
+#### Backend
+```bash
+# Criar ambiente virtual
 python -m venv .venv
-```
 
-#### Ative o ambiente virtual
-**Windows:**
-```bash
-.venv\Scripts\activate
-```
+# Ativar ambiente virtual
+.venv\Scripts\activate  # Windows
+# source .venv/bin/activate  # Linux/Mac
 
-**Linux/Mac:**
-```bash
-source .venv/bin/activate
-```
-
-#### Instale as dependências Python
-```bash
+# Instalar dependências
 pip install -r requirement.txt
-```
 
-#### Inicialize o banco de dados
-```bash
+# Configurar banco
 python scripts/setup_db.py
 ```
 
-### 3. Configuração do Frontend
-
-#### Navegue para a pasta frontend
+#### Frontend
 ```bash
 cd frontend
-```
-
-#### Instale as dependências Node.js
-```bash
 npm install
-```
-
-#### Volte para a pasta raiz
-```bash
 cd ..
 ```
 
 ## 🚀 Executando o Projeto
 
-### Opção 1: Script de Inicialização Automática
+### ⭐ **Inicialização Automática (Recomendado)**
 ```bash
-python start.py
+.\start.bat
 ```
 
-### Opção 2: Execução Manual
+**O que o script faz automaticamente:**
+- ✅ Verifica se Python e Node.js estão instalados
+- ✅ Cria e ativa ambiente virtual Python
+- ✅ Instala todas as dependências
+- ✅ Configura banco de dados
+- ✅ Inicia backend e frontend em janelas separadas
+
+### 🔧 **Execução Manual (Avançado)**
 
 #### Terminal 1 - Backend
 ```bash
@@ -232,6 +235,37 @@ O sistema utiliza SQLite como banco de dados principal, com as seguintes tabelas
 - **sale_items**: Itens de venda
 - **purchase_orders**: Pedidos de compra
 - **purchase_order_items**: Itens dos pedidos
+
+## 🔄 Gerenciamento dos Servidores
+
+### **Inicialização Automática**
+```bash
+.\start.bat
+```
+
+### **Parar Servidores**
+- Feche as janelas "Backend" e "Frontend" que foram abertas
+- Ou pressione `Ctrl+C` nas janelas dos servidores
+
+### **Reiniciar**
+```bash
+.\start.bat
+```
+
+### **Execução Manual**
+Se preferir executar manualmente:
+
+#### Terminal 1 - Backend
+```bash
+.venv\Scripts\activate
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+#### Terminal 2 - Frontend
+```bash
+cd frontend
+npm run dev
+```
 
 ## 🚀 Deploy
 
