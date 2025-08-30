@@ -36,8 +36,7 @@ export default function Alerts() {
     fetchLowStockAlerts();
     
     // Listen for product data changes from other components
-    const handleProductsDataChanged = (event) => {
-      console.log('Alerts: Products data changed:', event.detail);
+    const handleProductsDataChanged = () => {
       // Refresh alerts data to stay synchronized
       fetchLowStockAlerts();
     };
@@ -55,7 +54,7 @@ export default function Alerts() {
       const response = await alertsAPI.getLowStock();
       setLowStockProducts(response.data);
       setLoading(false);
-    } catch (err) {
+    } catch {
       setError('Failed to load low stock alerts');
       setLoading(false);
     }

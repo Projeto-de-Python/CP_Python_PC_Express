@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import {
   Box,
   Typography,
@@ -53,7 +54,7 @@ export default function Suppliers({ darkMode }) {
       const response = await suppliersAPI.getAll();
       setSuppliers(response.data);
       setLoading(false);
-    } catch (err) {
+    } catch {
       setError('Failed to load suppliers');
       setLoading(false);
     }
@@ -101,7 +102,7 @@ export default function Suppliers({ darkMode }) {
       try {
         await suppliersAPI.delete(supplierId);
         fetchSuppliers();
-      } catch (err) {
+      } catch {
         setError('Failed to delete supplier');
       }
     }
@@ -260,3 +261,7 @@ export default function Suppliers({ darkMode }) {
     </Box>
   );
 }
+
+Suppliers.propTypes = {
+  darkMode: PropTypes.bool.isRequired
+};

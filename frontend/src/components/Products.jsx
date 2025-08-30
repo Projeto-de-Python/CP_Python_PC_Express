@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import {
   Box,
   Typography,
@@ -37,7 +38,6 @@ import {
   Trash2,
   PlusCircle,
   MinusCircle,
-  Settings,
   Search,
   RotateCcw,
   TrendingUp,
@@ -45,6 +45,7 @@ import {
   AlertTriangle,
   MessageCircle,
   HelpCircle,
+  Brain,
 } from 'lucide-react';
 import { productsAPI, suppliersAPI, stockAPI } from '../services/api.jsx';
 
@@ -74,12 +75,12 @@ export default function Products({ darkMode }) {
   const [adjustingStock, setAdjustingStock] = useState(new Set());
 
 
+
   useEffect(() => {
     fetchData();
     
     // Listen for product data changes from other components
-    const handleProductsDataChanged = (event) => {
-      console.log('Products data changed:', event.detail);
+    const handleProductsDataChanged = () => {
       // Refresh products data to stay synchronized
       fetchData();
     };
@@ -101,7 +102,7 @@ export default function Products({ darkMode }) {
       setProducts(productsRes.data);
       setSuppliers(suppliersRes.data);
       setLoading(false);
-    } catch (err) {
+    } catch {
       setError('Failed to load data');
       setLoading(false);
     }
@@ -181,10 +182,17 @@ export default function Products({ darkMode }) {
           } 
         }));
         
-      } catch (err) {
+      } catch {
         setError('Failed to delete product');
       }
     }
+  };
+
+  const handleMLAnalysis = (product) => {
+    // Dispatch event to notify Insights component
+    window.dispatchEvent(new CustomEvent('productSelectedForML', { 
+      detail: { product } 
+    }));
   };
 
   const handleQuickStockAdjust = async (productId, adjustment) => {
@@ -210,7 +218,6 @@ export default function Products({ darkMode }) {
       }));
       
     } catch (err) {
-      console.error('Stock adjustment error:', err);
       const errorMessage = err.response?.data?.detail || err.message || 'Failed to adjust stock';
       setError(`Stock adjustment failed: ${errorMessage}`);
     } finally {
@@ -620,6 +627,15 @@ export default function Products({ darkMode }) {
                          <Edit size={18} />
                        </IconButton>
                      </Tooltip>
+                     <Tooltip title="ML Analysis">
+                       <IconButton
+                         size="small"
+                         onClick={() => handleMLAnalysis(product)}
+                         sx={{ color: 'info.main' }}
+                       >
+                         <Brain size={18} />
+                       </IconButton>
+                     </Tooltip>
                      <Tooltip title="Contact Supplier">
                        <IconButton
                          size="small"
@@ -765,3 +781,7 @@ export default function Products({ darkMode }) {
     </Box>
   );
 }
+
+Products.propTypes = {
+  darkMode: PropTypes.bool.isRequired
+};

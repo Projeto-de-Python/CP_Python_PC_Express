@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { chartColors } from '../../utils/chartUtils';
 
@@ -41,4 +42,11 @@ export const LoadingSpinner = ({
       )}
     </Box>
   );
+};
+
+LoadingSpinner.propTypes = {
+  message: PropTypes.string,
+  size: PropTypes.number,
+  minHeight: PropTypes.string,
+  showMessage: PropTypes.bool
 };

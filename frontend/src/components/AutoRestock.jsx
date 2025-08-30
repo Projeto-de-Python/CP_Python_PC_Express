@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import {
   Box,
   Typography,
@@ -18,39 +19,27 @@ import {
   Paper,
   IconButton,
   Tooltip,
-  LinearProgress,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Divider,
   Snackbar,
-  Fade,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import {
   Package,
   AlertTriangle,
-  TrendingUp,
   Zap,
   RefreshCw,
   CheckCircle,
   Clock,
   DollarSign,
-  ShoppingCart,
-  Brain,
   HelpCircle,
-  Sparkles,
-  Database,
 } from 'lucide-react';
-import { autoRestockAPI, productsAPI } from '../services/api.jsx';
+import { autoRestockAPI } from '../services/api.jsx';
 
 export default function AutoRestock({ darkMode }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [stockAnalysis, setStockAnalysis] = useState(null);
   const [processingRestock, setProcessingRestock] = useState(false);
-  const [restockDialog, setRestockDialog] = useState({ open: false, product: null });
+
   const [restockingProduct, setRestockingProduct] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
@@ -67,8 +56,7 @@ export default function AutoRestock({ darkMode }) {
       
       const response = await autoRestockAPI.getAnalysis();
       setStockAnalysis(response.data);
-    } catch (err) {
-      console.error('Error fetching auto-restock data:', err);
+    } catch {
       setError('Failed to load auto-restock data. Please try again.');
     } finally {
       setLoading(false);
@@ -88,8 +76,7 @@ export default function AutoRestock({ darkMode }) {
       setSuccessMessage(`Successfully created ${response.data.orders_created} restock orders worth $${response.data.total_value.toFixed(2)}`);
       setShowSuccess(true);
       fetchData(); // Refresh data
-    } catch (err) {
-      console.error('Error during restock:', err);
+    } catch {
       setError('Failed to create restock orders. Please try again.');
     } finally {
       setProcessingRestock(false);
@@ -104,12 +91,10 @@ export default function AutoRestock({ darkMode }) {
       setSuccessMessage(response.data.message);
       setShowSuccess(true);
       fetchData(); // Refresh data
-    } catch (err) {
-      console.error('Error restocking product:', err);
+    } catch {
       setError('Failed to restock product. Please try again.');
     } finally {
       setRestockingProduct(null);
-      setRestockDialog({ open: false, product: null });
     }
   };
 
@@ -488,3 +473,7 @@ export default function AutoRestock({ darkMode }) {
     </Box>
   );
 }
+
+AutoRestock.propTypes = {
+  darkMode: PropTypes.bool.isRequired
+};

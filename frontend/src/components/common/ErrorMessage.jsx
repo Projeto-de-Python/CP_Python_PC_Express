@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Alert, Box, Button, Typography } from '@mui/material';
 import { RefreshCw, AlertTriangle } from 'lucide-react';
 
@@ -47,4 +48,14 @@ export const ErrorMessage = ({
       </Alert>
     </Box>
   );
+};
+
+ErrorMessage.propTypes = {
+  error: PropTypes.string,
+  onRetry: PropTypes.func,
+  onClose: PropTypes.func,
+  title: PropTypes.string,
+  showRetry: PropTypes.bool,
+  showClose: PropTypes.bool,
+  severity: PropTypes.string
 };

@@ -24,7 +24,7 @@ export const chartAnimation = {
   easing: 'ease-in-out'
 };
 
-export const createCustomTooltip = (darkMode) => ({ active, payload, label }) => {
+export const createCustomTooltip = (darkMode) => ({ active, payload }) => {
   if (active && payload && payload.length) {
     return {
       background: darkMode ? 'rgba(26, 26, 26, 0.95)' : 'rgba(255, 255, 255, 0.95)',

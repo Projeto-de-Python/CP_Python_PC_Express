@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Box, Typography, IconButton, Tooltip, Chip } from '@mui/material';
 import { HelpCircle } from 'lucide-react';
 import { getChartTheme } from '../../utils/chartUtils';
@@ -12,7 +13,6 @@ export const ChartWrapper = ({
   tooltip, 
   expanded, 
   onToggleExpand,
-  color = 'primary',
   sx = {} 
 }) => {
   const theme = getChartTheme(darkMode);
@@ -90,4 +90,15 @@ export const ChartWrapper = ({
       </Box>
     </Box>
   );
+};
+
+ChartWrapper.propTypes = {
+  title: PropTypes.string.isRequired,
+  icon: PropTypes.node,
+  children: PropTypes.node.isRequired,
+  darkMode: PropTypes.bool.isRequired,
+  tooltip: PropTypes.string,
+  expanded: PropTypes.bool,
+  onToggleExpand: PropTypes.func,
+  sx: PropTypes.object
 };

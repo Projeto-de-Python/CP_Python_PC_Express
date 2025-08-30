@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Box, Typography, Button, Paper } from '@mui/material';
 import { chartColors } from '../../utils/chartUtils';
 
@@ -67,4 +68,14 @@ export const EmptyState = ({
       </Box>
     </Paper>
   );
+};
+
+EmptyState.propTypes = {
+  icon: PropTypes.elementType,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string,
+  actionLabel: PropTypes.string,
+  onAction: PropTypes.func,
+  showAction: PropTypes.bool,
+  sx: PropTypes.object
 };

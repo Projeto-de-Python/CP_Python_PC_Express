@@ -1,5 +1,6 @@
 import React from 'react';
-import { Card, CardContent, Typography, Box, IconButton, Tooltip } from '@mui/material';
+import PropTypes from 'prop-types';
+import { Card, CardContent, Typography, Box } from '@mui/material';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { chartColors } from '../../utils/chartUtils';
@@ -120,4 +121,15 @@ export const StatCard = ({
       </CardContent>
     </Card>
   );
+};
+
+StatCard.propTypes = {
+  title: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  icon: PropTypes.node,
+  gradient: PropTypes.string,
+  trend: PropTypes.number,
+  subtitle: PropTypes.string,
+  route: PropTypes.string,
+  onClick: PropTypes.func
 };

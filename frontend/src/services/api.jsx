@@ -63,10 +63,26 @@ export const purchaseOrdersAPI = {
 
 // Insights API (Simplified)
 export const insightsAPI = {
-  generateSalesData: (days = 30) => api.post(`/insights/generate-sales-data?days=${days}`),
   getOverview: () => api.get('/insights/overview'),
   getProductInsights: (productId) => api.get(`/insights/product/${productId}`),
   getLowStockAlerts: () => api.get('/insights/low-stock-alerts'),
+  generateSalesData: (days = 30) => api.post(`/insights/generate-sales-data?days=${days}`),
+  
+  // ML endpoints
+  getDemandPrediction: (productId, daysAhead = 30) =>
+    api.get(`/insights/ml/demand-prediction/${productId}?days_ahead=${daysAhead}`),
+    
+  getPriceOptimization: (productId) =>
+    api.get(`/insights/ml/price-optimization/${productId}`),
+    
+  getAnomalyDetection: (productId = null) =>
+    api.get(`/insights/ml/anomaly-detection${productId ? `?product_id=${productId}` : ''}`),
+    
+  getStockOptimization: (productId) =>
+    api.get(`/insights/ml/stock-optimization/${productId}`),
+    
+  getMLProductInsights: (productId) =>
+    api.get(`/insights/ml/product-insights/${productId}`),
 };
 
 // Auto Restock API (Simplified)

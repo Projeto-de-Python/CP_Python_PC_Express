@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import {
   Box,
   AppBar,
@@ -21,7 +22,6 @@ import {
   Switch,
   FormControlLabel,
   Chip,
-  Paper,
   Divider,
   Select,
   FormControl,
@@ -129,13 +129,13 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
         {menuItems.map((item) => (
           <ListItem
             key={item.text}
-            button
             onClick={() => handleNavigation(item.path)}
             sx={{
               backgroundColor: location.pathname === item.path ? 'rgba(102, 126, 234, 0.1)' : 'transparent',
               '&:hover': {
                 backgroundColor: 'rgba(102, 126, 234, 0.05)',
               },
+              cursor: 'pointer',
             }}
           >
             <ListItemIcon sx={{ color: location.pathname === item.path ? '#667eea' : 'inherit' }}>
@@ -444,3 +444,9 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
     </Box>
   );
 }
+
+Layout.propTypes = {
+  children: PropTypes.node.isRequired,
+  darkMode: PropTypes.bool.isRequired,
+  onToggleDarkMode: PropTypes.func.isRequired
+};

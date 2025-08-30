@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import {
   Box,
   Typography,
@@ -6,7 +7,6 @@ import {
   IconButton,
   Tooltip,
   Card,
-  CardContent,
   Chip,
   Paper,
   LinearProgress,
@@ -19,7 +19,6 @@ import {
   TrendingUp,
   RotateCcw,
   HelpCircle,
-  BarChart3,
   PieChart,
   Activity,
 } from 'lucide-react';
@@ -34,16 +33,14 @@ import {
   Legend,
   Pie,
   Cell,
-  LineChart,
-  Line,
 } from 'recharts';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { productsAPI, suppliersAPI, alertsAPI } from '../services/api.jsx';
 import { StatCard, ChartWrapper, LoadingSpinner, ErrorMessage } from './common';
-import { chartColors, chartAnimation, formatCurrency, formatNumber } from '../utils/chartUtils';
+import { chartColors, formatCurrency } from '../utils/chartUtils';
 
-export default function Dashboard({ darkMode, onToggleDarkMode }) {
+export default function Dashboard({ darkMode }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [products, setProducts] = useState([]);
@@ -61,8 +58,7 @@ export default function Dashboard({ darkMode, onToggleDarkMode }) {
     fetchDashboardData();
     
     // Listen for product data changes from other components
-    const handleProductsDataChanged = (event) => {
-      console.log('Dashboard data changed:', event.detail);
+    const handleProductsDataChanged = () => {
       fetchDashboardData();
     };
     
@@ -93,17 +89,12 @@ export default function Dashboard({ darkMode, onToggleDarkMode }) {
         alertsAPI.getLowStock(),
       ]);
 
-      console.log('Dashboard Data Loaded:', {
-        products: productsRes.data.length,
-        suppliers: suppliersRes.data.length,
-        alerts: alertsRes.data.length
-      });
+
 
       setProducts(productsRes.data);
       setSuppliers(suppliersRes.data);
       setLowStockAlerts(alertsRes.data);
-    } catch (err) {
-      console.error('Dashboard data fetch error:', err);
+    } catch {
       setError('Failed to load dashboard data');
     } finally {
       setLoading(false);
@@ -186,13 +177,7 @@ export default function Dashboard({ darkMode, onToggleDarkMode }) {
     }
   ];
 
-  // Traffic Sources Data
-  const trafficSourcesData = [
-    { name: t('dashboard.socialMedia'), value: 35, color: '#FF6B6B' },
-    { name: t('dashboard.organicSearch'), value: 28, color: '#4ECDC4' },
-    { name: t('dashboard.directTraffic'), value: 22, color: '#45B7D1' },
-    { name: t('dashboard.referralTraffic'), value: 15, color: '#96CEB4' }
-  ];
+
 
   const categoryData = products.length > 0 
     ? Object.entries(
@@ -702,7 +687,7 @@ export default function Dashboard({ darkMode, onToggleDarkMode }) {
             </Box>
           </Box>
           <Grid container spacing={2}>
-            {lowStockAlerts.slice(0, 6).map((product, index) => (
+            {lowStockAlerts.slice(0, 6).map((product) => (
               <Grid xs={12} sm={6} md={4} key={product.id}>
                 <Paper
                   elevation={2}
@@ -753,4 +738,8 @@ export default function Dashboard({ darkMode, onToggleDarkMode }) {
     </Box>
   );
 }
+
+Dashboard.propTypes = {
+  darkMode: PropTypes.bool.isRequired
+};
 

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { api } from '../services/api';
 
 const AuthContext = createContext();
@@ -69,7 +70,6 @@ export const AuthProvider = ({ children }) => {
       
       return { success: true };
     } catch (error) {
-      console.error('Login error:', error);
       return { 
         success: false, 
         error: error.response?.data?.detail || 'Login failed' 
@@ -90,7 +90,6 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data);
       return { success: true };
     } catch (error) {
-      console.error('Register error:', error);
       return { 
         success: false, 
         error: error.response?.data?.detail || 'Registration failed' 
@@ -120,4 +119,8 @@ export const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
+};
+
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired
 };
