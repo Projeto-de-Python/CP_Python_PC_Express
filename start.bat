@@ -34,14 +34,22 @@ if not exist ".venv" (
 )
 
 echo Ativando ambiente virtual...
-call .venv\Scripts\activate.bat
-
-if not exist ".venv\Lib\site-packages\fastapi" (
-    echo Instalando dependencias Python...
-    pip install -r requirement.txt
-    echo OK: Dependencias Python instaladas
+if exist ".venv\Scripts\activate.bat" (
+    call .venv\Scripts\activate.bat
 ) else (
+    echo Aviso: activate.bat nao encontrado. Usarei o Python da venv diretamente.
+)
+
+if exist ".venv\Lib\site-packages\fastapi" (
     echo OK: Dependencias Python ja instaladas
+) else (
+    echo Instalando dependencias Python...
+    if exist ".venv\Scripts\python.exe" (
+        .venv\Scripts\python.exe -m pip install -r requirement.txt --no-input
+    ) else (
+        pip install -r requirement.txt --no-input
+    )
+    echo OK: Dependencias Python instaladas
 )
 
 echo.
@@ -49,7 +57,11 @@ echo Configurando banco de dados...
 
 if not exist "inventory.db" (
     echo Configurando banco...
-    python scripts/setup_db.py
+    if exist ".venv\Scripts\python.exe" (
+        .venv\Scripts\python.exe scripts/setup_db.py
+    ) else (
+        python scripts/setup_db.py
+    )
     echo OK: Banco configurado
 ) else (
     echo OK: Banco ja configurado
@@ -75,14 +87,14 @@ echo ========================================
 echo.
 
 echo Iniciando backend...
-start "Backend" cmd /k "call .venv\Scripts\activate.bat && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000"
+if exist ".venv\Scripts\python.exe" (
+    start "Backend" cmd /k ".venv\Scripts\python.exe -m uvicorn app.main:app --host 0.0.0.0 --port 8000"
+) else (
+    start "Backend" cmd /k "uvicorn app.main:app --host 0.0.0.0 --port 8000"
+)
 
-timeout /t 5 /nobreak >nul
-
-echo Iniciando frontend...
-start "Frontend" cmd /k "cd frontend && npm run dev"
-
-timeout /t 10 /nobreak >nul
+echo Iniciando frontend (porta 5173)...
+start "Frontend" cmd /k "cd /d %~dp0frontend && npm run dev -- --port 5173 --strictPort"
 
 echo.
 echo ========================================
@@ -101,4 +113,4 @@ echo.
 echo Os servidores estao rodando em janelas separadas.
 echo Feche as janelas para parar os servidores.
 echo.
-pause
+exit /b 0
