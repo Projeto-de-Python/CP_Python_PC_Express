@@ -27,9 +27,9 @@ env/
 inventory.db
 
 # --- Node/Frontend ---
-PCexpress/frontend/node_modules/
-PCexpress/frontend/dist/
-PCexpress/frontend/.vite/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
