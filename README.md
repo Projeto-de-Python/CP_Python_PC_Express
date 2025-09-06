@@ -1,3 +1,10 @@
+Integrantes Big 5:
+1) Lucca Phelipe Masini RM 564121
+2) Luiz Henrique Poss RM562177
+3) Luis Fernando de Oliveira Salgado RM 561401
+4) Igor Paixão Sarak RM 563726
+5) Bernardo Braga Perobeli RM 56246
+
 # PC-Express - Sistema de Gerenciamento de Inventário
 
 Um sistema completo de gerenciamento de inventário desenvolvido com FastAPI (backend) e React (frontend), oferecendo uma interface moderna e intuitiva para controle de estoque, fornecedores, alertas e insights de negócio.
