@@ -3,21 +3,21 @@ import PropTypes from 'prop-types';
 import { Alert, Box, Button, Typography } from '@mui/material';
 import { RefreshCw, AlertTriangle } from 'lucide-react';
 
-export const ErrorMessage = ({ 
-  error, 
-  onRetry, 
-  onClose, 
+export const ErrorMessage = ({
+  error,
+  onRetry,
+  onClose,
   title = 'Error',
   showRetry = true,
   showClose = true,
-  severity = 'error'
+  severity = 'error',
 }) => {
   if (!error) return null;
 
   return (
     <Box sx={{ mb: 3 }}>
-      <Alert 
-        severity={severity} 
+      <Alert
+        severity={severity}
         onClose={showClose ? onClose : undefined}
         icon={<AlertTriangle />}
         sx={{
@@ -57,5 +57,5 @@ ErrorMessage.propTypes = {
   title: PropTypes.string,
   showRetry: PropTypes.bool,
   showClose: PropTypes.bool,
-  severity: PropTypes.string
+  severity: PropTypes.string,
 };

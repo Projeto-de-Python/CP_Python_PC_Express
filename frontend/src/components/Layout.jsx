@@ -65,7 +65,11 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
     { text: t('common.dashboard'), icon: <Activity size={20} />, path: '/' },
     { text: t('common.products'), icon: <Package size={20} />, path: '/products' },
     { text: t('common.suppliers'), icon: <Users size={20} />, path: '/suppliers' },
-    { text: t('common.purchaseOrders'), icon: <ShoppingCart size={20} />, path: '/purchase-orders' },
+    {
+      text: t('common.purchaseOrders'),
+      icon: <ShoppingCart size={20} />,
+      path: '/purchase-orders',
+    },
     { text: t('common.insights'), icon: <BarChart3 size={20} />, path: '/insights' },
     { text: t('common.alerts'), icon: <AlertTriangle size={20} />, path: '/alerts' },
     { text: t('common.autoRestock'), icon: <Sparkles size={20} />, path: '/auto-restock' },
@@ -75,12 +79,12 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleNavigation = (path) => {
+  const handleNavigation = path => {
     navigate(path);
     setMobileOpen(false);
   };
 
-  const handleUserMenuOpen = (event) => {
+  const handleUserMenuOpen = event => {
     setUserMenuAnchor(event.currentTarget);
   };
 
@@ -115,23 +119,28 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
   const drawer = (
     <Box>
       <Box sx={{ p: 2, textAlign: 'center' }}>
-        <Typography variant="h6" fontWeight="bold" sx={{ 
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          backgroundClip: 'text',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-        }}>
+        <Typography
+          variant="h6"
+          fontWeight="bold"
+          sx={{
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            backgroundClip: 'text',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
+        >
           PC Express
         </Typography>
       </Box>
       <Divider />
       <List>
-        {menuItems.map((item) => (
+        {menuItems.map(item => (
           <ListItem
             key={item.text}
             onClick={() => handleNavigation(item.path)}
             sx={{
-              backgroundColor: location.pathname === item.path ? 'rgba(102, 126, 234, 0.1)' : 'transparent',
+              backgroundColor:
+                location.pathname === item.path ? 'rgba(102, 126, 234, 0.1)' : 'transparent',
               '&:hover': {
                 backgroundColor: 'rgba(102, 126, 234, 0.05)',
               },
@@ -141,9 +150,9 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
             <ListItemIcon sx={{ color: location.pathname === item.path ? '#667eea' : 'inherit' }}>
               {item.icon}
             </ListItemIcon>
-            <ListItemText 
-              primary={item.text} 
-              sx={{ 
+            <ListItemText
+              primary={item.text}
+              sx={{
                 color: location.pathname === item.path ? '#667eea' : 'inherit',
                 fontWeight: location.pathname === item.path ? 'bold' : 'normal',
               }}
@@ -162,11 +171,13 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
-          background: darkMode 
-            ? 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)' 
+          background: darkMode
+            ? 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)'
             : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
           backdropFilter: 'blur(10px)',
-          borderBottom: darkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(255,255,255,0.2)',
+          borderBottom: darkMode
+            ? '1px solid rgba(255,255,255,0.1)'
+            : '1px solid rgba(255,255,255,0.2)',
           boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
         }}
       >
@@ -182,36 +193,40 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
             >
               <MenuIcon />
             </IconButton>
-            
-            <Typography variant="h6" fontWeight="bold" sx={{ 
-              background: 'linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              display: { xs: 'none', sm: 'block' }
-            }}>
+
+            <Typography
+              variant="h6"
+              fontWeight="bold"
+              sx={{
+                background: 'linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                display: { xs: 'none', sm: 'block' },
+              }}
+            >
               PC Express
             </Typography>
           </Box>
 
           {/* Center - Navigation Menu */}
           <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1 }}>
-            {menuItems.map((item) => (
+            {menuItems.map(item => (
               <Button
                 key={item.text}
-                variant={location.pathname === item.path ? "contained" : "text"}
+                variant={location.pathname === item.path ? 'contained' : 'text'}
                 size="small"
                 startIcon={item.icon}
                 onClick={() => handleNavigation(item.path)}
                 sx={{
-                  background: location.pathname === item.path 
-                    ? 'rgba(255,255,255,0.2)'
-                    : 'transparent',
+                  background:
+                    location.pathname === item.path ? 'rgba(255,255,255,0.2)' : 'transparent',
                   color: 'white',
                   '&:hover': {
-                    background: location.pathname === item.path 
-                      ? 'rgba(255,255,255,0.3)'
-                      : 'rgba(255,255,255,0.1)',
+                    background:
+                      location.pathname === item.path
+                        ? 'rgba(255,255,255,0.3)'
+                        : 'rgba(255,255,255,0.1)',
                   },
                   textTransform: 'none',
                   fontWeight: location.pathname === item.path ? 'bold' : 'normal',
@@ -244,9 +259,9 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
             {/* Dark Mode Toggle */}
             <IconButton
               onClick={onToggleDarkMode}
-              sx={{ 
+              sx={{
                 color: 'white',
-                '&:hover': { 
+                '&:hover': {
                   background: 'rgba(255,255,255,0.1)',
                   transform: 'scale(1.1)',
                 },
@@ -260,7 +275,7 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
             <FormControl size="small" sx={{ minWidth: 120 }}>
               <Select
                 value={currentLanguage}
-                onChange={(e) => changeLanguage(e.target.value)}
+                onChange={e => changeLanguage(e.target.value)}
                 sx={{
                   color: 'white',
                   '& .MuiOutlinedInput-notchedOutline': {
@@ -282,9 +297,11 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
                     sx: {
                       background: darkMode ? 'rgba(30,30,30,0.95)' : 'rgba(255,255,255,0.95)',
                       backdropFilter: 'blur(20px)',
-                      border: darkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)',
-                    }
-                  }
+                      border: darkMode
+                        ? '1px solid rgba(255,255,255,0.1)'
+                        : '1px solid rgba(0,0,0,0.1)',
+                    },
+                  },
                 }}
               >
                 <MenuItem value="en">{t('common.english')}</MenuItem>
@@ -294,9 +311,9 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
 
             {/* Help Button */}
             <IconButton
-              sx={{ 
+              sx={{
                 color: 'white',
-                '&:hover': { 
+                '&:hover': {
                   background: 'rgba(255,255,255,0.1)',
                   transform: 'scale(1.1)',
                 },
@@ -309,9 +326,9 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
             {/* User Menu */}
             <IconButton
               onClick={handleUserMenuOpen}
-              sx={{ 
+              sx={{
                 color: 'white',
-                '&:hover': { 
+                '&:hover': {
                   background: 'rgba(255,255,255,0.1)',
                   transform: 'scale(1.1)',
                 },
@@ -327,10 +344,7 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
       </AppBar>
 
       {/* Mobile Navigation Drawer */}
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-      >
+      <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}>
         <Drawer
           variant="temporary"
           open={mobileOpen}
@@ -340,8 +354,8 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { 
-              boxSizing: 'border-box', 
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
               width: 240,
               background: darkMode ? 'rgba(30,30,30,0.95)' : 'rgba(255,255,255,0.95)',
               backdropFilter: 'blur(20px)',
@@ -378,7 +392,7 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
             border: darkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)',
             borderRadius: 2,
             mt: 1,
-          }
+          },
         }}
       >
         <MenuItem onClick={handleSettingsOpen}>
@@ -401,20 +415,14 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
         <DialogContent>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <FormControlLabel
-              control={
-                <Switch
-                  checked={darkMode}
-                  onChange={onToggleDarkMode}
-                  color="primary"
-                />
-              }
+              control={<Switch checked={darkMode} onChange={onToggleDarkMode} color="primary" />}
               label={t('common.darkMode')}
             />
             <FormControl fullWidth>
               <InputLabel>{t('common.language')}</InputLabel>
               <Select
                 value={currentLanguage}
-                onChange={(e) => changeLanguage(e.target.value)}
+                onChange={e => changeLanguage(e.target.value)}
                 label={t('common.language')}
               >
                 <MenuItem value="en">{t('common.english')}</MenuItem>
@@ -448,5 +456,5 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
   darkMode: PropTypes.bool.isRequired,
-  onToggleDarkMode: PropTypes.func.isRequired
+  onToggleDarkMode: PropTypes.func.isRequired,
 };

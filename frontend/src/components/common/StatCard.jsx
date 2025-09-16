@@ -5,16 +5,7 @@ import { TrendingUp, TrendingDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { chartColors } from '../../utils/chartUtils';
 
-export const StatCard = ({ 
-  title, 
-  value, 
-  icon, 
-  gradient, 
-  trend, 
-  subtitle, 
-  route,
-  onClick 
-}) => {
+export const StatCard = ({ title, value, icon, gradient, trend, subtitle, route, onClick }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -104,15 +95,15 @@ export const StatCard = ({
             </Box>
           )}
         </Box>
-        
+
         <Typography variant="h4" fontWeight="bold" gutterBottom>
           {value}
         </Typography>
-        
+
         <Typography variant="h6" fontWeight="600" gutterBottom>
           {title}
         </Typography>
-        
+
         {subtitle && (
           <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.8)' }}>
             {subtitle}
@@ -131,5 +122,5 @@ StatCard.propTypes = {
   trend: PropTypes.number,
   subtitle: PropTypes.string,
   route: PropTypes.string,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
 };

@@ -19,11 +19,7 @@ import {
   IconButton,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import {
-  AlertTriangle,
-  Package,
-  HelpCircle,
-} from 'lucide-react';
+import { AlertTriangle, Package, HelpCircle } from 'lucide-react';
 import { alertsAPI } from '../services/api';
 
 export default function Alerts() {
@@ -34,15 +30,15 @@ export default function Alerts() {
 
   useEffect(() => {
     fetchLowStockAlerts();
-    
+
     // Listen for product data changes from other components
     const handleProductsDataChanged = () => {
       // Refresh alerts data to stay synchronized
       fetchLowStockAlerts();
     };
-    
+
     window.addEventListener('productsDataChanged', handleProductsDataChanged);
-    
+
     // Cleanup event listener
     return () => {
       window.removeEventListener('productsDataChanged', handleProductsDataChanged);
@@ -60,13 +56,13 @@ export default function Alerts() {
     }
   };
 
-  const getStockStatusColor = (product) => {
+  const getStockStatusColor = product => {
     if (product.quantidade === 0) return 'error';
     if (product.quantidade <= product.estoque_minimo / 2) return 'error';
     return 'warning';
   };
 
-  const getStockStatusText = (product) => {
+  const getStockStatusText = product => {
     if (product.quantidade === 0) return t('products.outOfStock');
     if (product.quantidade <= product.estoque_minimo / 2) return 'Critical';
     return t('products.lowStock');
@@ -173,7 +169,7 @@ export default function Alerts() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {lowStockProducts.map((product) => (
+                {lowStockProducts.map(product => (
                   <TableRow key={product.id}>
                     <TableCell>
                       <Typography variant="subtitle1">{product.nome}</Typography>
@@ -212,14 +208,11 @@ export default function Alerts() {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => window.location.href = '/products'}
+              onClick={() => (window.location.href = '/products')}
             >
               Manage Products
             </Button>
-            <Button
-              variant="outlined"
-              onClick={fetchLowStockAlerts}
-            >
+            <Button variant="outlined" onClick={fetchLowStockAlerts}>
               Refresh Alerts
             </Button>
           </Box>

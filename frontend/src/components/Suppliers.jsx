@@ -97,7 +97,7 @@ export default function Suppliers({ darkMode }) {
     }
   };
 
-  const handleDelete = async (supplierId) => {
+  const handleDelete = async supplierId => {
     if (window.confirm('Are you sure you want to delete this supplier?')) {
       try {
         await suppliersAPI.delete(supplierId);
@@ -120,7 +120,9 @@ export default function Suppliers({ darkMode }) {
     <Box>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Box display="flex" alignItems="center" gap={2}>
-          <Typography variant="h4" sx={{ color: darkMode ? '#ffffff' : '#000000' }}>{t('suppliers.title')}</Typography>
+          <Typography variant="h4" sx={{ color: darkMode ? '#ffffff' : '#000000' }}>
+            {t('suppliers.title')}
+          </Typography>
           <IconButton
             size="small"
             title="Manage your supplier contacts. Add new suppliers, edit existing ones, and track their information for purchase order management."
@@ -129,11 +131,7 @@ export default function Suppliers({ darkMode }) {
             <HelpIcon />
           </IconButton>
         </Box>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => handleOpenDialog()}
-        >
+        <Button variant="contained" startIcon={<AddIcon />} onClick={() => handleOpenDialog()}>
           {t('suppliers.addSupplier')}
         </Button>
       </Box>
@@ -158,7 +156,7 @@ export default function Suppliers({ darkMode }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {suppliers.map((supplier) => (
+            {suppliers.map(supplier => (
               <TableRow key={supplier.id}>
                 <TableCell>{supplier.nome}</TableCell>
                 <TableCell>{supplier.email || '-'}</TableCell>
@@ -173,22 +171,12 @@ export default function Suppliers({ darkMode }) {
                     '-'
                   )}
                 </TableCell>
+                <TableCell>{new Date(supplier.criado_em).toLocaleDateString()}</TableCell>
                 <TableCell>
-                  {new Date(supplier.criado_em).toLocaleDateString()}
-                </TableCell>
-                <TableCell>
-                  <IconButton
-                    size="small"
-                    onClick={() => handleOpenDialog(supplier)}
-                    title="Edit"
-                  >
+                  <IconButton size="small" onClick={() => handleOpenDialog(supplier)} title="Edit">
                     <EditIcon />
                   </IconButton>
-                  <IconButton
-                    size="small"
-                    onClick={() => handleDelete(supplier.id)}
-                    title="Delete"
-                  >
+                  <IconButton size="small" onClick={() => handleDelete(supplier.id)} title="Delete">
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>
@@ -210,7 +198,7 @@ export default function Suppliers({ darkMode }) {
                 fullWidth
                 label={t('suppliers.supplierName')}
                 value={formData.nome}
-                onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
+                onChange={e => setFormData({ ...formData, nome: e.target.value })}
                 required
               />
             </Grid>
@@ -220,7 +208,7 @@ export default function Suppliers({ darkMode }) {
                 label={t('suppliers.email')}
                 type="email"
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                onChange={e => setFormData({ ...formData, email: e.target.value })}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -228,7 +216,7 @@ export default function Suppliers({ darkMode }) {
                 fullWidth
                 label={t('suppliers.phone')}
                 value={formData.telefone}
-                onChange={(e) => setFormData({ ...formData, telefone: e.target.value })}
+                onChange={e => setFormData({ ...formData, telefone: e.target.value })}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -236,7 +224,7 @@ export default function Suppliers({ darkMode }) {
                 fullWidth
                 label="CNPJ"
                 value={formData.cnpj}
-                onChange={(e) => setFormData({ ...formData, cnpj: e.target.value })}
+                onChange={e => setFormData({ ...formData, cnpj: e.target.value })}
               />
             </Grid>
             <Grid item xs={12}>
@@ -246,7 +234,7 @@ export default function Suppliers({ darkMode }) {
                 rows={3}
                 label="Notes"
                 value={formData.observacoes}
-                onChange={(e) => setFormData({ ...formData, observacoes: e.target.value })}
+                onChange={e => setFormData({ ...formData, observacoes: e.target.value })}
               />
             </Grid>
           </Grid>
@@ -263,5 +251,5 @@ export default function Suppliers({ darkMode }) {
 }
 
 Suppliers.propTypes = {
-  darkMode: PropTypes.bool.isRequired
+  darkMode: PropTypes.bool.isRequired,
 };

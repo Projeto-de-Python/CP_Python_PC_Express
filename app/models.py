@@ -1,13 +1,17 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Float, Text, Enum, DateTime, Boolean
+import enum
+
+from sqlalchemy import Boolean, Column, DateTime, Enum, Float, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-import enum
+
 from .database import Base
+
 
 class MovementType(str, enum.Enum):
     IN = "IN"
     OUT = "OUT"
     ADJUST = "ADJUST"
+
 
 class PurchaseOrderStatus(str, enum.Enum):
     DRAFT = "DRAFT"
@@ -15,10 +19,12 @@ class PurchaseOrderStatus(str, enum.Enum):
     APPROVED = "APPROVED"
     CANCELLED = "CANCELLED"
 
+
 class SaleStatus(str, enum.Enum):
     COMPLETED = "COMPLETED"
     CANCELLED = "CANCELLED"
     REFUNDED = "REFUNDED"
+
 
 class User(Base):
     __tablename__ = "users"
@@ -31,7 +37,10 @@ class User(Base):
     suppliers = relationship("Supplier", back_populates="user", cascade="all, delete-orphan")
     products = relationship("Product", back_populates="user", cascade="all, delete-orphan")
     sales = relationship("Sale", back_populates="user", cascade="all, delete-orphan")
-    purchase_orders = relationship("PurchaseOrder", back_populates="user", cascade="all, delete-orphan")
+    purchase_orders = relationship(
+        "PurchaseOrder", back_populates="user", cascade="all, delete-orphan"
+    )
+
 
 class Supplier(Base):
     __tablename__ = "suppliers"
@@ -48,6 +57,7 @@ class Supplier(Base):
     produtos = relationship("Product", back_populates="fornecedor")
     purchase_orders = relationship("PurchaseOrder", back_populates="fornecedor")
 
+
 class Product(Base):
     __tablename__ = "products"
     id = Column(Integer, primary_key=True, index=True)
@@ -62,21 +72,26 @@ class Product(Base):
     estoque_minimo = Column(Integer, nullable=False, default=5)
     # New fields for advanced features
     lead_time_days = Column(Integer, nullable=False, default=7)  # Default 7 days lead time
-    safety_stock = Column(Integer, nullable=False, default=2)    # Default 2 units safety stock
-    last_sale_date = Column(DateTime(timezone=True), nullable=True)  # Track last sale for dead stock detection
+    safety_stock = Column(Integer, nullable=False, default=2)  # Default 2 units safety stock
+    last_sale_date = Column(
+        DateTime(timezone=True), nullable=True
+    )  # Track last sale for dead stock detection
     criado_em = Column(DateTime(timezone=True), server_default=func.now())
     atualizado_em = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
     user = relationship("User", back_populates="products")
     fornecedor = relationship("Supplier", back_populates="produtos")
-    movimentos = relationship("StockMovement", back_populates="produto", cascade="all, delete-orphan")
+    movimentos = relationship(
+        "StockMovement", back_populates="produto", cascade="all, delete-orphan"
+    )
     purchase_order_items = relationship("PurchaseOrderItem", back_populates="produto")
     sales = relationship("SaleItem", back_populates="produto")
-    
+
     @property
     def em_estoque_baixo(self):
         """Check if product is low on stock"""
         return self.quantidade <= self.estoque_minimo
+
 
 class StockMovement(Base):
     __tablename__ = "stock_movements"
@@ -91,6 +106,7 @@ class StockMovement(Base):
 
     produto = relationship("Product", back_populates="movimentos")
 
+
 class Sale(Base):
     __tablename__ = "sales"
     id = Column(Integer, primary_key=True, index=True)
@@ -98,9 +114,10 @@ class Sale(Base):
     total_value = Column(Float, nullable=False, default=0.0)
     status = Column(Enum(SaleStatus), nullable=False, default=SaleStatus.COMPLETED)
     criado_em = Column(DateTime(timezone=True), server_default=func.now())
-    
+
     user = relationship("User", back_populates="sales")
     items = relationship("SaleItem", back_populates="sale", cascade="all, delete-orphan")
+
 
 class SaleItem(Base):
     __tablename__ = "sale_items"
@@ -115,6 +132,7 @@ class SaleItem(Base):
     sale = relationship("Sale", back_populates="items")
     produto = relationship("Product", back_populates="sales")
 
+
 class PurchaseOrder(Base):
     __tablename__ = "purchase_orders"
     id = Column(Integer, primary_key=True, index=True)
@@ -127,7 +145,10 @@ class PurchaseOrder(Base):
 
     user = relationship("User", back_populates="purchase_orders")
     fornecedor = relationship("Supplier", back_populates="purchase_orders")
-    items = relationship("PurchaseOrderItem", back_populates="purchase_order", cascade="all, delete-orphan")
+    items = relationship(
+        "PurchaseOrderItem", back_populates="purchase_order", cascade="all, delete-orphan"
+    )
+
 
 class PurchaseOrderItem(Base):
     __tablename__ = "purchase_order_items"
@@ -140,4 +161,3 @@ class PurchaseOrderItem(Base):
 
     purchase_order = relationship("PurchaseOrder", back_populates="items")
     produto = relationship("Product", back_populates="purchase_order_items")
-

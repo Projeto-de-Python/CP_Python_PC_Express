@@ -20,20 +20,20 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     // Set up axios interceptor for authentication
     const requestInterceptor = api.interceptors.request.use(
-      (config) => {
+      config => {
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
       },
-      (error) => {
+      error => {
         return Promise.reject(error);
       }
     );
 
     const responseInterceptor = api.interceptors.response.use(
-      (response) => response,
-      (error) => {
+      response => response,
+      error => {
         if (error.response?.status === 401) {
           logout();
         }
@@ -64,15 +64,15 @@ export const AuthProvider = ({ children }) => {
       const { access_token } = response.data;
       setToken(access_token);
       localStorage.setItem('token', access_token);
-      
+
       // Set user info (you might want to decode the JWT or make a separate call)
       setUser({ email });
-      
+
       return { success: true };
     } catch (error) {
-      return { 
-        success: false, 
-        error: error.response?.data?.detail || 'Login failed' 
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Login failed',
       };
     } finally {
       setLoading(false);
@@ -90,9 +90,9 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data);
       return { success: true };
     } catch (error) {
-      return { 
-        success: false, 
-        error: error.response?.data?.detail || 'Registration failed' 
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Registration failed',
       };
     } finally {
       setLoading(false);
@@ -114,13 +114,9 @@ export const AuthProvider = ({ children }) => {
     loading,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 AuthProvider.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };

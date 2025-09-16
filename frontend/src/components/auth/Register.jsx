@@ -27,13 +27,13 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  
+
   const { register } = useAuth();
   const navigate = useNavigate();
   const theme = useTheme();
   const { t } = useTranslation();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setError('');
 
@@ -50,13 +50,13 @@ const Register = () => {
     setLoading(true);
 
     const result = await register(email, password);
-    
+
     if (result.success) {
       navigate('/login');
     } else {
       setError(result.error);
     }
-    
+
     setLoading(false);
   };
 
@@ -76,9 +76,10 @@ const Register = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: theme.palette.mode === 'dark' 
-            ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)'
-            : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          background:
+            theme.palette.mode === 'dark'
+              ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)'
+              : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
           position: 'relative',
           overflow: 'hidden',
           '&::before': {
@@ -88,11 +89,12 @@ const Register = () => {
             left: 0,
             right: 0,
             bottom: 0,
-            background: theme.palette.mode === 'dark'
-              ? 'radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%)'
-              : 'radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%)',
+            background:
+              theme.palette.mode === 'dark'
+                ? 'radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%)'
+                : 'radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%)',
             pointerEvents: 'none',
-          }
+          },
         }}
       >
         <Paper
@@ -102,51 +104,58 @@ const Register = () => {
             width: '100%',
             maxWidth: 450,
             borderRadius: 3,
-            background: theme.palette.mode === 'dark'
-              ? 'rgba(26, 26, 46, 0.9)'
-              : 'rgba(255, 255, 255, 0.95)',
+            background:
+              theme.palette.mode === 'dark' ? 'rgba(26, 26, 46, 0.9)' : 'rgba(255, 255, 255, 0.95)',
             backdropFilter: 'blur(20px)',
-            border: theme.palette.mode === 'dark'
-              ? '1px solid rgba(255, 255, 255, 0.1)'
-              : '1px solid rgba(255, 255, 255, 0.2)',
+            border:
+              theme.palette.mode === 'dark'
+                ? '1px solid rgba(255, 255, 255, 0.1)'
+                : '1px solid rgba(255, 255, 255, 0.2)',
             position: 'relative',
             zIndex: 1,
-            boxShadow: theme.palette.mode === 'dark'
-              ? '0 8px 32px rgba(0, 0, 0, 0.3)'
-              : '0 8px 32px rgba(0, 0, 0, 0.1)',
+            boxShadow:
+              theme.palette.mode === 'dark'
+                ? '0 8px 32px rgba(0, 0, 0, 0.3)'
+                : '0 8px 32px rgba(0, 0, 0, 0.1)',
           }}
         >
           <Box sx={{ textAlign: 'center', mb: 4 }}>
             <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
-              <Computer 
-                sx={{ 
-                  fontSize: 48, 
+              <Computer
+                sx={{
+                  fontSize: 48,
                   color: theme.palette.mode === 'dark' ? '#667eea' : '#667eea',
-                  filter: theme.palette.mode === 'dark' ? 'drop-shadow(0 0 10px rgba(102, 126, 234, 0.5))' : 'none'
-                }} 
+                  filter:
+                    theme.palette.mode === 'dark'
+                      ? 'drop-shadow(0 0 10px rgba(102, 126, 234, 0.5))'
+                      : 'none',
+                }}
               />
             </Box>
-            <Typography 
-              variant="h3" 
-              component="h1" 
+            <Typography
+              variant="h3"
+              component="h1"
               gutterBottom
               sx={{
                 fontWeight: 700,
-                background: theme.palette.mode === 'dark'
-                  ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                  : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                background:
+                  theme.palette.mode === 'dark'
+                    ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                    : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                 backgroundClip: 'text',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-                textShadow: theme.palette.mode === 'dark' ? '0 0 20px rgba(102, 126, 234, 0.3)' : 'none',
+                textShadow:
+                  theme.palette.mode === 'dark' ? '0 0 20px rgba(102, 126, 234, 0.3)' : 'none',
               }}
             >
               PC Express
             </Typography>
-            <Typography 
-              variant="h6" 
+            <Typography
+              variant="h6"
               sx={{
-                color: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)',
+                color:
+                  theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)',
                 fontWeight: 400,
               }}
             >
@@ -155,12 +164,18 @@ const Register = () => {
           </Box>
 
           {error && (
-            <Alert 
-              severity="error" 
-              sx={{ 
+            <Alert
+              severity="error"
+              sx={{
                 mb: 3,
-                background: theme.palette.mode === 'dark' ? 'rgba(244, 67, 54, 0.1)' : 'rgba(244, 67, 54, 0.1)',
-                border: theme.palette.mode === 'dark' ? '1px solid rgba(244, 67, 54, 0.3)' : '1px solid rgba(244, 67, 54, 0.3)',
+                background:
+                  theme.palette.mode === 'dark'
+                    ? 'rgba(244, 67, 54, 0.1)'
+                    : 'rgba(244, 67, 54, 0.1)',
+                border:
+                  theme.palette.mode === 'dark'
+                    ? '1px solid rgba(244, 67, 54, 0.3)'
+                    : '1px solid rgba(244, 67, 54, 0.3)',
               }}
             >
               {error}
@@ -178,21 +193,33 @@ const Register = () => {
               autoComplete="email"
               autoFocus
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              sx={{ 
+              onChange={e => setEmail(e.target.value)}
+              sx={{
                 mb: 2,
                 '& .MuiOutlinedInput-root': {
                   borderRadius: 2,
-                  background: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)',
+                  background:
+                    theme.palette.mode === 'dark'
+                      ? 'rgba(255, 255, 255, 0.05)'
+                      : 'rgba(0, 0, 0, 0.02)',
                   '&:hover': {
-                    background: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)',
+                    background:
+                      theme.palette.mode === 'dark'
+                        ? 'rgba(255, 255, 255, 0.08)'
+                        : 'rgba(0, 0, 0, 0.04)',
                   },
                   '&.Mui-focused': {
-                    background: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.06)',
+                    background:
+                      theme.palette.mode === 'dark'
+                        ? 'rgba(255, 255, 255, 0.1)'
+                        : 'rgba(0, 0, 0, 0.06)',
                   },
                 },
                 '& .MuiInputLabel-root': {
-                  color: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)',
+                  color:
+                    theme.palette.mode === 'dark'
+                      ? 'rgba(255, 255, 255, 0.7)'
+                      : 'rgba(0, 0, 0, 0.6)',
                 },
               }}
             />
@@ -206,21 +233,33 @@ const Register = () => {
               id="password"
               autoComplete="new-password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              sx={{ 
+              onChange={e => setPassword(e.target.value)}
+              sx={{
                 mb: 2,
                 '& .MuiOutlinedInput-root': {
                   borderRadius: 2,
-                  background: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)',
+                  background:
+                    theme.palette.mode === 'dark'
+                      ? 'rgba(255, 255, 255, 0.05)'
+                      : 'rgba(0, 0, 0, 0.02)',
                   '&:hover': {
-                    background: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)',
+                    background:
+                      theme.palette.mode === 'dark'
+                        ? 'rgba(255, 255, 255, 0.08)'
+                        : 'rgba(0, 0, 0, 0.04)',
                   },
                   '&.Mui-focused': {
-                    background: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.06)',
+                    background:
+                      theme.palette.mode === 'dark'
+                        ? 'rgba(255, 255, 255, 0.1)'
+                        : 'rgba(0, 0, 0, 0.06)',
                   },
                 },
                 '& .MuiInputLabel-root': {
-                  color: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)',
+                  color:
+                    theme.palette.mode === 'dark'
+                      ? 'rgba(255, 255, 255, 0.7)'
+                      : 'rgba(0, 0, 0, 0.6)',
                 },
               }}
               InputProps={{
@@ -231,7 +270,10 @@ const Register = () => {
                       onClick={handleTogglePasswordVisibility}
                       edge="end"
                       sx={{
-                        color: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)',
+                        color:
+                          theme.palette.mode === 'dark'
+                            ? 'rgba(255, 255, 255, 0.7)'
+                            : 'rgba(0, 0, 0, 0.6)',
                       }}
                     >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -250,21 +292,33 @@ const Register = () => {
               id="confirmPassword"
               autoComplete="new-password"
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              sx={{ 
+              onChange={e => setConfirmPassword(e.target.value)}
+              sx={{
                 mb: 3,
                 '& .MuiOutlinedInput-root': {
                   borderRadius: 2,
-                  background: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)',
+                  background:
+                    theme.palette.mode === 'dark'
+                      ? 'rgba(255, 255, 255, 0.05)'
+                      : 'rgba(0, 0, 0, 0.02)',
                   '&:hover': {
-                    background: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)',
+                    background:
+                      theme.palette.mode === 'dark'
+                        ? 'rgba(255, 255, 255, 0.08)'
+                        : 'rgba(0, 0, 0, 0.04)',
                   },
                   '&.Mui-focused': {
-                    background: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.06)',
+                    background:
+                      theme.palette.mode === 'dark'
+                        ? 'rgba(255, 255, 255, 0.1)'
+                        : 'rgba(0, 0, 0, 0.06)',
                   },
                 },
                 '& .MuiInputLabel-root': {
-                  color: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)',
+                  color:
+                    theme.palette.mode === 'dark'
+                      ? 'rgba(255, 255, 255, 0.7)'
+                      : 'rgba(0, 0, 0, 0.6)',
                 },
               }}
               InputProps={{
@@ -275,7 +329,10 @@ const Register = () => {
                       onClick={handleToggleConfirmPasswordVisibility}
                       edge="end"
                       sx={{
-                        color: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)',
+                        color:
+                          theme.palette.mode === 'dark'
+                            ? 'rgba(255, 255, 255, 0.7)'
+                            : 'rgba(0, 0, 0, 0.6)',
                       }}
                     >
                       {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
@@ -305,7 +362,10 @@ const Register = () => {
                   transform: 'translateY(-1px)',
                 },
                 '&:disabled': {
-                  background: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+                  background:
+                    theme.palette.mode === 'dark'
+                      ? 'rgba(255, 255, 255, 0.1)'
+                      : 'rgba(0, 0, 0, 0.1)',
                   boxShadow: 'none',
                   transform: 'none',
                 },
@@ -315,9 +375,9 @@ const Register = () => {
               {loading ? <CircularProgress size={24} color="inherit" /> : t('auth.registerButton')}
             </Button>
             <Box sx={{ textAlign: 'center' }}>
-              <Link 
-                component={RouterLink} 
-                to="/login" 
+              <Link
+                component={RouterLink}
+                to="/login"
                 variant="body2"
                 sx={{
                   color: theme.palette.mode === 'dark' ? '#667eea' : '#667eea',

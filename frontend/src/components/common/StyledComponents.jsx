@@ -25,23 +25,25 @@ export const GridContainer = styled.div`
 // Card Components
 export const StyledCard = styled(Card)`
   border-radius: 12px;
-  background: ${props => props.theme?.mode === 'dark' 
-    ? 'rgba(26, 26, 46, 0.9)' 
-    : 'rgba(255, 255, 255, 0.95)'};
+  background: ${props =>
+    props.theme?.mode === 'dark' ? 'rgba(26, 26, 46, 0.9)' : 'rgba(255, 255, 255, 0.95)'};
   backdrop-filter: blur(20px);
-  border: ${props => props.theme?.mode === 'dark'
-    ? '1px solid rgba(255, 255, 255, 0.1)'
-    : '1px solid rgba(255, 255, 255, 0.2)'};
-  box-shadow: ${props => props.theme?.mode === 'dark'
-    ? '0 8px 32px rgba(0, 0, 0, 0.3)'
-    : '0 8px 32px rgba(0, 0, 0, 0.1)'};
+  border: ${props =>
+    props.theme?.mode === 'dark'
+      ? '1px solid rgba(255, 255, 255, 0.1)'
+      : '1px solid rgba(255, 255, 255, 0.2)'};
+  box-shadow: ${props =>
+    props.theme?.mode === 'dark'
+      ? '0 8px 32px rgba(0, 0, 0, 0.3)'
+      : '0 8px 32px rgba(0, 0, 0, 0.1)'};
   transition: all 0.3s ease;
-  
+
   &:hover {
     transform: translateY(-2px);
-    box-shadow: ${props => props.theme?.mode === 'dark'
-      ? '0 12px 40px rgba(0, 0, 0, 0.4)'
-      : '0 12px 40px rgba(0, 0, 0, 0.15)'};
+    box-shadow: ${props =>
+      props.theme?.mode === 'dark'
+        ? '0 12px 40px rgba(0, 0, 0, 0.4)'
+        : '0 12px 40px rgba(0, 0, 0, 0.15)'};
   }
 `;
 
@@ -54,15 +56,16 @@ export const GradientButton = styled(Button)`
   text-transform: none;
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
   transition: all 0.3s ease;
-  
+
   &:hover {
     background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
     box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
     transform: translateY(-1px);
   }
-  
+
   &:disabled {
-    background: ${props => props.theme?.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'};
+    background: ${props =>
+      props.theme?.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'};
     box-shadow: none;
     transform: none;
   }
@@ -76,7 +79,7 @@ export const OutlineButton = styled(Button)`
   font-weight: 600;
   text-transform: none;
   transition: all 0.3s ease;
-  
+
   &:hover {
     background: #667eea;
     color: white;
@@ -89,21 +92,25 @@ export const OutlineButton = styled(Button)`
 export const StyledTextField = styled(TextField)`
   .MuiOutlinedInput-root {
     border-radius: 8px;
-    background: ${props => props.theme?.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)'};
+    background: ${props =>
+      props.theme?.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)'};
     transition: all 0.3s ease;
-    
+
     &:hover {
-      background: ${props => props.theme?.mode === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)'};
+      background: ${props =>
+        props.theme?.mode === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)'};
     }
-    
+
     &.Mui-focused {
-      background: ${props => props.theme?.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.06)'};
+      background: ${props =>
+        props.theme?.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.06)'};
       box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
     }
   }
-  
+
   .MuiInputLabel-root {
-    color: ${props => props.theme?.mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)'};
+    color: ${props =>
+      props.theme?.mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)'};
   }
 `;
 
@@ -116,11 +123,13 @@ export const GradientTitle = styled.h1`
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: ${props => props.theme?.mode === 'dark' ? '0 0 20px rgba(102, 126, 234, 0.3)' : 'none'};
+  text-shadow: ${props =>
+    props.theme?.mode === 'dark' ? '0 0 20px rgba(102, 126, 234, 0.3)' : 'none'};
 `;
 
 export const StyledText = styled.p`
-  color: ${props => props.theme?.mode === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.7)'};
+  color: ${props =>
+    props.theme?.mode === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.7)'};
   font-size: ${props => props.size || '1rem'};
   font-weight: ${props => props.weight || '400'};
   margin: ${props => props.margin || '0'};
@@ -130,22 +139,24 @@ export const StyledText = styled.p`
 // Background Components
 export const GradientBackground = styled.div`
   min-height: 100vh;
-  background: ${props => props.theme?.mode === 'dark' 
-    ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)'
-    : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'};
+  background: ${props =>
+    props.theme?.mode === 'dark'
+      ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)'
+      : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'};
   position: relative;
   overflow: hidden;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: ${props => props.theme?.mode === 'dark'
-      ? 'radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%)'
-      : 'radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%)'};
+    background: ${props =>
+      props.theme?.mode === 'dark'
+        ? 'radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%)'
+        : 'radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%)'};
     pointer-events: none;
   }
 `;
@@ -154,7 +165,7 @@ export const GradientBackground = styled.div`
 export const FadeInContainer = styled.div`
   opacity: 0;
   animation: fadeIn 0.6s ease-in-out forwards;
-  
+
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -171,7 +182,7 @@ export const SlideInContainer = styled.div`
   opacity: 0;
   animation: slideIn 0.8s ease-out forwards;
   animation-delay: ${props => props.delay || '0s'};
-  
+
   @keyframes slideIn {
     from {
       opacity: 0;
@@ -186,13 +197,13 @@ export const SlideInContainer = styled.div`
 
 // Utility Components
 export const GlassContainer = styled.div`
-  background: ${props => props.theme?.mode === 'dark' 
-    ? 'rgba(255, 255, 255, 0.05)' 
-    : 'rgba(255, 255, 255, 0.1)'};
+  background: ${props =>
+    props.theme?.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.1)'};
   backdrop-filter: blur(20px);
-  border: ${props => props.theme?.mode === 'dark'
-    ? '1px solid rgba(255, 255, 255, 0.1)'
-    : '1px solid rgba(255, 255, 255, 0.2)'};
+  border: ${props =>
+    props.theme?.mode === 'dark'
+      ? '1px solid rgba(255, 255, 255, 0.1)'
+      : '1px solid rgba(255, 255, 255, 0.2)'};
   border-radius: ${props => props.borderRadius || '12px'};
   padding: ${props => props.padding || '1rem'};
 `;
@@ -200,8 +211,9 @@ export const GlassContainer = styled.div`
 export const Divider = styled.hr`
   border: none;
   height: 1px;
-  background: ${props => props.theme?.mode === 'dark' 
-    ? 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)'
-    : 'linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent)'};
+  background: ${props =>
+    props.theme?.mode === 'dark'
+      ? 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)'
+      : 'linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent)'};
   margin: ${props => props.margin || '1rem 0'};
 `;

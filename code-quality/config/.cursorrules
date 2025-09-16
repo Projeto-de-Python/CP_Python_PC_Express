@@ -1,0 +1,165 @@
+# Cursor AI Rules - PC Express Project
+
+## 🎯 **OBRIGATÓRIO: Siga estas regras em TODOS os códigos**
+
+### **Python - Formatação e Linting**
+
+- **SEMPRE** use Black com line-length=100
+- **SEMPRE** organize imports com isort (profile=black)
+- **SEMPRE** use type hints em funções públicas
+- **SEMPRE** siga PEP 8 com exceções do Black
+- **NUNCA** deixe linhas com mais de 100 caracteres
+- **SEMPRE** use docstrings para funções complexas
+
+### **JavaScript/React - Formatação e Linting**
+
+- **SEMPRE** use Prettier com configuração do projeto
+- **SEMPRE** use ESLint com regras do projeto
+- **SEMPRE** quebre componentes grandes em componentes menores
+- **SEMPRE** use PropTypes para validação
+- **NUNCA** deixe arquivos com mais de 200 linhas
+- **SEMPRE** use styled-components para estilos
+
+### **Estrutura de Componentes React**
+
+- **SEMPRE** separe styled-components em arquivo separado (.js)
+- **SEMPRE** crie componentes pequenos e focados
+- **SEMPRE** use hooks apropriados (useState, useEffect, etc.)
+- **SEMPRE** implemente PropTypes corretamente
+- **NUNCA** misture lógica de negócio com apresentação
+
+### **Regras para Hooks**
+
+- **SEMPRE** mantenha hooks simples e focados quando possível
+- **PREFIRA** hooks menores, mas aceite hooks grandes se justificados
+- **NUNCA** use mais de 12 hooks no mesmo componente
+- **SEMPRE** quebre hooks complexos em funções menores quando viável
+- **SEMPRE** extraia lógica complexa para hooks customizados quando apropriado
+- **EVITE** useEffect com muitas dependências (>8), mas aceite se necessário
+- **PREFIRA** separar múltiplas operações em useEffect diferentes
+- **CONSIDERE** a complexidade real, não apenas o tamanho
+
+### **Arquitetura do Projeto**
+
+- **SEMPRE** mantenha a estrutura modular:
+  - `app/` - Backend Python (FastAPI)
+  - `frontend/src/` - Frontend React
+  - `scripts/` - Scripts Python
+- **SEMPRE** use imports relativos corretos
+- **SEMPRE** mantenha separação de responsabilidades
+
+### **Comandos de Formatação**
+
+- **Python**: `python -m black . --line-length 100 && python -m isort . --profile black`
+- **JavaScript**: `npm run format && npm run lint:fix`
+
+### **Validação Automática**
+
+- **SEMPRE** execute validação antes de finalizar código
+- **SEMPRE** use os atalhos criados: `validate.bat` ou `./validate.sh`
+- **SEMPRE** use npm scripts: `npm run validate` ou `npm run fix:all`
+- **SEMPRE** verifique se Git hooks estão ativos (validação automática em commits)
+
+### **Comportamento Quando Validação Falha**
+
+- **NUNCA** finalize código que não passa na validação
+- **SEMPRE** tente correção automática primeiro: `npm run fix:all`
+- **SEMPRE** refatore código se necessário (arquivos grandes, problemas de estrutura)
+- **SEMPRE** execute validação novamente após correções
+- **SEMPRE** repita o processo até o código passar na validação
+- **SEMPRE** informe o usuário sobre problemas que não podem ser corrigidos automaticamente
+
+### **Exemplos de Boas Práticas**
+
+#### **Python - Função Bem Formatada:**
+
+```python
+from typing import List, Optional
+from sqlalchemy.orm import Session
+from fastapi import HTTPException
+
+def create_product(
+    db: Session,
+    data: schemas.ProductCreate,
+    user_id: int
+) -> models.Product:
+    """Create a new product with validation."""
+    product = models.Product(**data.model_dump(), user_id=user_id)
+    db.add(product)
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=409, detail="Product code already exists")
+    db.refresh(product)
+    return product
+```
+
+#### **React - Componente Bem Estruturado:**
+
+```jsx
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { Button, TextField } from '@mui/material';
+import { StyledContainer, StyledForm } from './ComponentStyles';
+
+const MyComponent = ({ onSubmit, loading }) => {
+  const [value, setValue] = useState('');
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    onSubmit(value);
+  };
+
+  return (
+    <StyledContainer>
+      <StyledForm onSubmit={handleSubmit}>
+        <TextField value={value} onChange={e => setValue(e.target.value)} label="Input" />
+        <Button type="submit" disabled={loading}>
+          Submit
+        </Button>
+      </StyledForm>
+    </StyledContainer>
+  );
+};
+
+MyComponent.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+};
+
+export default MyComponent;
+```
+
+### **Regras de Commit**
+
+- **SEMPRE** execute formatação antes de commitar
+- **SEMPRE** teste se o código está funcionando
+- **SEMPRE** mantenha commits pequenos e focados
+
+### **Arquivos de Configuração**
+
+- `pyproject.toml` - Configuração Black/isort
+- `.prettierrc` - Configuração Prettier
+- `eslint.config.js` - Configuração ESLint
+- `.editorconfig` - Configuração Editor
+
+### **⚠️ IMPORTANTE**
+
+- **NUNCA** ignore essas regras
+- **SEMPRE** formate o código antes de finalizar
+- **SEMPRE** mantenha consistência com o projeto existente
+- **SEMPRE** teste se as regras estão sendo seguidas
+
+## 🚀 **Comandos Rápidos**
+
+```bash
+# Python
+python -m black . --line-length 100
+python -m isort . --profile black
+
+# JavaScript
+npm run format
+npm run lint:fix
+npm run lint:all
+```

@@ -5,19 +5,19 @@ import { HelpCircle } from 'lucide-react';
 import { getChartTheme } from '../../utils/chartUtils';
 import { useTranslation } from 'react-i18next';
 
-export const ChartWrapper = ({ 
-  title, 
-  icon, 
-  children, 
-  darkMode, 
-  tooltip, 
-  expanded, 
+export const ChartWrapper = ({
+  title,
+  icon,
+  children,
+  darkMode,
+  tooltip,
+  expanded,
   onToggleExpand,
-  sx = {} 
+  sx = {},
 }) => {
   const theme = getChartTheme(darkMode);
   const { t } = useTranslation();
-  
+
   return (
     <Box
       onClick={onToggleExpand}
@@ -31,12 +31,14 @@ export const ChartWrapper = ({
         backdropFilter: 'blur(10px)',
         border: theme.border,
         cursor: onToggleExpand ? 'pointer' : 'default',
-        '&:hover': onToggleExpand ? {
-          boxShadow: darkMode 
-            ? `0 8px 32px rgba(102, 126, 234, 0.25), 0 0 0 1px rgba(102, 126, 234, 0.2), 0 0 15px rgba(102, 126, 234, 0.15)` 
-            : `0 8px 32px rgba(102, 126, 234, 0.3), 0 0 0 1px rgba(102, 126, 234, 0.2), 0 0 20px rgba(102, 126, 234, 0.1)`,
-          transform: 'translateY(-2px)',
-        } : {},
+        '&:hover': onToggleExpand
+          ? {
+              boxShadow: darkMode
+                ? `0 8px 32px rgba(102, 126, 234, 0.25), 0 0 0 1px rgba(102, 126, 234, 0.2), 0 0 15px rgba(102, 126, 234, 0.15)`
+                : `0 8px 32px rgba(102, 126, 234, 0.3), 0 0 0 1px rgba(102, 126, 234, 0.2), 0 0 20px rgba(102, 126, 234, 0.1)`,
+              transform: 'translateY(-2px)',
+            }
+          : {},
         '&::before': {
           content: '""',
           position: 'absolute',
@@ -45,12 +47,12 @@ export const ChartWrapper = ({
           right: 0,
           bottom: 0,
           borderRadius: 2,
-          background: darkMode 
+          background: darkMode
             ? 'radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.15) 0%, transparent 70%)'
             : 'radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.08) 0%, transparent 70%)',
           pointerEvents: 'none',
         },
-        ...sx
+        ...sx,
       }}
     >
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
@@ -61,14 +63,16 @@ export const ChartWrapper = ({
           </Typography>
           {tooltip && (
             <Tooltip title={tooltip}>
-              <IconButton sx={{ 
-                color: '#667eea',
-                '&:hover': { 
-                  color: '#764ba2',
-                  transform: 'scale(1.1)',
-                },
-                transition: 'all 0.3s ease',
-              }}>
+              <IconButton
+                sx={{
+                  color: '#667eea',
+                  '&:hover': {
+                    color: '#764ba2',
+                    transform: 'scale(1.1)',
+                  },
+                  transition: 'all 0.3s ease',
+                }}
+              >
                 <HelpCircle size={16} />
               </IconButton>
             </Tooltip>
@@ -84,10 +88,8 @@ export const ChartWrapper = ({
           />
         )}
       </Box>
-      
-      <Box sx={{ position: 'relative' }}>
-        {children}
-      </Box>
+
+      <Box sx={{ position: 'relative' }}>{children}</Box>
     </Box>
   );
 };
@@ -100,5 +102,5 @@ ChartWrapper.propTypes = {
   tooltip: PropTypes.string,
   expanded: PropTypes.bool,
   onToggleExpand: PropTypes.func,
-  sx: PropTypes.object
+  sx: PropTypes.object,
 };

@@ -8,11 +8,11 @@ import ptTranslations from './locales/pt.json';
 
 const resources = {
   en: {
-    translation: enTranslations
+    translation: enTranslations,
   },
   pt: {
-    translation: ptTranslations
-  }
+    translation: ptTranslations,
+  },
 };
 
 i18n

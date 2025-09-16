@@ -1,46 +1,141 @@
-Integrantes Big 5:
-1) Lucca Phelipe Masini RM 564121
-2) Luiz Henrique Poss RM562177
-3) Luis Fernando de Oliveira Salgado RM 561401
-4) Igor Paixão Sarak RM 563726
-5) Bernardo Braga Perobeli RM 56246
+# 🚀 PC-Express - Sistema de Gerenciamento de Inventário
 
-# PC-Express - Sistema de Gerenciamento de Inventário
+Um sistema completo de gerenciamento de inventário desenvolvido com FastAPI (backend) e React (frontend), oferecendo uma interface moderna e intuitiva para controle de estoque, fornecedores, alertas e insights de negócio com **Machine Learning**.
 
-Um sistema completo de gerenciamento de inventário desenvolvido com FastAPI (backend) e React (frontend), oferecendo uma interface moderna e intuitiva para controle de estoque, fornecedores, alertas e insights de negócio.
+## ⚡ **Início Rápido**
 
-## 🚀 Características
+### **Um Comando Só:**
+```powershell
+.\start.ps1
+```
 
-- **Dashboard Interativo**: Visualização em tempo real de métricas importantes
-- **Gerenciamento de Produtos**: CRUD completo com categorização e controle de estoque
-- **Fornecedores**: Cadastro e gerenciamento de parceiros comerciais
-- **Alertas de Estoque**: Notificações automáticas para itens com estoque baixo
-- **Pedidos de Compra**: Sistema completo de pedidos de reabastecimento
-- **Insights de Negócio**: Análises e recomendações baseadas em dados
-- **Reabastecimento Automático**: Sistema inteligente de sugestões de reabastecimento
-- **Tema Escuro/Claro**: Interface adaptável com suporte a múltiplos temas
-- **Internacionalização**: Suporte completo a português e inglês
-- **Autenticação Segura**: Sistema de login com JWT
+**O script faz tudo automaticamente:**
+- ✅ Verifica dependências (Python, Node.js)
+- ✅ Instala se necessário (com instruções)
+- ✅ Configura ambiente (venv, dependências, banco)
+- ✅ Inicia servidores (backend + frontend)
+- ✅ Abre navegador na página de login
+- ✅ **Auto-reinicialização** se servidores pararem
+- ✅ **Monitoramento contínuo** de recursos
+- ✅ **Otimizações de performance** integradas
 
-## 📋 Pré-requisitos
+### **Credenciais:**
+- **Email:** `admin@pc-express.com`
+- **Senha:** `admin123`
+
+### **URLs:**
+- **Sistema:** http://localhost:5173
+- **API:** http://localhost:8000
+- **Documentação:** http://localhost:8000/docs
+
+### **Para Parar:**
+```cmd
+.\stop.bat
+```
+
+**O script de parada é inteligente:**
+- ✅ Para apenas processos relacionados ao PC-Express
+- ✅ Preserva outros aplicativos Python/Node.js do sistema
+- ✅ Mostra logs detalhados dos processos finalizados
+- ✅ Verifica múltiplas formas de identificação (porta, comando, diretório)
+
+### **Opções Avançadas:**
+```powershell
+# Com debug (mostra logs detalhados)
+.\start.ps1 -Debug
+
+# Sem abrir navegador
+.\start.ps1 -SkipBrowser
+
+# Forçar reinicialização
+.\start.ps1 -Force
+```
+
+## 🎯 **Funcionalidades Principais**
+
+### **📊 Dashboard Interativo**
+- Métricas em tempo real (produtos, fornecedores, alertas)
+- Gráficos de performance e categorias
+- Alertas de estoque baixo
+- Produtos em destaque por valor
+
+### **📦 Gerenciamento de Produtos**
+- CRUD completo com categorização
+- Controle de estoque com níveis mínimos
+- Códigos únicos e descrições detalhadas
+- Integração com fornecedores
+
+### **🏢 Sistema de Fornecedores**
+- Cadastro completo de parceiros comerciais
+- Informações de contato e CNPJ
+- Histórico de relacionamento
+
+### **📋 Pedidos de Compra**
+- Criação e acompanhamento de pedidos
+- Status de aprovação e cancelamento
+- Integração com fornecedores e produtos
+
+### **⚠️ Alertas Inteligentes**
+- Monitoramento automático de estoque baixo
+- Notificações em tempo real
+- Priorização por criticidade
+
+### **🤖 Machine Learning Avançado**
+- **Previsão de Demanda:** Algoritmos de regressão linear com features temporais
+- **Otimização de Preços:** Análise de elasticidade de preço
+- **Detecção de Anomalias:** Isolation Forest para identificar padrões anômalos
+- **Otimização de Estoque:** Cálculo de ponto de reposição e cobertura
+
+### **🔄 Reabastecimento Automático**
+- Sugestões inteligentes baseadas em ML
+- Cálculo de demanda prevista
+- Otimização de níveis de estoque
+
+## 🎨 **Interface e Experiência**
+
+- **Design Moderno:** Interface glassmorphism com gradientes
+- **Responsivo:** Funciona perfeitamente em desktop e mobile
+- **Temas:** Alternância entre modo claro e escuro
+- **Internacionalização:** Português e Inglês com persistência
+- **Animações:** Transições suaves e feedback visual
+
+## 🛠️ **Tecnologias**
+
+### **Backend**
+- **Framework:** FastAPI
+- **ORM:** SQLAlchemy
+- **Banco de Dados:** SQLite
+- **Autenticação:** JWT com passlib[bcrypt]
+- **Validação:** Pydantic
+- **Machine Learning:** Scikit-learn, Pandas, NumPy
+
+### **Frontend**
+- **Framework:** React 18
+- **UI Library:** Material-UI (MUI)
+- **Build Tool:** Vite
+- **Roteamento:** React Router DOM
+- **Gráficos:** Recharts
+- **Ícones:** Lucide React
+- **Internacionalização:** React-i18next
+
+## 📋 **Pré-requisitos**
 
 - **Python 3.8+** - [Download](https://www.python.org/downloads/)
 - **Node.js 16+** - [Download](https://nodejs.org/)
-- **npm** (incluído com Node.js)
 
 > **💡 Dica:** O script de inicialização verifica automaticamente se estes pré-requisitos estão instalados.
 
-## 🛠️ Instalação
+## 🚀 **Instalação e Execução**
 
-### 1. Clone o repositório
+### **1. Clone o repositório**
 ```bash
 git clone <url-do-repositorio>
 cd PCexpress
 ```
 
-### 2. Inicialização Automática (Recomendado)
-```bash
-.\start.bat
+### **2. Inicialização Automática (Recomendado)**
+```powershell
+.\start.ps1
 ```
 
 **O script fará automaticamente:**
@@ -49,12 +144,19 @@ cd PCexpress
 - ✅ Instalação de dependências
 - ✅ Configuração do banco de dados
 - ✅ Inicialização dos servidores
+- ✅ Abertura do navegador
 
-### 3. Configuração Manual (Opcional)
+### **3. Parâmetros Opcionais**
+```powershell
+.\start.ps1 -SkipBrowser    # Não abre navegador
+.\start.ps1 -Force          # Força reinicialização
+```
 
-Se preferir configurar manualmente, siga os passos abaixo:
+### **4. Configuração Manual (Opcional)**
 
-#### Backend
+Se preferir configurar manualmente:
+
+#### **Backend**
 ```bash
 # Criar ambiente virtual
 python -m venv .venv
@@ -70,30 +172,16 @@ pip install -r requirement.txt
 python scripts/setup_db.py
 ```
 
-#### Frontend
+#### **Frontend**
 ```bash
 cd frontend
 npm install
 cd ..
 ```
 
-## 🚀 Executando o Projeto
+## 🔧 **Execução Manual**
 
-### ⭐ **Inicialização Automática (Recomendado)**
-```bash
-.\start.bat
-```
-
-**O que o script faz automaticamente:**
-- ✅ Verifica se Python e Node.js estão instalados
-- ✅ Cria e ativa ambiente virtual Python
-- ✅ Instala todas as dependências
-- ✅ Configura banco de dados
-- ✅ Inicia backend e frontend em janelas separadas
-
-### 🔧 **Execução Manual (Avançado)**
-
-#### Terminal 1 - Backend
+### **Terminal 1 - Backend**
 ```bash
 # Ative o ambiente virtual primeiro
 .venv\Scripts\activate  # Windows
@@ -103,50 +191,76 @@ cd ..
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-#### Terminal 2 - Frontend
+### **Terminal 2 - Frontend**
 ```bash
 cd frontend
 npm run dev
 ```
 
-## 🌐 Acessando a Aplicação
+## 🤖 **Machine Learning**
 
-Após a inicialização, acesse:
+### **Como Usar ML:**
 
-- **Frontend**: http://localhost:5173
-- **Backend API**: http://localhost:8000
-- **Documentação da API**: http://localhost:8000/docs
+1. **Geração de Dados Iniciais** (Opcional)
+   - Acesse a aba **Insights**
+   - Clique em **"Generate Initial Data (30 days)"**
+   - Isso só cria dados se não existirem vendas no sistema
 
-## 🔐 Credenciais Padrão
+2. **Análise ML de Produtos**
+   - Vá para a aba **Products**
+   - Clique no ícone **🧠 (Brain)** ao lado de qualquer produto
+   - O sistema automaticamente muda para **Insights > 🤖 ML Insights**
 
-- **Email**: admin@pc-express.com
-- **Senha**: admin123
+3. **Funcionalidades ML:**
+   - **📈 Previsão de Demanda:** Demanda para os próximos 30 dias
+   - **💰 Otimização de Preços:** Preço ótimo para maximizar receita
+   - **⚠️ Detecção de Anomalias:** Identificação de vendas anômalas
+   - **📦 Otimização de Estoque:** Recomendações de estoque ótimo
 
-## 🏗️ Arquitetura
+### **Requisitos de Dados:**
+- **Mínimo para Previsão:** 14 dias de dados de vendas
+- **Mínimo para Preços:** 2 variações de preço diferentes
+- **Mínimo para Anomalias:** 7 dias de dados de vendas
 
-### Backend
-- **Framework**: FastAPI
-- **ORM**: SQLAlchemy
-- **Banco de Dados**: SQLite
-- **Autenticação**: JWT com passlib[bcrypt]
-- **Validação**: Pydantic
+## 🚨 **Solução de Problemas**
 
-### Frontend
-- **Framework**: React 18
-- **UI Library**: Material-UI (MUI)
-- **Build Tool**: Vite
-- **Roteamento**: React Router DOM
-- **Gráficos**: Recharts
-- **Ícones**: Lucide React
-- **Internacionalização**: React-i18next
+### **"Execution Policy" no PowerShell:**
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
 
-## 📁 Estrutura do Projeto
+### **Python não encontrado:**
+1. Baixe Python 3.8+ de: https://www.python.org/downloads/
+2. **IMPORTANTE:** Marque "Add Python to PATH" durante a instalação
+3. Execute o script novamente
+
+### **Node.js não encontrado:**
+1. Baixe Node.js 16+ de: https://nodejs.org/
+2. Execute o script novamente
+
+### **Porta já em uso:**
+```cmd
+.\stop.bat
+# Ou
+.\start.ps1 -Force
+```
+
+### **Dependências não instalam:**
+```cmd
+# Delete as pastas e execute novamente
+rmdir /s /q .venv
+rmdir /s /q frontend\node_modules
+.\start.ps1
+```
+
+## 📁 **Estrutura do Projeto**
 
 ```
 PCexpress/
 ├── app/                    # Backend FastAPI
 │   ├── routers/           # Rotas da API
-│   ├── models.py          # Modelos do banco de dados
+│   ├── services/          # ML e simulação
+│   ├── models.py          # Modelos do banco
 │   ├── schemas.py         # Schemas Pydantic
 │   ├── auth.py            # Autenticação
 │   ├── database.py        # Configuração do banco
@@ -161,125 +275,73 @@ PCexpress/
 │   ├── package.json
 │   └── vite.config.js
 ├── scripts/               # Scripts de configuração
-│   ├── setup_db.py        # Configuração inicial do banco
+│   ├── setup_db.py        # Configuração inicial
 │   └── seed.py            # Dados de exemplo
+├── start.ps1              # Script de inicialização
+├── stop.bat               # Script para parar
 ├── requirement.txt        # Dependências Python
-├── start.py              # Script de inicialização
-└── README.md
+└── README.md              # Este arquivo
 ```
 
-## 🔧 Funcionalidades Principais
+## 🔒 **Segurança e Privacidade**
 
-### Dashboard
-- Métricas em tempo real
-- Gráficos interativos
-- Alertas de estoque
-- Produtos em destaque
+- **Dados Locais:** Tudo fica no seu SQLite
+- **Sem Envio Externo:** Nenhum dado é enviado para APIs externas
+- **Processamento Local:** Todos os cálculos ML são feitos localmente
+- **Controle Total:** Você tem controle completo sobre os dados
 
-### Produtos
-- Cadastro completo de produtos
-- Controle de estoque
-- Categorização
-- Preços e códigos
+## 📊 **Banco de Dados**
 
-### Fornecedores
-- Cadastro de fornecedores
-- Informações de contato
-- Histórico de pedidos
+O sistema utiliza SQLite com as seguintes tabelas:
 
-### Alertas
-- Monitoramento de estoque baixo
-- Notificações automáticas
-- Priorização de itens críticos
+- **users:** Usuários do sistema
+- **suppliers:** Fornecedores
+- **products:** Produtos
+- **stock_movements:** Movimentações de estoque
+- **sales:** Vendas
+- **sale_items:** Itens de venda
+- **purchase_orders:** Pedidos de compra
+- **purchase_order_items:** Itens dos pedidos
 
-### Pedidos de Compra
-- Criação de pedidos
-- Acompanhamento de status
-- Integração com fornecedores
+## 🔧 **Melhorias de Estabilidade (v2.0)**
 
-### Insights
-- Análises de vendas
-- Recomendações de negócio
-- Relatórios personalizados
+### **Problemas Resolvidos:**
+- ✅ **Navegador duplo** - Corrigido problema de abertura dupla
+- ✅ **Crashes inesperados** - Auto-reinicialização até 5 tentativas
+- ✅ **Sobrecarga de memória** - Otimizações de Node.js e Python
+- ✅ **Timeout de requisições** - Timeout de 10s configurado
+- ✅ **Monitoramento inadequado** - Verificação contínua de recursos
+- ✅ **Detecção de frontend** - Corrigido problema de detecção IPv6/IPv4
+- ✅ **Script de parada** - Parada específica apenas dos processos do PC-Express
 
-### Reabastecimento Automático
-- Sugestões inteligentes
-- Cálculo de demanda
-- Otimização de estoque
+### **Otimizações Implementadas:**
+- 🚀 **Pool de conexões SQLite** com timeouts e reciclagem
+- 🚀 **Limite de memória Node.js** (2GB) para evitar crashes
+- 🚀 **Configurações uvicorn otimizadas** com limites de concorrência
+- 🚀 **Auto-refresh reduzido** de 30s para 60s no Dashboard
+- 🚀 **Monitoramento de recursos** do sistema em tempo real
+- 🚀 **Logs detalhados** com timestamps para debug
+- 🚀 **Detecção de porta melhorada** - Suporte IPv4 e IPv6
+- 🚀 **Parada inteligente** - Preserva outros processos Python/Node.js do sistema
 
-## 🎨 Temas e Personalização
+### **Como Usar as Melhorias:**
+```powershell
+# Uso normal (com todas as melhorias)
+.\start.ps1
 
-O sistema suporta temas claro e escuro, com transições suaves e interface responsiva. Todos os componentes são adaptáveis e mantêm a consistência visual.
+# Com debug para ver logs detalhados
+.\start.ps1 -Debug
 
-## 🌍 Internacionalização
-
-O sistema oferece suporte completo a múltiplos idiomas:
-- **Português**: Idioma nativo brasileiro
-- **Inglês**: Idioma padrão do sistema
-- **Seletor de Idioma**: Disponível na barra de navegação
-- **Persistência**: Preferência salva automaticamente
-- **Configurações**: Opção adicional no menu de configurações
-
-Para mais detalhes sobre a implementação, consulte o arquivo `frontend/INTERNATIONALIZATION.md`.
-
-## 🔒 Segurança
-
-- Autenticação JWT
-- Senhas criptografadas com bcrypt
-- Isolamento de dados por usuário
-- Validação de entrada com Pydantic
-- CORS configurado adequadamente
-
-## 📊 Banco de Dados
-
-O sistema utiliza SQLite como banco de dados principal, com as seguintes tabelas:
-
-- **users**: Usuários do sistema
-- **suppliers**: Fornecedores
-- **products**: Produtos
-- **stock_movements**: Movimentações de estoque
-- **sales**: Vendas
-- **sale_items**: Itens de venda
-- **purchase_orders**: Pedidos de compra
-- **purchase_order_items**: Itens dos pedidos
-
-## 🔄 Gerenciamento dos Servidores
-
-### **Inicialização Automática**
-```bash
-.\start.bat
+# Sem abrir navegador automaticamente
+.\start.ps1 -SkipBrowser
 ```
 
-### **Parar Servidores**
-- Feche as janelas "Backend" e "Frontend" que foram abertas
-- Ou pressione `Ctrl+C` nas janelas dos servidores
+## 🚀 **Deploy**
 
-### **Reiniciar**
-```bash
-.\start.bat
-```
+### **Desenvolvimento**
+O projeto está configurado para desenvolvimento local com hot-reload.
 
-### **Execução Manual**
-Se preferir executar manualmente:
-
-#### Terminal 1 - Backend
-```bash
-.venv\Scripts\activate
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-```
-
-#### Terminal 2 - Frontend
-```bash
-cd frontend
-npm run dev
-```
-
-## 🚀 Deploy
-
-### Desenvolvimento
-O projeto está configurado para desenvolvimento local com hot-reload tanto no backend quanto no frontend.
-
-### Produção
+### **Produção**
 Para deploy em produção, considere:
 - Usar um banco de dados mais robusto (PostgreSQL, MySQL)
 - Configurar um servidor web (Nginx, Apache)
@@ -287,7 +349,7 @@ Para deploy em produção, considere:
 - Configurar variáveis de ambiente
 - Usar um servidor WSGI para o FastAPI
 
-## 🤝 Contribuição
+## 🤝 **Contribuição**
 
 1. Faça um fork do projeto
 2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
@@ -295,11 +357,20 @@ Para deploy em produção, considere:
 4. Push para a branch (`git push origin feature/AmazingFeature`)
 5. Abra um Pull Request
 
-## 📝 Licença
+## 📝 **Licença**
 
 Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
 
-## 📞 Suporte
+## 👥 **Equipe**
+
+**Integrantes Big 5:**
+1. Lucca Phelipe Masini RM 564121
+2. Luiz Henrique Poss RM562177
+3. Luis Fernando de Oliveira Salgado RM 561401
+4. Igor Paixão Sarak RM 563726
+5. Bernardo Braga Perobeli RM 56246
+
+## 📞 **Suporte**
 
 Para suporte ou dúvidas, entre em contato através dos canais disponibilizados no projeto.
 

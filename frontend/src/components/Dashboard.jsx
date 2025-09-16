@@ -22,13 +22,13 @@ import {
   PieChart,
   Activity,
 } from 'lucide-react';
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip as RechartsTooltip, 
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip as RechartsTooltip,
   ResponsiveContainer,
   Legend,
   Pie,
@@ -56,24 +56,27 @@ export default function Dashboard({ darkMode }) {
 
   useEffect(() => {
     fetchDashboardData();
-    
+
     // Listen for product data changes from other components
     const handleProductsDataChanged = () => {
       fetchDashboardData();
     };
-    
+
     window.addEventListener('productsDataChanged', handleProductsDataChanged);
-    
+
     return () => {
       window.removeEventListener('productsDataChanged', handleProductsDataChanged);
     };
   }, [refreshKey]);
 
-  // Auto-refresh every 30 seconds
+  // Auto-refresh every 60 seconds (reduzido de 30s para 60s)
   useEffect(() => {
     const interval = setInterval(() => {
-      fetchDashboardData();
-    }, 30000);
+      // Só faz refresh se a página estiver visível
+      if (!document.hidden) {
+        fetchDashboardData();
+      }
+    }, 60000);
 
     return () => clearInterval(interval);
   }, []);
@@ -88,8 +91,6 @@ export default function Dashboard({ darkMode }) {
         suppliersAPI.getAll(),
         alertsAPI.getLowStock(),
       ]);
-
-
 
       setProducts(productsRes.data);
       setSuppliers(suppliersRes.data);
@@ -113,19 +114,17 @@ export default function Dashboard({ darkMode }) {
     setActiveIndex(0);
   };
 
-
-
-  const handleCategoryClick = (category) => {
+  const handleCategoryClick = category => {
     setSelectedCategory(selectedCategory === category ? null : category);
   };
 
-  const handleStockClick = (data) => {
+  const handleStockClick = data => {
     // Navigate to products page with filter for this product
-    navigate('/products', { 
-      state: { 
+    navigate('/products', {
+      state: {
         filterProduct: data.name,
-        highlightStock: true 
-      } 
+        highlightStock: true,
+      },
     });
   };
 
@@ -139,149 +138,186 @@ export default function Dashboard({ darkMode }) {
     totalSuppliers: suppliers.length,
     lowStockProducts: products.filter(p => p.em_estoque_baixo).length,
     totalInventoryValue: products.reduce((sum, product) => {
-      return sum + (product.preco * product.quantidade);
+      return sum + product.preco * product.quantidade;
     }, 0),
   };
 
   // Website Traffic Data
   const websiteTrafficData = [
-    { 
-      metric: t('dashboard.pageViews'), 
-      value: 20500, 
-      target: 25000, 
+    {
+      metric: t('dashboard.pageViews'),
+      value: 20500,
+      target: 25000,
       color: chartColors.primary,
-      icon: '📊'
+      icon: '📊',
     },
-    { 
-      metric: t('dashboard.uniqueVisitors'), 
-      value: 12450, 
-      target: 15000, 
+    {
+      metric: t('dashboard.uniqueVisitors'),
+      value: 12450,
+      target: 15000,
       color: chartColors.success,
-      icon: '👥'
+      icon: '👥',
     },
-    { 
-      metric: t('dashboard.avgSessionTime'), 
-      value: 4.2, 
-      target: 5.0, 
+    {
+      metric: t('dashboard.avgSessionTime'),
+      value: 4.2,
+      target: 5.0,
       color: chartColors.warning,
       icon: '⏱️',
-      unit: 'min'
+      unit: 'min',
     },
-    { 
-      metric: t('dashboard.bounceRate'), 
-      value: 32.5, 
-      target: 25.0, 
+    {
+      metric: t('dashboard.bounceRate'),
+      value: 32.5,
+      target: 25.0,
       color: chartColors.error,
       icon: '📉',
-      unit: '%'
-    }
+      unit: '%',
+    },
   ];
 
-
-
-  const categoryData = products.length > 0 
-    ? Object.entries(
-        products.reduce((acc, product) => {
-          acc[product.categoria] = (acc[product.categoria] || 0) + 1;
-          return acc;
-        }, {})
-      ).map(([name, value], index) => ({
-        name, 
-        value,
-        color: chartColors.chartColors[index % chartColors.chartColors.length]
-      }))
-    : [
-        { name: 'Processors', value: 5, color: chartColors.chartColors[0] },
-        { name: 'Graphics Cards', value: 3, color: chartColors.chartColors[1] },
-        { name: 'Memory', value: 4, color: chartColors.chartColors[2] },
-        { name: 'Storage', value: 6, color: chartColors.chartColors[3] },
-      ];
+  const categoryData =
+    products.length > 0
+      ? Object.entries(
+          products.reduce((acc, product) => {
+            acc[product.categoria] = (acc[product.categoria] || 0) + 1;
+            return acc;
+          }, {})
+        ).map(([name, value], index) => ({
+          name,
+          value,
+          color: chartColors.chartColors[index % chartColors.chartColors.length],
+        }))
+      : [
+          { name: 'Processors', value: 5, color: chartColors.chartColors[0] },
+          { name: 'Graphics Cards', value: 3, color: chartColors.chartColors[1] },
+          { name: 'Memory', value: 4, color: chartColors.chartColors[2] },
+          { name: 'Storage', value: 6, color: chartColors.chartColors[3] },
+        ];
 
   // Stock Levels Data
-  const stockLevelsData = products.length > 0 
-    ? products.slice(0, 8).map(product => ({
-        name: product.nome.length > 15 ? `${product.nome.substring(0, 15)}...` : product.nome,
-        current: product.quantidade,
-        minimum: product.estoque_minimo,
-        color: product.quantidade <= product.estoque_minimo ? chartColors.error : chartColors.success
-      }))
-    : [
-        { name: 'AMD Ryzen 7 5800X', current: 15, minimum: 5, color: chartColors.success },
-        { name: 'NVIDIA RTX 3080', current: 3, minimum: 5, color: chartColors.error },
-        { name: 'Samsung 970 EVO 1TB', current: 25, minimum: 10, color: chartColors.success },
-        { name: 'Corsair Vengeance 16GB', current: 8, minimum: 15, color: chartColors.error },
-        { name: 'ASUS ROG Strix B550', current: 12, minimum: 8, color: chartColors.success },
-        { name: 'Seagate Barracuda 2TB', current: 18, minimum: 12, color: chartColors.success },
-        { name: 'EVGA 750W Gold', current: 6, minimum: 10, color: chartColors.error },
-        { name: 'Logitech G Pro X', current: 22, minimum: 15, color: chartColors.success }
-      ];
+  const stockLevelsData =
+    products.length > 0
+      ? products.slice(0, 8).map(product => ({
+          name: product.nome.length > 15 ? `${product.nome.substring(0, 15)}...` : product.nome,
+          current: product.quantidade,
+          minimum: product.estoque_minimo,
+          color:
+            product.quantidade <= product.estoque_minimo ? chartColors.error : chartColors.success,
+        }))
+      : [
+          { name: 'AMD Ryzen 7 5800X', current: 15, minimum: 5, color: chartColors.success },
+          { name: 'NVIDIA RTX 3080', current: 3, minimum: 5, color: chartColors.error },
+          { name: 'Samsung 970 EVO 1TB', current: 25, minimum: 10, color: chartColors.success },
+          { name: 'Corsair Vengeance 16GB', current: 8, minimum: 15, color: chartColors.error },
+          { name: 'ASUS ROG Strix B550', current: 12, minimum: 8, color: chartColors.success },
+          { name: 'Seagate Barracuda 2TB', current: 18, minimum: 12, color: chartColors.success },
+          { name: 'EVGA 750W Gold', current: 6, minimum: 10, color: chartColors.error },
+          { name: 'Logitech G Pro X', current: 22, minimum: 15, color: chartColors.success },
+        ];
 
   // Top Performing Products Data
-  const topProductsData = products.length > 0 
-    ? products
-        .sort((a, b) => (b.preco * b.quantidade) - (a.preco * a.quantidade))
-        .slice(0, 5)
-        .map((product, index) => ({
-          name: product.nome,
-          value: product.preco * product.quantidade,
-          stock: product.quantidade,
-          price: product.preco,
-          color: chartColors.chartColors[index % chartColors.chartColors.length]
-        }))
-    : [
-        { name: 'AMD Ryzen 7 5800X', value: 15999.0, stock: 10, price: 1599.90, color: chartColors.chartColors[0] },
-        { name: 'NVIDIA RTX 4060 8GB', value: 21999.0, stock: 10, price: 2199.90, color: chartColors.chartColors[1] },
-        { name: 'SSD NVMe 1TB Kingston', value: 4299.0, stock: 10, price: 429.90, color: chartColors.chartColors[2] },
-        { name: 'Monitor 24" 144Hz', value: 8999.0, stock: 10, price: 899.90, color: chartColors.chartColors[3] },
-        { name: 'Teclado Mecânico RGB', value: 2999.0, stock: 10, price: 299.90, color: chartColors.chartColors[4] }
-      ];
+  const topProductsData =
+    products.length > 0
+      ? products
+          .sort((a, b) => b.preco * b.quantidade - a.preco * a.quantidade)
+          .slice(0, 5)
+          .map((product, index) => ({
+            name: product.nome,
+            value: product.preco * product.quantidade,
+            stock: product.quantidade,
+            price: product.preco,
+            color: chartColors.chartColors[index % chartColors.chartColors.length],
+          }))
+      : [
+          {
+            name: 'AMD Ryzen 7 5800X',
+            value: 15999.0,
+            stock: 10,
+            price: 1599.9,
+            color: chartColors.chartColors[0],
+          },
+          {
+            name: 'NVIDIA RTX 4060 8GB',
+            value: 21999.0,
+            stock: 10,
+            price: 2199.9,
+            color: chartColors.chartColors[1],
+          },
+          {
+            name: 'SSD NVMe 1TB Kingston',
+            value: 4299.0,
+            stock: 10,
+            price: 429.9,
+            color: chartColors.chartColors[2],
+          },
+          {
+            name: 'Monitor 24" 144Hz',
+            value: 8999.0,
+            stock: 10,
+            price: 899.9,
+            color: chartColors.chartColors[3],
+          },
+          {
+            name: 'Teclado Mecânico RGB',
+            value: 2999.0,
+            stock: 10,
+            price: 299.9,
+            color: chartColors.chartColors[4],
+          },
+        ];
 
   return (
     <Box>
       {/* Header */}
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Box display="flex" alignItems="center" gap={2}>
-          <Typography variant="h4" fontWeight="bold" sx={{ 
-            background: chartColors.gradientColors.primary,
-            backgroundClip: 'text',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-          }}>
+          <Typography
+            variant="h4"
+            fontWeight="bold"
+            sx={{
+              background: chartColors.gradientColors.primary,
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
+          >
             {t('dashboard.title')}
           </Typography>
           <Tooltip title="This dashboard provides real-time insights into your inventory performance, helping you make informed business decisions. Monitor stock levels, track sales trends, and identify opportunities for growth.">
-            <IconButton sx={{ 
-              color: chartColors.primary,
-              '&:hover': { 
-                color: chartColors.secondary,
-                transform: 'scale(1.1)',
-              },
-              transition: 'all 0.3s ease',
-            }}>
+            <IconButton
+              sx={{
+                color: chartColors.primary,
+                '&:hover': {
+                  color: chartColors.secondary,
+                  transform: 'scale(1.1)',
+                },
+                transition: 'all 0.3s ease',
+              }}
+            >
               <HelpCircle size={20} />
             </IconButton>
           </Tooltip>
         </Box>
         <Tooltip title={t('common.loading')}>
-          <IconButton onClick={handleRefresh} sx={{ 
-            background: chartColors.gradientColors.primary,
-            color: 'white',
-            '&:hover': { 
-              background: chartColors.gradientColors.secondary,
-              transform: 'rotate(180deg)',
-            },
-            transition: 'all 0.3s ease',
-          }}>
+          <IconButton
+            onClick={handleRefresh}
+            sx={{
+              background: chartColors.gradientColors.primary,
+              color: 'white',
+              '&:hover': {
+                background: chartColors.gradientColors.secondary,
+                transform: 'rotate(180deg)',
+              },
+              transition: 'all 0.3s ease',
+            }}
+          >
             <RotateCcw size={20} />
           </IconButton>
         </Tooltip>
       </Box>
 
-      <ErrorMessage 
-        error={error} 
-        onRetry={fetchDashboardData}
-        onClose={() => setError(null)}
-      />
+      <ErrorMessage error={error} onRetry={fetchDashboardData} onClose={() => setError(null)} />
 
       {/* Stats Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
@@ -362,21 +398,36 @@ export default function Dashboard({ darkMode }) {
                         <Typography variant="h6" sx={{ color: item.color, fontSize: '1.5rem' }}>
                           {item.icon}
                         </Typography>
-                        <Typography variant="caption" sx={{ color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)' }}>
+                        <Typography
+                          variant="caption"
+                          sx={{ color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)' }}
+                        >
                           {item.metric}
                         </Typography>
                       </Box>
-                      
-                      <Typography variant="h4" fontWeight="bold" sx={{ color: darkMode ? '#ffffff' : '#000000', mb: 0.5 }}>
-                        {item.value >= 1000 ? `${(item.value / 1000).toFixed(1)}k` : item.value}{item.unit || ''}
+
+                      <Typography
+                        variant="h4"
+                        fontWeight="bold"
+                        sx={{ color: darkMode ? '#ffffff' : '#000000', mb: 0.5 }}
+                      >
+                        {item.value >= 1000 ? `${(item.value / 1000).toFixed(1)}k` : item.value}
+                        {item.unit || ''}
                       </Typography>
-                      
+
                       <Box display="flex" alignItems="center" gap={1} mb={1}>
-                        <Typography variant="caption" sx={{ color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)' }}>
-                          Target: {item.target >= 1000 ? `${(item.target / 1000).toFixed(1)}k` : item.target}{item.unit || ''}
+                        <Typography
+                          variant="caption"
+                          sx={{ color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)' }}
+                        >
+                          Target:{' '}
+                          {item.target >= 1000
+                            ? `${(item.target / 1000).toFixed(1)}k`
+                            : item.target}
+                          {item.unit || ''}
                         </Typography>
                       </Box>
-                      
+
                       <LinearProgress
                         variant="determinate"
                         value={(item.value / item.target) * 100}
@@ -390,13 +441,17 @@ export default function Dashboard({ darkMode }) {
                           },
                         }}
                       />
-                      
-                      <Typography variant="caption" sx={{ 
-                        color: item.value >= item.target ? chartColors.success : chartColors.warning,
-                        fontWeight: 'bold',
-                        mt: 0.5,
-                        display: 'block'
-                      }}>
+
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          color:
+                            item.value >= item.target ? chartColors.success : chartColors.warning,
+                          fontWeight: 'bold',
+                          mt: 0.5,
+                          display: 'block',
+                        }}
+                      >
                         {item.value >= item.target ? '✅ On Track' : '⚠️ Below Target'}
                       </Typography>
                     </Card>
@@ -429,13 +484,13 @@ export default function Dashboard({ darkMode }) {
                   dataKey="value"
                   onMouseEnter={onPieEnter}
                   onMouseLeave={onPieLeave}
-                  onClick={(data) => handleCategoryClick(data.name)}
+                  onClick={data => handleCategoryClick(data.name)}
                   style={{ cursor: 'pointer' }}
                   paddingAngle={1}
                 >
                   {categoryData.map((entry, index) => (
-                    <Cell 
-                      key={`cell-${index}`} 
+                    <Cell
+                      key={`cell-${index}`}
                       fill={entry.color}
                       stroke={darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}
                       strokeWidth={1}
@@ -451,7 +506,9 @@ export default function Dashboard({ darkMode }) {
                     fontSize: '16px',
                     fontWeight: 'bold',
                     fill: darkMode ? '#ffffff' : '#333333',
-                    textShadow: darkMode ? '0 0 10px rgba(255,255,255,0.3)' : '0 0 10px rgba(0,0,0,0.1)'
+                    textShadow: darkMode
+                      ? '0 0 10px rgba(255,255,255,0.3)'
+                      : '0 0 10px rgba(0,0,0,0.1)',
                   }}
                 >
                   {categoryData.reduce((sum, item) => sum + item.value, 0)}
@@ -464,7 +521,7 @@ export default function Dashboard({ darkMode }) {
                   style={{
                     fontSize: '10px',
                     fill: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)',
-                    fontWeight: '500'
+                    fontWeight: '500',
                   }}
                 >
                   {t('dashboard.total')}
@@ -485,23 +542,34 @@ export default function Dashboard({ darkMode }) {
           >
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={stockLevelsData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke={darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} />
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke={darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}
+                />
                 <XAxis dataKey="name" tick={{ fontSize: 11, fill: theme.palette.text.secondary }} />
                 <YAxis tick={{ fontSize: 11, fill: theme.palette.text.secondary }} />
-                <RechartsTooltip 
+                <RechartsTooltip
                   content={({ active, payload, label }) => {
                     if (active && payload && payload.length) {
                       const data = payload[0].payload;
                       return (
-                        <Box sx={{
-                          background: darkMode ? 'rgba(26, 26, 26, 0.95)' : 'rgba(255, 255, 255, 0.95)',
-                          border: '1px solid',
-                          borderColor: darkMode ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)',
-                          borderRadius: 1,
-                          p: 1.5,
-                          backdropFilter: 'blur(10px)',
-                        }}>
-                          <Typography variant="body2" fontWeight="600" sx={{ color: darkMode ? 'white' : 'black' }}>
+                        <Box
+                          sx={{
+                            background: darkMode
+                              ? 'rgba(26, 26, 26, 0.95)'
+                              : 'rgba(255, 255, 255, 0.95)',
+                            border: '1px solid',
+                            borderColor: darkMode ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)',
+                            borderRadius: 1,
+                            p: 1.5,
+                            backdropFilter: 'blur(10px)',
+                          }}
+                        >
+                          <Typography
+                            variant="body2"
+                            fontWeight="600"
+                            sx={{ color: darkMode ? 'white' : 'black' }}
+                          >
                             {label}
                           </Typography>
                           <Typography variant="body2" sx={{ color: chartColors.primary }}>
@@ -510,7 +578,15 @@ export default function Dashboard({ darkMode }) {
                           <Typography variant="body2" sx={{ color: chartColors.warning }}>
                             Minimum Stock: {data.minimum}
                           </Typography>
-                          <Typography variant="body2" sx={{ color: data.current <= data.minimum ? chartColors.error : chartColors.success }}>
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              color:
+                                data.current <= data.minimum
+                                  ? chartColors.error
+                                  : chartColors.success,
+                            }}
+                          >
                             Status: {data.current <= data.minimum ? 'Low Stock' : 'In Stock'}
                           </Typography>
                         </Box>
@@ -520,20 +596,20 @@ export default function Dashboard({ darkMode }) {
                   }}
                 />
                 <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
-                <Bar 
-                  dataKey="current" 
-                  fill={chartColors.primary} 
-                  name="Current Stock" 
+                <Bar
+                  dataKey="current"
+                  fill={chartColors.primary}
+                  name="Current Stock"
                   radius={[4, 4, 0, 0]}
-                  onClick={(data) => handleStockClick(data)}
+                  onClick={data => handleStockClick(data)}
                   style={{ cursor: 'pointer' }}
                 />
-                <Bar 
-                  dataKey="minimum" 
-                  fill={chartColors.warning} 
-                  name="Minimum Stock" 
+                <Bar
+                  dataKey="minimum"
+                  fill={chartColors.warning}
+                  name="Minimum Stock"
                   radius={[4, 4, 0, 0]}
-                  onClick={(data) => handleStockClick(data)}
+                  onClick={data => handleStockClick(data)}
                   style={{ cursor: 'pointer' }}
                 />
               </BarChart>
@@ -554,8 +630,8 @@ export default function Dashboard({ darkMode }) {
               border: darkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)',
               transition: 'all 0.3s ease',
               '&:hover': {
-                boxShadow: darkMode 
-                  ? '0 8px 32px rgba(16, 172, 132, 0.25), 0 0 0 1px rgba(16, 172, 132, 0.2), 0 0 15px rgba(16, 172, 132, 0.15)' 
+                boxShadow: darkMode
+                  ? '0 8px 32px rgba(16, 172, 132, 0.25), 0 0 0 1px rgba(16, 172, 132, 0.2), 0 0 15px rgba(16, 172, 132, 0.15)'
                   : '0 8px 32px rgba(16, 172, 132, 0.3), 0 0 0 1px rgba(16, 172, 132, 0.2), 0 0 20px rgba(16, 172, 132, 0.1)',
                 transform: 'translateY(-2px)',
               },
@@ -568,20 +644,22 @@ export default function Dashboard({ darkMode }) {
                   {t('dashboard.topPerforming')}
                 </Typography>
                 <Tooltip title="Your highest-value inventory items ranked by total inventory value. This helps you focus on your most profitable products and optimize stock levels.">
-                  <IconButton sx={{ 
-                    color: chartColors.success,
-                    '&:hover': { 
-                      color: chartColors.primary,
-                      transform: 'scale(1.1)',
-                    },
-                    transition: 'all 0.3s ease',
-                  }}>
+                  <IconButton
+                    sx={{
+                      color: chartColors.success,
+                      '&:hover': {
+                        color: chartColors.primary,
+                        transform: 'scale(1.1)',
+                      },
+                      transition: 'all 0.3s ease',
+                    }}
+                  >
                     <HelpCircle size={16} />
                   </IconButton>
                 </Tooltip>
               </Box>
             </Box>
-            
+
             <Grid container spacing={2}>
               {topProductsData.map((product, index) => (
                 <Grid xs={12} sm={6} md={4} lg={2} key={index}>
@@ -614,15 +692,22 @@ export default function Dashboard({ darkMode }) {
                         }}
                       />
                     </Box>
-                    
-                    <Typography variant="subtitle2" fontWeight="600" gutterBottom sx={{ 
-                      color: darkMode ? 'white' : 'black',
-                      fontSize: '0.85rem',
-                      lineHeight: 1.2,
-                    }}>
-                      {product.name.length > 25 ? `${product.name.substring(0, 25)}...` : product.name}
+
+                    <Typography
+                      variant="subtitle2"
+                      fontWeight="600"
+                      gutterBottom
+                      sx={{
+                        color: darkMode ? 'white' : 'black',
+                        fontSize: '0.85rem',
+                        lineHeight: 1.2,
+                      }}
+                    >
+                      {product.name.length > 25
+                        ? `${product.name.substring(0, 25)}...`
+                        : product.name}
                     </Typography>
-                    
+
                     <Box display="flex" justifyContent="space-between" alignItems="center" mt={1}>
                       <Typography variant="caption" color="textSecondary">
                         Stock: {product.stock}
@@ -631,7 +716,7 @@ export default function Dashboard({ darkMode }) {
                         {formatCurrency(product.price)}
                       </Typography>
                     </Box>
-                    
+
                     <LinearProgress
                       variant="determinate"
                       value={(product.value / Math.max(...topProductsData.map(p => p.value))) * 100}
@@ -656,8 +741,8 @@ export default function Dashboard({ darkMode }) {
 
       {/* Low Stock Alerts */}
       {(lowStockAlerts.length > 0 || stats.lowStockProducts > 0) && (
-        <Box 
-          sx={{ 
+        <Box
+          sx={{
             mb: 3,
             p: 3,
             borderRadius: 2,
@@ -673,21 +758,23 @@ export default function Dashboard({ darkMode }) {
                 {t('dashboard.lowStockAlerts')}
               </Typography>
               <Tooltip title="Critical inventory items that need immediate attention. These products are running low or out of stock and require urgent restocking to prevent lost sales.">
-                <IconButton sx={{ 
-                  color: chartColors.warning,
-                  '&:hover': { 
-                    color: chartColors.error,
-                    transform: 'scale(1.1)',
-                  },
-                  transition: 'all 0.3s ease',
-                }}>
+                <IconButton
+                  sx={{
+                    color: chartColors.warning,
+                    '&:hover': {
+                      color: chartColors.error,
+                      transform: 'scale(1.1)',
+                    },
+                    transition: 'all 0.3s ease',
+                  }}
+                >
                   <HelpCircle size={16} />
                 </IconButton>
               </Tooltip>
             </Box>
           </Box>
           <Grid container spacing={2}>
-            {lowStockAlerts.slice(0, 6).map((product) => (
+            {lowStockAlerts.slice(0, 6).map(product => (
               <Grid xs={12} sm={6} md={4} key={product.id}>
                 <Paper
                   elevation={2}
@@ -696,9 +783,10 @@ export default function Dashboard({ darkMode }) {
                     border: '1px solid',
                     borderColor: product.quantidade === 0 ? 'error.main' : 'warning.main',
                     borderRadius: 2,
-                    background: product.quantidade === 0 
-                      ? 'linear-gradient(135deg, rgba(244,67,54,0.1) 0%, rgba(244,67,54,0.05) 100%)'
-                      : 'linear-gradient(135deg, rgba(255,152,0,0.1) 0%, rgba(255,152,0,0.05) 100%)',
+                    background:
+                      product.quantidade === 0
+                        ? 'linear-gradient(135deg, rgba(244,67,54,0.1) 0%, rgba(244,67,54,0.05) 100%)'
+                        : 'linear-gradient(135deg, rgba(255,152,0,0.1) 0%, rgba(255,152,0,0.05) 100%)',
                     transition: 'all 0.3s ease',
                     cursor: 'pointer',
                     '&:hover': {
@@ -740,6 +828,5 @@ export default function Dashboard({ darkMode }) {
 }
 
 Dashboard.propTypes = {
-  darkMode: PropTypes.bool.isRequired
+  darkMode: PropTypes.bool.isRequired,
 };
-

@@ -25,7 +25,7 @@ export const LanguageProvider = ({ children }) => {
     }
   }, [i18n]);
 
-  const changeLanguage = (language) => {
+  const changeLanguage = language => {
     setCurrentLanguage(language);
     i18n.changeLanguage(language);
     localStorage.setItem('language', language);
@@ -36,13 +36,9 @@ export const LanguageProvider = ({ children }) => {
     changeLanguage,
   };
 
-  return (
-    <LanguageContext.Provider value={value}>
-      {children}
-    </LanguageContext.Provider>
-  );
+  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 };
 
 LanguageProvider.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };

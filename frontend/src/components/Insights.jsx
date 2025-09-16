@@ -53,19 +53,18 @@ export default function Insights() {
   const [activeTab, setActiveTab] = useState(0);
   const [mlLoading, setMlLoading] = useState(false);
 
-
   useEffect(() => {
     fetchData();
-    
+
     // Listen for product selection from Products component
-    const handleProductSelectedForML = (event) => {
+    const handleProductSelectedForML = event => {
       const { product } = event.detail;
       setSelectedProductForML(product);
       fetchMLInsights(product.id);
     };
-    
+
     window.addEventListener('productSelectedForML', handleProductSelectedForML);
-    
+
     // Cleanup event listener
     return () => {
       window.removeEventListener('productSelectedForML', handleProductSelectedForML);
@@ -76,21 +75,22 @@ export default function Insights() {
     try {
       setLoading(true);
       setError(null);
-      
+
       // Fetch overview insights
       const overviewResponse = await insightsAPI.getOverview();
       setOverview(overviewResponse.data);
-      
+
       // Temporarily skip low stock alerts due to backend issue
       setLowStockAlerts({
         low_stock_products: [],
         total_low_stock: 0,
         critical_count: 0,
-        high_count: 0
+        high_count: 0,
       });
-      
     } catch (error) {
-      setError(`Failed to load insights data: ${error.response?.data?.detail || error.message || 'Unknown error'}`);
+      setError(
+        `Failed to load insights data: ${error.response?.data?.detail || error.message || 'Unknown error'}`
+      );
     } finally {
       setLoading(false);
     }
@@ -104,19 +104,21 @@ export default function Insights() {
       fetchData(); // Refresh data
     } catch (error) {
       console.error('❌ Error generating sales data:', error);
-      alert(`Failed to generate sales data: ${error.response?.data?.detail || error.message || 'Unknown error'}`);
+      alert(
+        `Failed to generate sales data: ${error.response?.data?.detail || error.message || 'Unknown error'}`
+      );
     } finally {
       setGeneratingData(false);
     }
   };
 
-  const fetchMLInsights = async (productId) => {
+  const fetchMLInsights = async productId => {
     try {
       setMlLoading(true);
       const response = await insightsAPI.getMLProductInsights(productId);
       setMlInsights(prev => ({
         ...prev,
-        [productId]: response.data
+        [productId]: response.data,
       }));
     } catch {
       alert('Failed to load ML insights. Please try again.');
@@ -124,8 +126,6 @@ export default function Insights() {
       setMlLoading(false);
     }
   };
-
-
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -142,7 +142,7 @@ export default function Insights() {
             <Brain size={20} style={{ marginRight: 8 }} />
             <Typography variant="h6">🤖 Machine Learning Insights</Typography>
           </Box>
-          
+
           {insights.demand_prediction?.success && (
             <Accordion>
               <AccordionSummary expandIcon={<ExpandMore />}>
@@ -155,29 +155,33 @@ export default function Insights() {
                 <Grid container spacing={2}>
                   <Grid item xs={6} md={3}>
                     <Typography variant="body2">
-                      <strong>Avg Daily Demand:</strong> {insights.demand_prediction.avg_daily_demand?.toFixed(2)} units
+                      <strong>Avg Daily Demand:</strong>{' '}
+                      {insights.demand_prediction.avg_daily_demand?.toFixed(2)} units
                     </Typography>
                   </Grid>
                   <Grid item xs={6} md={3}>
                     <Typography variant="body2">
-                      <strong>Total Predicted:</strong> {insights.demand_prediction.total_predicted_demand?.toFixed(0)} units
+                      <strong>Total Predicted:</strong>{' '}
+                      {insights.demand_prediction.total_predicted_demand?.toFixed(0)} units
                     </Typography>
                   </Grid>
                   <Grid item xs={6} md={3}>
                     <Typography variant="body2">
-                      <strong>Model Accuracy:</strong> {(insights.demand_prediction.model_accuracy * 100).toFixed(1)}%
+                      <strong>Model Accuracy:</strong>{' '}
+                      {(insights.demand_prediction.model_accuracy * 100).toFixed(1)}%
                     </Typography>
                   </Grid>
                   <Grid item xs={6} md={3}>
                     <Typography variant="body2">
-                      <strong>Data Points:</strong> {insights.demand_prediction.historical_data_points}
+                      <strong>Data Points:</strong>{' '}
+                      {insights.demand_prediction.historical_data_points}
                     </Typography>
                   </Grid>
                 </Grid>
               </AccordionDetails>
             </Accordion>
           )}
-          
+
           {insights.price_optimization?.success && (
             <Accordion>
               <AccordionSummary expandIcon={<ExpandMore />}>
@@ -207,14 +211,15 @@ export default function Insights() {
                   )}
                   <Grid item xs={6} md={3}>
                     <Typography variant="body2">
-                      <strong>Model Accuracy:</strong> {(insights.price_optimization.model_accuracy * 100).toFixed(1)}%
+                      <strong>Model Accuracy:</strong>{' '}
+                      {(insights.price_optimization.model_accuracy * 100).toFixed(1)}%
                     </Typography>
                   </Grid>
                 </Grid>
               </AccordionDetails>
             </Accordion>
           )}
-          
+
           {insights.stock_optimization?.success && (
             <Accordion>
               <AccordionSummary expandIcon={<ExpandMore />}>
@@ -237,7 +242,8 @@ export default function Insights() {
                   </Grid>
                   <Grid item xs={6} md={3}>
                     <Typography variant="body2">
-                      <strong>Stock Coverage:</strong> {insights.stock_optimization.stock_cover_days} days
+                      <strong>Stock Coverage:</strong>{' '}
+                      {insights.stock_optimization.stock_cover_days} days
                     </Typography>
                   </Grid>
                   <Grid item xs={6} md={3}>
@@ -249,37 +255,46 @@ export default function Insights() {
               </AccordionDetails>
             </Accordion>
           )}
-          
-          {insights.anomaly_detection?.success && insights.anomaly_detection.total_anomalies > 0 && (
-            <Accordion>
-              <AccordionSummary expandIcon={<ExpandMore />}>
-                <Box display="flex" alignItems="center">
-                  <Warning size={16} style={{ marginRight: 8 }} />
-                  <Typography variant="subtitle1">⚠️ Anomaly Detection</Typography>
-                </Box>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography variant="body2">
-                  <strong>Anomalies Detected:</strong> {insights.anomaly_detection.total_anomalies}
-                </Typography>
-                <Typography variant="body2">
-                  <strong>Data Points:</strong> {insights.anomaly_detection.data_points}
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-          )}
-          
+
+          {insights.anomaly_detection?.success &&
+            insights.anomaly_detection.total_anomalies > 0 && (
+              <Accordion>
+                <AccordionSummary expandIcon={<ExpandMore />}>
+                  <Box display="flex" alignItems="center">
+                    <Warning size={16} style={{ marginRight: 8 }} />
+                    <Typography variant="subtitle1">⚠️ Anomaly Detection</Typography>
+                  </Box>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography variant="body2">
+                    <strong>Anomalies Detected:</strong>{' '}
+                    {insights.anomaly_detection.total_anomalies}
+                  </Typography>
+                  <Typography variant="body2">
+                    <strong>Data Points:</strong> {insights.anomaly_detection.data_points}
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+            )}
+
           {insights.summary?.recommended_actions?.map((action, index) => (
-            <Alert key={index} severity={action.priority === 'high' ? 'warning' : 'info'} sx={{ mb: 1 }}>
+            <Alert
+              key={index}
+              severity={action.priority === 'high' ? 'warning' : 'info'}
+              sx={{ mb: 1 }}
+            >
               <Typography variant="body2">{action.message}</Typography>
-              <Typography variant="caption" display="block">{action.action}</Typography>
+              <Typography variant="caption" display="block">
+                {action.action}
+              </Typography>
             </Alert>
           ))}
-          
+
           {!insights.summary?.has_sufficient_data && (
             <Alert severity="info">
               <Typography variant="body2">
-                Add more sales data to get better ML insights. The system needs at least 14 days of sales data.
+                Add more sales data to get better ML insights. The system needs at least 14 days of
+                sales data.
               </Typography>
             </Alert>
           )}
@@ -289,7 +304,7 @@ export default function Insights() {
   };
 
   MLInsightsCard.propTypes = {
-    insights: PropTypes.object.isRequired
+    insights: PropTypes.object.isRequired,
   };
 
   if (loading) {
@@ -314,12 +329,7 @@ export default function Insights() {
         <Typography variant="h4" component="h1">
           📊 Insights & Analytics
         </Typography>
-        <Button
-          variant="outlined"
-          startIcon={<RefreshCw />}
-          onClick={fetchData}
-          disabled={loading}
-        >
+        <Button variant="outlined" startIcon={<RefreshCw />} onClick={fetchData} disabled={loading}>
           Refresh
         </Button>
       </Box>
@@ -331,7 +341,8 @@ export default function Insights() {
             🚀 System Setup
           </Typography>
           <Typography variant="body2" mb={2}>
-            Generate initial sales data to test ML features. This will only create data if no sales exist.
+            Generate initial sales data to test ML features. This will only create data if no sales
+            exist.
           </Typography>
           <Button
             variant="contained"
@@ -370,7 +381,8 @@ export default function Insights() {
                   </Grid>
                   <Grid item xs={6} md={3}>
                     <Typography variant="body2">
-                      <strong>Total Value:</strong> R$ {overview.inventory_summary.total_stock_value?.toFixed(2)}
+                      <strong>Total Value:</strong> R${' '}
+                      {overview.inventory_summary.total_stock_value?.toFixed(2)}
                     </Typography>
                   </Grid>
                   <Grid item xs={6} md={3}>
@@ -386,9 +398,9 @@ export default function Insights() {
                 </Grid>
                 <Box mt={2}>
                   <Typography variant="body2">Stock Health</Typography>
-                  <LinearProgress 
-                    variant="determinate" 
-                    value={overview.inventory_summary.stock_health_percentage} 
+                  <LinearProgress
+                    variant="determinate"
+                    value={overview.inventory_summary.stock_health_percentage}
                     sx={{ height: 8, borderRadius: 4 }}
                   />
                   <Typography variant="caption">
@@ -413,12 +425,14 @@ export default function Insights() {
                   </Grid>
                   <Grid item xs={6} md={4}>
                     <Typography variant="body2">
-                      <strong>Total Value:</strong> R$ {overview.sales_analysis.total_sales_value?.toFixed(2)}
+                      <strong>Total Value:</strong> R${' '}
+                      {overview.sales_analysis.total_sales_value?.toFixed(2)}
                     </Typography>
                   </Grid>
                   <Grid item xs={6} md={4}>
                     <Typography variant="body2">
-                      <strong>Avg Sale:</strong> R$ {overview.sales_analysis.average_sale_value?.toFixed(2)}
+                      <strong>Avg Sale:</strong> R${' '}
+                      {overview.sales_analysis.average_sale_value?.toFixed(2)}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -433,9 +447,15 @@ export default function Insights() {
                   💡 Recommendations
                 </Typography>
                 {overview.recommendations?.map((rec, index) => (
-                  <Alert key={index} severity={rec.priority === 'high' ? 'warning' : 'info'} sx={{ mb: 1 }}>
+                  <Alert
+                    key={index}
+                    severity={rec.priority === 'high' ? 'warning' : 'info'}
+                    sx={{ mb: 1 }}
+                  >
                     <Typography variant="body2">{rec.message}</Typography>
-                    <Typography variant="caption" display="block">{rec.action}</Typography>
+                    <Typography variant="caption" display="block">
+                      {rec.action}
+                    </Typography>
                   </Alert>
                 ))}
               </CardContent>
@@ -450,7 +470,7 @@ export default function Insights() {
           <Typography variant="h6" mb={2}>
             🤖 Machine Learning Insights
           </Typography>
-          
+
           {selectedProductForML ? (
             <Box>
               <Card sx={{ mb: 2 }}>
@@ -459,25 +479,25 @@ export default function Insights() {
                     📦 {selectedProductForML.nome} - {selectedProductForML.codigo}
                   </Typography>
                   <Typography variant="body2" color="textSecondary">
-                    Category: {selectedProductForML.categoria} | Stock: {selectedProductForML.quantidade} | Price: R$ {selectedProductForML.preco}
+                    Category: {selectedProductForML.categoria} | Stock:{' '}
+                    {selectedProductForML.quantidade} | Price: R$ {selectedProductForML.preco}
                   </Typography>
                 </CardContent>
               </Card>
-              
+
               {mlLoading ? (
                 <Box display="flex" justifyContent="center" p={3}>
                   <CircularProgress />
                 </Box>
               ) : (
-                <MLInsightsCard 
-                  insights={mlInsights[selectedProductForML.id]} 
-                />
+                <MLInsightsCard insights={mlInsights[selectedProductForML.id]} />
               )}
             </Box>
           ) : (
             <Alert severity="info">
               <Typography variant="body2">
-                Select a product from the Products tab to view ML insights. The system will analyze real sales data to provide predictions and recommendations.
+                Select a product from the Products tab to view ML insights. The system will analyze
+                real sales data to provide predictions and recommendations.
               </Typography>
             </Alert>
           )}
@@ -490,7 +510,7 @@ export default function Insights() {
           <Typography variant="h6" mb={2}>
             ⚠️ Low Stock Alerts
           </Typography>
-          
+
           <Grid container spacing={2} mb={2}>
             <Grid item xs={4} md={4}>
               <Card>
@@ -538,23 +558,29 @@ export default function Insights() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {lowStockAlerts.low_stock_products?.map((item) => (
+                {lowStockAlerts.low_stock_products?.map(item => (
                   <TableRow key={item.product.id}>
                     <TableCell>{item.product.nome}</TableCell>
                     <TableCell>{item.product.codigo}</TableCell>
                     <TableCell>{item.product.quantidade}</TableCell>
                     <TableCell>{item.product.estoque_minimo}</TableCell>
                     <TableCell>
-                      <Chip 
-                        label={item.analysis.urgency} 
-                        color={item.analysis.urgency === 'critical' ? 'error' : 
-                               item.analysis.urgency === 'high' ? 'warning' : 'info'}
+                      <Chip
+                        label={item.analysis.urgency}
+                        color={
+                          item.analysis.urgency === 'critical'
+                            ? 'error'
+                            : item.analysis.urgency === 'high'
+                              ? 'warning'
+                              : 'info'
+                        }
                         size="small"
                       />
                     </TableCell>
                     <TableCell>
-                      {item.analysis.days_until_stockout === Infinity ? 
-                        '∞' : item.analysis.days_until_stockout?.toFixed(1)}
+                      {item.analysis.days_until_stockout === Infinity
+                        ? '∞'
+                        : item.analysis.days_until_stockout?.toFixed(1)}
                     </TableCell>
                     <TableCell>{item.analysis.recommended_restock}</TableCell>
                   </TableRow>
@@ -566,15 +592,13 @@ export default function Insights() {
       )}
 
       {/* Product Details Dialog */}
-      <Dialog 
-        open={!!selectedProduct} 
+      <Dialog
+        open={!!selectedProduct}
         onClose={() => setSelectedProduct(null)}
         maxWidth="md"
         fullWidth
       >
-        <DialogTitle>
-          📦 Product Insights: {selectedProduct?.nome}
-        </DialogTitle>
+        <DialogTitle>📦 Product Insights: {selectedProduct?.nome}</DialogTitle>
         <DialogContent>
           {productInsights && (
             <Grid container spacing={2}>
@@ -615,17 +639,20 @@ export default function Insights() {
                     <Grid container spacing={2}>
                       <Grid item xs={6} md={3}>
                         <Typography variant="body2">
-                          <strong>Total Sold:</strong> {productInsights.sales_analysis.total_sold_30d}
+                          <strong>Total Sold:</strong>{' '}
+                          {productInsights.sales_analysis.total_sold_30d}
                         </Typography>
                       </Grid>
                       <Grid item xs={6} md={3}>
                         <Typography variant="body2">
-                          <strong>Sales Value:</strong> R$ {productInsights.sales_analysis.total_sales_value_30d?.toFixed(2)}
+                          <strong>Sales Value:</strong> R${' '}
+                          {productInsights.sales_analysis.total_sales_value_30d?.toFixed(2)}
                         </Typography>
                       </Grid>
                       <Grid item xs={6} md={3}>
                         <Typography variant="body2">
-                          <strong>Avg Sale Qty:</strong> {productInsights.sales_analysis.average_sale_quantity?.toFixed(2)}
+                          <strong>Avg Sale Qty:</strong>{' '}
+                          {productInsights.sales_analysis.average_sale_quantity?.toFixed(2)}
                         </Typography>
                       </Grid>
                       <Grid item xs={6} md={3}>
@@ -646,11 +673,13 @@ export default function Insights() {
                       <strong>Analysis:</strong> {productInsights.price_analysis.analysis}
                     </Typography>
                     <Typography variant="body2">
-                      <strong>Recommendation:</strong> {productInsights.price_analysis.recommendation}
+                      <strong>Recommendation:</strong>{' '}
+                      {productInsights.price_analysis.recommendation}
                     </Typography>
                     {productInsights.price_analysis.avg_sale_price && (
                       <Typography variant="body2">
-                        <strong>Avg Sale Price:</strong> R$ {productInsights.price_analysis.avg_sale_price?.toFixed(2)}
+                        <strong>Avg Sale Price:</strong> R${' '}
+                        {productInsights.price_analysis.avg_sale_price?.toFixed(2)}
                       </Typography>
                     )}
                   </CardContent>
@@ -662,10 +691,21 @@ export default function Insights() {
                   <CardContent>
                     <Typography variant="h6">Recommendations</Typography>
                     {productInsights.recommendations?.map((rec, index) => (
-                      <Alert key={index} severity={rec.priority === 'critical' ? 'error' : 
-                                                   rec.priority === 'high' ? 'warning' : 'info'} sx={{ mb: 1 }}>
+                      <Alert
+                        key={index}
+                        severity={
+                          rec.priority === 'critical'
+                            ? 'error'
+                            : rec.priority === 'high'
+                              ? 'warning'
+                              : 'info'
+                        }
+                        sx={{ mb: 1 }}
+                      >
                         <Typography variant="body2">{rec.message}</Typography>
-                        <Typography variant="caption" display="block">{rec.action}</Typography>
+                        <Typography variant="caption" display="block">
+                          {rec.action}
+                        </Typography>
                       </Alert>
                     ))}
                   </CardContent>

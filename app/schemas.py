@@ -1,14 +1,18 @@
-from pydantic import BaseModel, PositiveInt, NonNegativeInt, NonNegativeFloat, Field, EmailStr
-from typing import Optional, List
 from datetime import datetime, timedelta
 from enum import Enum
+from typing import List, Optional
+
+from pydantic import BaseModel, EmailStr, Field, NonNegativeFloat, NonNegativeInt, PositiveInt
+
 
 # Authentication Schemas
 class UserBase(BaseModel):
     email: EmailStr
 
+
 class UserCreate(UserBase):
     password: str
+
 
 class User(UserBase):
     id: int
@@ -17,17 +21,21 @@ class User(UserBase):
     class Config:
         from_attributes = True
 
+
 class Token(BaseModel):
     access_token: str
     token_type: str
 
+
 class TokenData(BaseModel):
     email: Optional[str] = None
+
 
 class MovementType(str, Enum):
     IN = "IN"
     OUT = "OUT"
     ADJUST = "ADJUST"
+
 
 class PurchaseOrderStatus(str, Enum):
     DRAFT = "DRAFT"
@@ -35,11 +43,11 @@ class PurchaseOrderStatus(str, Enum):
     APPROVED = "APPROVED"
     CANCELLED = "CANCELLED"
 
+
 class SaleStatus(str, Enum):
     COMPLETED = "COMPLETED"
     CANCELLED = "CANCELLED"
     REFUNDED = "REFUNDED"
-
 
 
 # Supplier
@@ -50,8 +58,10 @@ class SupplierBase(BaseModel):
     cnpj: Optional[str] = None
     observacoes: Optional[str] = None
 
+
 class SupplierCreate(SupplierBase):
     pass
+
 
 class SupplierUpdate(BaseModel):
     nome: Optional[str] = Field(None, min_length=1)
@@ -60,11 +70,14 @@ class SupplierUpdate(BaseModel):
     cnpj: Optional[str] = None
     observacoes: Optional[str] = None
 
+
 class SupplierOut(SupplierBase):
     id: int
     criado_em: datetime
+
     class Config:
         from_attributes = True
+
 
 class Supplier(SupplierBase):
     id: int
@@ -73,6 +86,7 @@ class Supplier(SupplierBase):
 
     class Config:
         from_attributes = True
+
 
 # Product
 class ProductBase(BaseModel):
@@ -87,8 +101,10 @@ class ProductBase(BaseModel):
     lead_time_days: NonNegativeInt = 7
     safety_stock: NonNegativeInt = 2
 
+
 class ProductCreate(ProductBase):
     pass
+
 
 class ProductUpdate(BaseModel):
     nome: Optional[str] = Field(None, min_length=1)
@@ -100,6 +116,7 @@ class ProductUpdate(BaseModel):
     estoque_minimo: Optional[NonNegativeInt] = None
     lead_time_days: Optional[NonNegativeInt] = None
     safety_stock: Optional[NonNegativeInt] = None
+
 
 class ProductOut(BaseModel):
     id: int
@@ -117,8 +134,10 @@ class ProductOut(BaseModel):
     criado_em: datetime
     atualizado_em: datetime
     em_estoque_baixo: bool
+
     class Config:
         from_attributes = True
+
 
 class Product(ProductBase):
     id: int
@@ -130,6 +149,7 @@ class Product(ProductBase):
     class Config:
         from_attributes = True
 
+
 # Sales
 class SaleItemBase(BaseModel):
     produto_id: int
@@ -137,8 +157,10 @@ class SaleItemBase(BaseModel):
     preco_unitario: float
     preco_total: float
 
+
 class SaleItemCreate(SaleItemBase):
     pass
+
 
 class SaleItemOut(BaseModel):
     id: int
@@ -149,8 +171,10 @@ class SaleItemOut(BaseModel):
     criado_em: datetime
     produto_nome: str
     produto_codigo: str
+
     class Config:
         from_attributes = True
+
 
 class SaleItem(SaleItemBase):
     id: int
@@ -160,12 +184,15 @@ class SaleItem(SaleItemBase):
     class Config:
         from_attributes = True
 
+
 class SaleBase(BaseModel):
     total_value: float = 0.0
     status: SaleStatus = SaleStatus.COMPLETED
 
+
 class SaleCreate(SaleBase):
     items: List[SaleItemCreate]
+
 
 class SaleOut(BaseModel):
     id: int
@@ -173,8 +200,10 @@ class SaleOut(BaseModel):
     status: SaleStatus
     criado_em: datetime
     items: List[SaleItemOut]
+
     class Config:
         from_attributes = True
+
 
 class Sale(SaleBase):
     id: int
@@ -186,15 +215,16 @@ class Sale(SaleBase):
         from_attributes = True
 
 
-
 # Stock
 class StockChangeIn(BaseModel):
     quantidade: PositiveInt
     motivo: Optional[str] = None
 
+
 class StockSetIn(BaseModel):
     quantidade: NonNegativeInt
     motivo: Optional[str] = None
+
 
 class StockMovementBase(BaseModel):
     tipo: MovementType
@@ -202,8 +232,10 @@ class StockMovementBase(BaseModel):
     quantidade_resultante: int
     motivo: Optional[str] = None
 
+
 class StockMovementCreate(StockMovementBase):
     pass
+
 
 class StockMovement(StockMovementBase):
     id: int
@@ -213,14 +245,17 @@ class StockMovement(StockMovementBase):
     class Config:
         from_attributes = True
 
+
 # Purchase Orders
 class PurchaseOrderItemBase(BaseModel):
     produto_id: int
     quantidade_solicitada: int
     preco_unitario: float
 
+
 class PurchaseOrderItemCreate(PurchaseOrderItemBase):
     pass
+
 
 class PurchaseOrderItemOut(BaseModel):
     id: int
@@ -231,8 +266,10 @@ class PurchaseOrderItemOut(BaseModel):
     criado_em: datetime
     produto_nome: str
     produto_codigo: str
+
     class Config:
         from_attributes = True
+
 
 class PurchaseOrderItem(PurchaseOrderItemBase):
     id: int
@@ -242,18 +279,22 @@ class PurchaseOrderItem(PurchaseOrderItemBase):
     class Config:
         from_attributes = True
 
+
 class PurchaseOrderBase(BaseModel):
     fornecedor_id: int
     status: PurchaseOrderStatus = PurchaseOrderStatus.DRAFT
     total_value: float = 0.0
     observacoes: Optional[str] = None
 
+
 class PurchaseOrderCreate(PurchaseOrderBase):
     items: List[PurchaseOrderItemCreate]
+
 
 class PurchaseOrderUpdate(BaseModel):
     status: Optional[PurchaseOrderStatus] = None
     observacoes: Optional[str] = None
+
 
 class PurchaseOrderOut(BaseModel):
     id: int
@@ -265,8 +306,10 @@ class PurchaseOrderOut(BaseModel):
     aprovado_em: Optional[datetime]
     fornecedor_nome: str
     items: List[PurchaseOrderItemOut]
+
     class Config:
         from_attributes = True
+
 
 class PurchaseOrder(PurchaseOrderBase):
     id: int
@@ -276,4 +319,3 @@ class PurchaseOrder(PurchaseOrderBase):
 
     class Config:
         from_attributes = True
-

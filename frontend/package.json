@@ -8,7 +8,14 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .js,.jsx",
-    "lint:fix": "eslint . --ext .js,.jsx --fix"
+    "lint:fix": "eslint . --ext .js,.jsx --fix",
+    "format": "prettier --write \"src/**/*.{js,jsx,json,css,md}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,json,css,md}\"",
+    "lint:all": "npm run lint && npm run format:check",
+    "validate": "cd .. && python scripts/validate_code_quality.py",
+    "validate:python": "cd .. && python -m black --check app/ scripts/ --line-length 100 && python -m isort --check-only app/ scripts/ --profile black",
+    "validate:js": "npm run format:check && npm run lint",
+    "fix:all": "cd .. && python -m black app/ scripts/ --line-length 100 && python -m isort app/ scripts/ --profile black && cd frontend && npm run format && npm run lint:fix"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -38,6 +45,7 @@
     "eslint": "^9.34.0",
     "eslint-plugin-react": "^7.37.5",
     "globals": "^16.3.0",
+    "prettier": "^3.6.2",
     "vite": "^5.4.19"
   }
 }

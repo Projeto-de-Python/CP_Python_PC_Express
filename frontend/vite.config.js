@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     port: 5173,
     host: 'localhost',
-    open: true,
+    open: false, // Desabilitado - o script PowerShell vai abrir
   },
   // Configuração para integração com ESLint
   esbuild: {
