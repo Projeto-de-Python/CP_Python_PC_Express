@@ -8,9 +8,6 @@ jobs:
   backend:
     name: Backend (Python)
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: PCexpress
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,7 +17,7 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'pip'
-          cache-dependency-path: PCexpress/requirement.txt
+          cache-dependency-path: requirement.txt
 
       - name: Install dependencies
         run: |
@@ -44,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: PCexpress/frontend
+        working-directory: frontend
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -54,7 +51,7 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
-          cache-dependency-path: PCexpress/frontend/package-lock.json
+          cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
