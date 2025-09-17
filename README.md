@@ -5,11 +5,13 @@ Um sistema completo de gerenciamento de inventário desenvolvido com FastAPI (ba
 ## ⚡ **Início Rápido**
 
 ### **Um Comando Só:**
+
 ```powershell
 .\start.ps1
 ```
 
 **O script faz tudo automaticamente:**
+
 - ✅ Verifica dependências (Python, Node.js)
 - ✅ Instala se necessário (com instruções)
 - ✅ Configura ambiente (venv, dependências, banco)
@@ -20,26 +22,31 @@ Um sistema completo de gerenciamento de inventário desenvolvido com FastAPI (ba
 - ✅ **Otimizações de performance** integradas
 
 ### **Credenciais:**
+
 - **Email:** `admin@pc-express.com`
 - **Senha:** `admin123`
 
 ### **URLs:**
+
 - **Sistema:** http://localhost:5173
 - **API:** http://localhost:8000
 - **Documentação:** http://localhost:8000/docs
 
 ### **Para Parar:**
+
 ```cmd
 .\stop.bat
 ```
 
 **O script de parada é inteligente:**
+
 - ✅ Para apenas processos relacionados ao PC-Express
 - ✅ Preserva outros aplicativos Python/Node.js do sistema
 - ✅ Mostra logs detalhados dos processos finalizados
 - ✅ Verifica múltiplas formas de identificação (porta, comando, diretório)
 
 ### **Opções Avançadas:**
+
 ```powershell
 # Com debug (mostra logs detalhados)
 .\start.ps1 -Debug
@@ -54,39 +61,46 @@ Um sistema completo de gerenciamento de inventário desenvolvido com FastAPI (ba
 ## 🎯 **Funcionalidades Principais**
 
 ### **📊 Dashboard Interativo**
+
 - Métricas em tempo real (produtos, fornecedores, alertas)
 - Gráficos de performance e categorias
 - Alertas de estoque baixo
 - Produtos em destaque por valor
 
 ### **📦 Gerenciamento de Produtos**
+
 - CRUD completo com categorização
 - Controle de estoque com níveis mínimos
 - Códigos únicos e descrições detalhadas
 - Integração com fornecedores
 
 ### **🏢 Sistema de Fornecedores**
+
 - Cadastro completo de parceiros comerciais
 - Informações de contato e CNPJ
 - Histórico de relacionamento
 
 ### **📋 Pedidos de Compra**
+
 - Criação e acompanhamento de pedidos
 - Status de aprovação e cancelamento
 - Integração com fornecedores e produtos
 
 ### **⚠️ Alertas Inteligentes**
+
 - Monitoramento automático de estoque baixo
 - Notificações em tempo real
 - Priorização por criticidade
 
 ### **🤖 Machine Learning Avançado**
+
 - **Previsão de Demanda:** Algoritmos de regressão linear com features temporais
 - **Otimização de Preços:** Análise de elasticidade de preço
 - **Detecção de Anomalias:** Isolation Forest para identificar padrões anômalos
 - **Otimização de Estoque:** Cálculo de ponto de reposição e cobertura
 
 ### **🔄 Reabastecimento Automático**
+
 - Sugestões inteligentes baseadas em ML
 - Cálculo de demanda prevista
 - Otimização de níveis de estoque
@@ -102,6 +116,7 @@ Um sistema completo de gerenciamento de inventário desenvolvido com FastAPI (ba
 ## 🛠️ **Tecnologias**
 
 ### **Backend**
+
 - **Framework:** FastAPI
 - **ORM:** SQLAlchemy
 - **Banco de Dados:** SQLite
@@ -110,6 +125,7 @@ Um sistema completo de gerenciamento de inventário desenvolvido com FastAPI (ba
 - **Machine Learning:** Scikit-learn, Pandas, NumPy
 
 ### **Frontend**
+
 - **Framework:** React 18
 - **UI Library:** Material-UI (MUI)
 - **Build Tool:** Vite
@@ -128,17 +144,20 @@ Um sistema completo de gerenciamento de inventário desenvolvido com FastAPI (ba
 ## 🚀 **Instalação e Execução**
 
 ### **1. Clone o repositório**
+
 ```bash
 git clone <url-do-repositorio>
-cd PCexpress
+cd CP_Python_PC_Express
 ```
 
 ### **2. Inicialização Automática (Recomendado)**
+
 ```powershell
 .\start.ps1
 ```
 
 **O script fará automaticamente:**
+
 - ✅ Verificação de pré-requisitos
 - ✅ Criação do ambiente virtual Python
 - ✅ Instalação de dependências
@@ -147,6 +166,7 @@ cd PCexpress
 - ✅ Abertura do navegador
 
 ### **3. Parâmetros Opcionais**
+
 ```powershell
 .\start.ps1 -SkipBrowser    # Não abre navegador
 .\start.ps1 -Force          # Força reinicialização
@@ -157,6 +177,7 @@ cd PCexpress
 Se preferir configurar manualmente:
 
 #### **Backend**
+
 ```bash
 # Criar ambiente virtual
 python -m venv .venv
@@ -173,6 +194,7 @@ python scripts/setup_db.py
 ```
 
 #### **Frontend**
+
 ```bash
 cd frontend
 npm install
@@ -182,6 +204,7 @@ cd ..
 ## 🔧 **Execução Manual**
 
 ### **Terminal 1 - Backend**
+
 ```bash
 # Ative o ambiente virtual primeiro
 .venv\Scripts\activate  # Windows
@@ -192,6 +215,7 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 ### **Terminal 2 - Frontend**
+
 ```bash
 cd frontend
 npm run dev
@@ -202,11 +226,13 @@ npm run dev
 ### **Como Usar ML:**
 
 1. **Geração de Dados Iniciais** (Opcional)
+
    - Acesse a aba **Insights**
    - Clique em **"Generate Initial Data (30 days)"**
    - Isso só cria dados se não existirem vendas no sistema
 
 2. **Análise ML de Produtos**
+
    - Vá para a aba **Products**
    - Clique no ícone **🧠 (Brain)** ao lado de qualquer produto
    - O sistema automaticamente muda para **Insights > 🤖 ML Insights**
@@ -218,6 +244,7 @@ npm run dev
    - **📦 Otimização de Estoque:** Recomendações de estoque ótimo
 
 ### **Requisitos de Dados:**
+
 - **Mínimo para Previsão:** 14 dias de dados de vendas
 - **Mínimo para Preços:** 2 variações de preço diferentes
 - **Mínimo para Anomalias:** 7 dias de dados de vendas
@@ -225,20 +252,24 @@ npm run dev
 ## 🚨 **Solução de Problemas**
 
 ### **"Execution Policy" no PowerShell:**
+
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
 ### **Python não encontrado:**
+
 1. Baixe Python 3.8+ de: https://www.python.org/downloads/
 2. **IMPORTANTE:** Marque "Add Python to PATH" durante a instalação
 3. Execute o script novamente
 
 ### **Node.js não encontrado:**
+
 1. Baixe Node.js 16+ de: https://nodejs.org/
 2. Execute o script novamente
 
 ### **Porta já em uso:**
+
 ```cmd
 .\stop.bat
 # Ou
@@ -246,6 +277,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
 ### **Dependências não instalam:**
+
 ```cmd
 # Delete as pastas e execute novamente
 rmdir /s /q .venv
@@ -256,7 +288,7 @@ rmdir /s /q frontend\node_modules
 ## 📁 **Estrutura do Projeto**
 
 ```
-PCexpress/
+CP_Python_PC_Express/
 ├── app/                    # Backend FastAPI
 │   ├── routers/           # Rotas da API
 │   ├── services/          # ML e simulação
@@ -306,6 +338,7 @@ O sistema utiliza SQLite com as seguintes tabelas:
 ## 🔧 **Melhorias de Estabilidade (v2.0)**
 
 ### **Problemas Resolvidos:**
+
 - ✅ **Navegador duplo** - Corrigido problema de abertura dupla
 - ✅ **Crashes inesperados** - Auto-reinicialização até 5 tentativas
 - ✅ **Sobrecarga de memória** - Otimizações de Node.js e Python
@@ -315,6 +348,7 @@ O sistema utiliza SQLite com as seguintes tabelas:
 - ✅ **Script de parada** - Parada específica apenas dos processos do PC-Express
 
 ### **Otimizações Implementadas:**
+
 - 🚀 **Pool de conexões SQLite** com timeouts e reciclagem
 - 🚀 **Limite de memória Node.js** (2GB) para evitar crashes
 - 🚀 **Configurações uvicorn otimizadas** com limites de concorrência
@@ -325,6 +359,7 @@ O sistema utiliza SQLite com as seguintes tabelas:
 - 🚀 **Parada inteligente** - Preserva outros processos Python/Node.js do sistema
 
 ### **Como Usar as Melhorias:**
+
 ```powershell
 # Uso normal (com todas as melhorias)
 .\start.ps1
@@ -339,10 +374,13 @@ O sistema utiliza SQLite com as seguintes tabelas:
 ## 🚀 **Deploy**
 
 ### **Desenvolvimento**
+
 O projeto está configurado para desenvolvimento local com hot-reload.
 
 ### **Produção**
+
 Para deploy em produção, considere:
+
 - Usar um banco de dados mais robusto (PostgreSQL, MySQL)
 - Configurar um servidor web (Nginx, Apache)
 - Implementar HTTPS
@@ -364,6 +402,7 @@ Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalh
 ## 👥 **Equipe**
 
 **Integrantes Big 5:**
+
 1. Lucca Phelipe Masini RM 564121
 2. Luiz Henrique Poss RM562177
 3. Luis Fernando de Oliveira Salgado RM 561401

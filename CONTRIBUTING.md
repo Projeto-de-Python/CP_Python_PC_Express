@@ -6,10 +6,10 @@ Obrigado por contribuir! Siga as diretrizes abaixo para manter o repositório or
 
 - Backend (Python 3.11+)
   - `python -m venv .venv`
-  - Ative o ambiente virtual e instale: `pip install -r PCexpress/requirement.txt`
-  - Desenvolvimento: `uvicorn PCexpress.app.main:app --reload`
+  - Ative o ambiente virtual e instale: `pip install -r requirement.txt`
+  - Desenvolvimento: `uvicorn app.main:app --reload`
 - Frontend (Node 18 LTS)
-  - `cd PCexpress/frontend`
+  - `cd frontend`
   - `npm ci`
   - Desenvolvimento: `npm run dev`
   - Build: `npm run build`
@@ -21,6 +21,7 @@ Observação: o frontend deve ser servido via um servidor HTTP (ex.: Vite dev se
 Formato: `tipo(escopo): descrição breve`
 
 Tipos comuns:
+
 - `feat`: nova funcionalidade
 - `fix`: correção de bug
 - `docs`: documentação
@@ -33,6 +34,7 @@ Tipos comuns:
 - `chore`: tarefas diversas
 
 Exemplos:
+
 - `feat(auth): adicionar fluxo de registro`
 - `fix(products): corrigir paginação no endpoint`
 
