@@ -681,7 +681,7 @@ export default function Dashboard({ darkMode }) {
             </Box>
 
             <Grid container spacing={2}>
-              {topProductsData.map((product) => (
+              {topProductsData.map((product, index) => (
                 <Grid size={{ xs: 12, sm: 6, md: 4, lg: 2 }} key={`product-${product.name}`}>
                   <Card
                     sx={{
