@@ -1,13 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { Box, CircularProgress, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
+import React from 'react';
+
 import { chartColors } from '../../utils/chartUtils';
 
 export const LoadingSpinner = ({
   message = 'Loading...',
   size = 60,
   minHeight = '400px',
-  showMessage = true,
+  showMessage = true
 }) => {
   return (
     <Box
@@ -23,8 +24,8 @@ export const LoadingSpinner = ({
         sx={{
           color: chartColors.primary,
           '& .MuiCircularProgress-circle': {
-            strokeLinecap: 'round',
-          },
+            strokeLinecap: 'round'
+          }
         }}
       />
       {showMessage && (
@@ -34,7 +35,7 @@ export const LoadingSpinner = ({
           sx={{
             mt: 2,
             textAlign: 'center',
-            fontWeight: 500,
+            fontWeight: 500
           }}
         >
           {message}
@@ -48,5 +49,5 @@ LoadingSpinner.propTypes = {
   message: PropTypes.string,
   size: PropTypes.number,
   minHeight: PropTypes.string,
-  showMessage: PropTypes.bool,
+  showMessage: PropTypes.bool
 };

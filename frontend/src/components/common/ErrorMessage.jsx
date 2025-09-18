@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { Alert, Box, Button, Typography } from '@mui/material';
 import { RefreshCw, AlertTriangle } from 'lucide-react';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 export const ErrorMessage = ({
   error,
@@ -10,9 +10,11 @@ export const ErrorMessage = ({
   title = 'Error',
   showRetry = true,
   showClose = true,
-  severity = 'error',
+  severity = 'error'
 }) => {
-  if (!error) return null;
+  if (!error) {
+return null;
+}
 
   return (
     <Box sx={{ mb: 3 }}>
@@ -22,8 +24,8 @@ export const ErrorMessage = ({
         icon={<AlertTriangle />}
         sx={{
           '& .MuiAlert-message': {
-            width: '100%',
-          },
+            width: '100%'
+          }
         }}
       >
         <Box>
@@ -57,5 +59,5 @@ ErrorMessage.propTypes = {
   title: PropTypes.string,
   showRetry: PropTypes.bool,
   showClose: PropTypes.bool,
-  severity: PropTypes.string,
+  severity: PropTypes.string
 };

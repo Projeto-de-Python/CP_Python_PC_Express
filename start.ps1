@@ -99,14 +99,14 @@ function Test-SystemResources {
 
 function Stop-ExistingServers {
     Write-ColorOutput "Parando servidores existentes..." "Yellow"
-    
+
     # Parar por porta usando netstat (mais confiável)
     try {
         # Backend
         $backendPids = netstat -ano | Select-String ":8000" | ForEach-Object {
             ($_ -split '\s+')[-1]
         } | Where-Object { $_ -ne "0" }
-        
+
         foreach ($pid in $backendPids) {
             try {
                 Stop-Process -Id $pid -Force -ErrorAction SilentlyContinue
@@ -116,12 +116,12 @@ function Stop-ExistingServers {
                 Write-Debug "Erro ao parar processo $pid`: $($_.Exception.Message)"
             }
         }
-        
+
         # Frontend
         $frontendPids = netstat -ano | Select-String ":5173" | ForEach-Object {
             ($_ -split '\s+')[-1]
         } | Where-Object { $_ -ne "0" }
-        
+
         foreach ($pid in $frontendPids) {
             try {
                 Stop-Process -Id $pid -Force -ErrorAction SilentlyContinue
@@ -131,7 +131,7 @@ function Stop-ExistingServers {
                 Write-Debug "Erro ao parar processo $pid`: $($_.Exception.Message)"
             }
         }
-        
+
         Start-Sleep -Seconds 3
     }
     catch {
@@ -141,38 +141,38 @@ function Stop-ExistingServers {
 
 function Start-BackendServer {
     Write-ColorOutput "Iniciando Backend..." "Yellow"
-    
+
     $scriptBlock = {
         param($WorkingDir, $Port)
         Set-Location $WorkingDir
         $env:PYTHONPATH = $WorkingDir
         $env:PYTHONUNBUFFERED = "1"
         $env:PYTHONIOENCODING = "utf-8"
-        
+
         try {
-            # Configurações otimizadas para uvicorn
-            & ".venv\Scripts\python.exe" -m uvicorn app.main:app --host 0.0.0.0 --port $Port --reload --log-level warning --workers 1 --limit-concurrency 1000 --limit-max-requests 1000
+            # Usar uvicorn padrão com otimizações integradas no sistema
+            & ".venv\Scripts\python.exe" -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --timeout-keep-alive 30 --timeout-graceful-shutdown 30 --limit-concurrency 1000 --limit-max-requests 10000 --backlog 2048
         }
         catch {
             Write-Error "Backend failed to start: $($_.Exception.Message)"
             exit 1
         }
     }
-    
+
     $job = Start-Job -ScriptBlock $scriptBlock -ArgumentList $PWD, $BackendPort
     return $job
 }
 
 function Start-FrontendServer {
     Write-ColorOutput "Iniciando Frontend..." "Yellow"
-    
+
     $scriptBlock = {
         param($WorkingDir, $Port)
-        
+
         # Configurações otimizadas para Node.js
         $env:NODE_OPTIONS = "--max-old-space-size=2048 --max-semi-space-size=128"
         $env:NODE_ENV = "development"
-        
+
         try {
             Set-Location "$WorkingDir\frontend"
             npm run dev -- --port $Port --strictPort --host localhost
@@ -182,18 +182,18 @@ function Start-FrontendServer {
             exit 1
         }
     }
-    
+
     $job = Start-Job -ScriptBlock $scriptBlock -ArgumentList $PWD, $FrontendPort
     return $job
 }
 
 function Wait-ForServer {
     param([string]$Url, [string]$ServerName, [int]$MaxWaitSeconds = 30)
-    
+
     Write-ColorOutput "Aguardando $ServerName iniciar..." "Yellow"
     $attempts = 0
     $maxAttempts = $MaxWaitSeconds / 2
-    
+
     while ($attempts -lt $maxAttempts) {
         if ($ServerName -eq "Frontend") {
             # Para frontend, usar netstat para verificar se a porta está em uso
@@ -209,12 +209,12 @@ function Wait-ForServer {
                 return $true
             }
         }
-        
+
         Start-Sleep -Seconds 2
         $attempts++
         Write-Host "." -NoNewline
     }
-    
+
     Write-Host ""
     Write-ColorOutput "ERRO: $ServerName não iniciou em $MaxWaitSeconds segundos" "Red"
     return $false
@@ -222,7 +222,7 @@ function Wait-ForServer {
 
 function Open-BrowserOnce {
     param([string]$Url)
-    
+
     if (-not $BrowserOpened -and -not $SkipBrowser) {
         Write-ColorOutput "Abrindo navegador..." "Cyan"
         try {
@@ -238,20 +238,20 @@ function Open-BrowserOnce {
 
 function Monitor-Servers {
     param([System.Management.Automation.Job]$BackendJob, [System.Management.Automation.Job]$FrontendJob)
-    
+
     $backendRestartCount = 0
     $frontendRestartCount = 0
     $lastBackendCheck = Get-Date
     $lastFrontendCheck = Get-Date
     $lastResourceCheck = Get-Date
     $lastBrowserCheck = Get-Date
-    
+
     Write-ColorOutput "Iniciando monitoramento de servidores..." "Cyan"
     Write-ColorOutput "Pressione Ctrl+C para parar" "Yellow"
-    
+
     while ($true) {
         $currentTime = Get-Date
-        
+
         # Verificar recursos do sistema a cada 30 segundos
         if (($currentTime - $lastResourceCheck).TotalSeconds -ge 30) {
             if (-not (Test-SystemResources)) {
@@ -259,26 +259,26 @@ function Monitor-Servers {
             }
             $lastResourceCheck = $currentTime
         }
-        
+
         # Verificar backend a cada HealthCheckInterval segundos
         if (($currentTime - $lastBackendCheck).TotalSeconds -ge $HealthCheckInterval) {
             $backendHealthy = Test-ServerHealth "$BackendUrl/health" "Backend"
             $lastBackendCheck = $currentTime
-            
+
             if (-not $backendHealthy) {
                 Write-ColorOutput "AVISO: Backend não está respondendo" "Yellow"
-                
+
                 # Verificar se o job ainda está rodando
                 if ($BackendJob.State -ne "Running") {
                     Write-ColorOutput "Backend job parou inesperadamente" "Red"
-                    
+
                     if ($backendRestartCount -lt $MaxRestartAttempts) {
                         Write-ColorOutput "Tentando reiniciar backend (tentativa $($backendRestartCount + 1)/$MaxRestartAttempts)..." "Yellow"
                         Remove-Job $BackendJob -ErrorAction SilentlyContinue
                         Start-Sleep -Seconds $RestartDelay
                         $BackendJob = Start-BackendServer
                         $backendRestartCount++
-                        
+
                         if (Wait-ForServer "$BackendUrl/health" "Backend" 20) {
                             Write-ColorOutput "Backend reiniciado com sucesso!" "Green"
                             $backendRestartCount = 0  # Reset counter on success
@@ -292,26 +292,26 @@ function Monitor-Servers {
                 $backendRestartCount = 0  # Reset counter on success
             }
         }
-        
+
         # Verificar frontend a cada HealthCheckInterval segundos
         if (($currentTime - $lastFrontendCheck).TotalSeconds -ge $HealthCheckInterval) {
             $frontendHealthy = Test-ServerHealth $FrontendUrl "Frontend"
             $lastFrontendCheck = $currentTime
-            
+
             if (-not $frontendHealthy) {
                 Write-ColorOutput "AVISO: Frontend não está respondendo" "Yellow"
-                
+
                 # Verificar se o job ainda está rodando
                 if ($FrontendJob.State -ne "Running") {
                     Write-ColorOutput "Frontend job parou inesperadamente" "Red"
-                    
+
                     if ($frontendRestartCount -lt $MaxRestartAttempts) {
                         Write-ColorOutput "Tentando reiniciar frontend (tentativa $($frontendRestartCount + 1)/$MaxRestartAttempts)..." "Yellow"
                         Remove-Job $FrontendJob -ErrorAction SilentlyContinue
                         Start-Sleep -Seconds $RestartDelay
                         $FrontendJob = Start-FrontendServer
                         $frontendRestartCount++
-                        
+
                         if (Wait-ForServer $FrontendUrl "Frontend" 20) {
                             Write-ColorOutput "Frontend reiniciado com sucesso!" "Green"
                             $frontendRestartCount = 0  # Reset counter on success
@@ -325,7 +325,7 @@ function Monitor-Servers {
                 $frontendRestartCount = 0  # Reset counter on success
             }
         }
-        
+
         # Abrir navegador uma vez quando ambos os servidores estiverem prontos
         if (($currentTime - $lastBrowserCheck).TotalSeconds -ge 5) {
             if (-not $BrowserOpened -and (Test-ServerHealth "$BackendUrl/health" "Backend") -and (Test-ServerHealth $FrontendUrl "Frontend")) {
@@ -333,10 +333,10 @@ function Monitor-Servers {
             }
             $lastBrowserCheck = $currentTime
         }
-        
+
         Start-Sleep -Seconds 3
     }
-    
+
     return $BackendJob, $FrontendJob
 }
 

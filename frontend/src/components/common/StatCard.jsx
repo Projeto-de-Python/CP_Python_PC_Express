@@ -1,8 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { Card, CardContent, Typography, Box } from '@mui/material';
 import { TrendingUp, TrendingDown } from 'lucide-react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { chartColors } from '../../utils/chartUtils';
 
 export const StatCard = ({ title, value, icon, gradient, trend, subtitle, route, onClick }) => {
@@ -28,7 +29,7 @@ export const StatCard = ({ title, value, icon, gradient, trend, subtitle, route,
         cursor: 'pointer',
         '&:hover': {
           transform: 'translateY(-4px)',
-          boxShadow: '0 8px 25px rgba(0,0,0,0.2)',
+          boxShadow: '0 8px 25px rgba(0,0,0,0.2)'
         },
         '&::before': {
           content: '""',
@@ -39,11 +40,11 @@ export const StatCard = ({ title, value, icon, gradient, trend, subtitle, route,
           bottom: 0,
           background: 'rgba(255,255,255,0.1)',
           opacity: 0,
-          transition: 'opacity 0.3s ease',
+          transition: 'opacity 0.3s ease'
         },
         '&:hover::before': {
-          opacity: 1,
-        },
+          opacity: 1
+        }
       }}
     >
       <CardContent sx={{ position: 'relative', zIndex: 1 }}>
@@ -61,8 +62,8 @@ export const StatCard = ({ title, value, icon, gradient, trend, subtitle, route,
               transition: 'all 0.3s ease',
               '&:hover': {
                 background: 'rgba(255,255,255,0.3)',
-                transform: 'scale(1.05)',
-              },
+                transform: 'scale(1.05)'
+              }
             }}
           >
             <Box
@@ -75,8 +76,8 @@ export const StatCard = ({ title, value, icon, gradient, trend, subtitle, route,
                 '& > *': {
                   fontSize: '24px',
                   width: '24px',
-                  height: '24px',
-                },
+                  height: '24px'
+                }
               }}
             >
               {icon}
@@ -122,5 +123,5 @@ StatCard.propTypes = {
   trend: PropTypes.number,
   subtitle: PropTypes.string,
   route: PropTypes.string,
-  onClick: PropTypes.func,
+  onClick: PropTypes.func
 };

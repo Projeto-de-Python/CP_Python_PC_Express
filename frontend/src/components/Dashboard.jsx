@@ -1,44 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import {
   Box,
-  Typography,
-  Grid,
-  IconButton,
-  Tooltip,
   Card,
   Chip,
-  Paper,
+  Grid,
+  IconButton,
   LinearProgress,
+  Paper,
+  Tooltip,
+  Typography
 } from '@mui/material';
-import { useTranslation } from 'react-i18next';
+import { useTheme } from '@mui/material/styles';
 import {
-  Package,
-  Users,
-  AlertTriangle,
-  TrendingUp,
-  RotateCcw,
-  HelpCircle,
-  PieChart,
   Activity,
+  AlertTriangle,
+  HelpCircle,
+  Package,
+  PieChart,
+  RotateCcw,
+  TrendingUp,
+  Users
 } from 'lucide-react';
+import PropTypes from 'prop-types';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import {
-  BarChart,
   Bar,
-  XAxis,
-  YAxis,
+  BarChart,
   CartesianGrid,
-  Tooltip as RechartsTooltip,
-  ResponsiveContainer,
+  Cell,
   Legend,
   Pie,
-  Cell,
+  Tooltip as RechartsTooltip,
+  ResponsiveContainer,
+  XAxis,
+  YAxis
 } from 'recharts';
-import { useTheme } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
-import { productsAPI, suppliersAPI, alertsAPI } from '../services/api.jsx';
-import { StatCard, ChartWrapper, LoadingSpinner, ErrorMessage } from './common';
+
+import { alertsAPI, productsAPI, suppliersAPI } from '../services/api.jsx';
 import { chartColors, formatCurrency } from '../utils/chartUtils';
+
+import { ChartWrapper, ErrorMessage, LoadingSpinner, StatCard } from './common';
 
 export default function Dashboard({ darkMode }) {
   const [loading, setLoading] = useState(true);
@@ -49,17 +51,49 @@ export default function Dashboard({ darkMode }) {
   const [refreshKey, setRefreshKey] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [isFetching, setIsFetching] = useState(false);
 
   const theme = useTheme();
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  const fetchDashboardData = useCallback(async() => {
+    // Evita requisições concorrentes
+    if (isFetching) {
+      return;
+    }
+
+    try {
+      setIsFetching(true);
+      setLoading(true);
+      setError(null);
+
+      const [productsRes, suppliersRes, alertsRes] = await Promise.all([
+        productsAPI.getAll(),
+        suppliersAPI.getAll(),
+        alertsAPI.getLowStock()
+      ]);
+
+      setProducts(productsRes.data || []);
+      setSuppliers(suppliersRes.data || []);
+      setLowStockAlerts(alertsRes.data || []);
+    } catch (error) {
+      setError(`Failed to load dashboard data: ${error.message}`);
+    } finally {
+      setLoading(false);
+      setIsFetching(false);
+    }
+  }, []); // Removido isFetching da dependência para evitar loop
 
   useEffect(() => {
     fetchDashboardData();
 
     // Listen for product data changes from other components
     const handleProductsDataChanged = () => {
-      fetchDashboardData();
+      // Debounce para evitar múltiplas chamadas
+      if (!isFetching) {
+        fetchDashboardData();
+      }
     };
 
     window.addEventListener('productsDataChanged', handleProductsDataChanged);
@@ -67,40 +101,19 @@ export default function Dashboard({ darkMode }) {
     return () => {
       window.removeEventListener('productsDataChanged', handleProductsDataChanged);
     };
-  }, [refreshKey]);
+  }, [refreshKey]); // Removido isFetching e fetchDashboardData para evitar loop
 
-  // Auto-refresh every 60 seconds (reduzido de 30s para 60s)
+  // Auto-refresh every 5 minutes (aumentado para reduzir conflitos)
   useEffect(() => {
     const interval = setInterval(() => {
-      // Só faz refresh se a página estiver visível
-      if (!document.hidden) {
+      // Só faz refresh se a página estiver visível e não estiver carregando
+      if (!document.hidden && !isFetching) {
         fetchDashboardData();
       }
-    }, 60000);
+    }, 300000); // 5 minutos
 
     return () => clearInterval(interval);
-  }, []);
-
-  const fetchDashboardData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const [productsRes, suppliersRes, alertsRes] = await Promise.all([
-        productsAPI.getAll(),
-        suppliersAPI.getAll(),
-        alertsAPI.getLowStock(),
-      ]);
-
-      setProducts(productsRes.data);
-      setSuppliers(suppliersRes.data);
-      setLowStockAlerts(alertsRes.data);
-    } catch {
-      setError('Failed to load dashboard data');
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, []); // Removido dependências para evitar loop
 
   const handleRefresh = () => {
     setRefreshKey(prev => prev + 1);
@@ -123,8 +136,8 @@ export default function Dashboard({ darkMode }) {
     navigate('/products', {
       state: {
         filterProduct: data.name,
-        highlightStock: true,
-      },
+        highlightStock: true
+      }
     });
   };
 
@@ -139,7 +152,7 @@ export default function Dashboard({ darkMode }) {
     lowStockProducts: products.filter(p => p.em_estoque_baixo).length,
     totalInventoryValue: products.reduce((sum, product) => {
       return sum + product.preco * product.quantidade;
-    }, 0),
+    }, 0)
   };
 
   // Website Traffic Data
@@ -149,14 +162,14 @@ export default function Dashboard({ darkMode }) {
       value: 20500,
       target: 25000,
       color: chartColors.primary,
-      icon: '📊',
+      icon: '📊'
     },
     {
       metric: t('dashboard.uniqueVisitors'),
       value: 12450,
       target: 15000,
       color: chartColors.success,
-      icon: '👥',
+      icon: '👥'
     },
     {
       metric: t('dashboard.avgSessionTime'),
@@ -164,7 +177,7 @@ export default function Dashboard({ darkMode }) {
       target: 5.0,
       color: chartColors.warning,
       icon: '⏱️',
-      unit: 'min',
+      unit: 'min'
     },
     {
       metric: t('dashboard.bounceRate'),
@@ -172,8 +185,8 @@ export default function Dashboard({ darkMode }) {
       target: 25.0,
       color: chartColors.error,
       icon: '📉',
-      unit: '%',
-    },
+      unit: '%'
+    }
   ];
 
   const categoryData =
@@ -186,13 +199,13 @@ export default function Dashboard({ darkMode }) {
         ).map(([name, value], index) => ({
           name,
           value,
-          color: chartColors.chartColors[index % chartColors.chartColors.length],
+          color: chartColors.chartColors[index % chartColors.chartColors.length]
         }))
       : [
           { name: 'Processors', value: 5, color: chartColors.chartColors[0] },
           { name: 'Graphics Cards', value: 3, color: chartColors.chartColors[1] },
           { name: 'Memory', value: 4, color: chartColors.chartColors[2] },
-          { name: 'Storage', value: 6, color: chartColors.chartColors[3] },
+          { name: 'Storage', value: 6, color: chartColors.chartColors[3] }
         ];
 
   // Stock Levels Data
@@ -203,7 +216,7 @@ export default function Dashboard({ darkMode }) {
           current: product.quantidade,
           minimum: product.estoque_minimo,
           color:
-            product.quantidade <= product.estoque_minimo ? chartColors.error : chartColors.success,
+            product.quantidade <= product.estoque_minimo ? chartColors.error : chartColors.success
         }))
       : [
           { name: 'AMD Ryzen 7 5800X', current: 15, minimum: 5, color: chartColors.success },
@@ -213,7 +226,7 @@ export default function Dashboard({ darkMode }) {
           { name: 'ASUS ROG Strix B550', current: 12, minimum: 8, color: chartColors.success },
           { name: 'Seagate Barracuda 2TB', current: 18, minimum: 12, color: chartColors.success },
           { name: 'EVGA 750W Gold', current: 6, minimum: 10, color: chartColors.error },
-          { name: 'Logitech G Pro X', current: 22, minimum: 15, color: chartColors.success },
+          { name: 'Logitech G Pro X', current: 22, minimum: 15, color: chartColors.success }
         ];
 
   // Top Performing Products Data
@@ -227,7 +240,7 @@ export default function Dashboard({ darkMode }) {
             value: product.preco * product.quantidade,
             stock: product.quantidade,
             price: product.preco,
-            color: chartColors.chartColors[index % chartColors.chartColors.length],
+            color: chartColors.chartColors[index % chartColors.chartColors.length]
           }))
       : [
           {
@@ -235,36 +248,36 @@ export default function Dashboard({ darkMode }) {
             value: 15999.0,
             stock: 10,
             price: 1599.9,
-            color: chartColors.chartColors[0],
+            color: chartColors.chartColors[0]
           },
           {
             name: 'NVIDIA RTX 4060 8GB',
             value: 21999.0,
             stock: 10,
             price: 2199.9,
-            color: chartColors.chartColors[1],
+            color: chartColors.chartColors[1]
           },
           {
             name: 'SSD NVMe 1TB Kingston',
             value: 4299.0,
             stock: 10,
             price: 429.9,
-            color: chartColors.chartColors[2],
+            color: chartColors.chartColors[2]
           },
           {
             name: 'Monitor 24" 144Hz',
             value: 8999.0,
             stock: 10,
             price: 899.9,
-            color: chartColors.chartColors[3],
+            color: chartColors.chartColors[3]
           },
           {
             name: 'Teclado Mecânico RGB',
             value: 2999.0,
             stock: 10,
             price: 299.9,
-            color: chartColors.chartColors[4],
-          },
+            color: chartColors.chartColors[4]
+          }
         ];
 
   return (
@@ -275,11 +288,12 @@ export default function Dashboard({ darkMode }) {
           <Typography
             variant="h4"
             fontWeight="bold"
+            data-tour="dashboard-title"
             sx={{
               background: chartColors.gradientColors.primary,
               backgroundClip: 'text',
               WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
+              WebkitTextFillColor: 'transparent'
             }}
           >
             {t('dashboard.title')}
@@ -290,9 +304,9 @@ export default function Dashboard({ darkMode }) {
                 color: chartColors.primary,
                 '&:hover': {
                   color: chartColors.secondary,
-                  transform: 'scale(1.1)',
+                  transform: 'scale(1.1)'
                 },
-                transition: 'all 0.3s ease',
+                transition: 'all 0.3s ease'
               }}
             >
               <HelpCircle size={20} />
@@ -307,9 +321,9 @@ export default function Dashboard({ darkMode }) {
               color: 'white',
               '&:hover': {
                 background: chartColors.gradientColors.secondary,
-                transform: 'rotate(180deg)',
+                transform: 'rotate(180deg)'
               },
-              transition: 'all 0.3s ease',
+              transition: 'all 0.3s ease'
             }}
           >
             <RotateCcw size={20} />
@@ -320,8 +334,8 @@ export default function Dashboard({ darkMode }) {
       <ErrorMessage error={error} onRetry={fetchDashboardData} onClose={() => setError(null)} />
 
       {/* Stats Cards */}
-      <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid xs={12} sm={6} md={3}>
+      <Grid container spacing={3} sx={{ mb: 4 }} data-tour="stats-cards" className="dashboard-kpi-cards">
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <StatCard
             title={t('dashboard.totalProducts')}
             value={stats.totalProducts}
@@ -332,7 +346,7 @@ export default function Dashboard({ darkMode }) {
             route="/products"
           />
         </Grid>
-        <Grid xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <StatCard
             title={t('dashboard.totalSuppliers')}
             value={stats.totalSuppliers}
@@ -343,7 +357,7 @@ export default function Dashboard({ darkMode }) {
             route="/suppliers"
           />
         </Grid>
-        <Grid xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <StatCard
             title={t('dashboard.lowStock')}
             value={stats.lowStockProducts}
@@ -354,7 +368,7 @@ export default function Dashboard({ darkMode }) {
             route="/alerts"
           />
         </Grid>
-        <Grid xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <StatCard
             title="Total Inventory Value"
             value={formatCurrency(stats.totalInventoryValue)}
@@ -368,7 +382,7 @@ export default function Dashboard({ darkMode }) {
 
       {/* Charts Grid */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid xs={12} lg={5}>
+        <Grid size={{ xs: 12, lg: 5 }}>
           <ChartWrapper
             title={t('dashboard.websiteTraffic')}
             icon={<Activity size={20} style={{ marginRight: 8, verticalAlign: 'middle' }} />}
@@ -376,49 +390,51 @@ export default function Dashboard({ darkMode }) {
             tooltip="Monitor website traffic metrics including page views, unique visitors, session time, and bounce rate. Track your digital marketing performance and user engagement."
             expanded={false}
             onToggleExpand={() => {}}
+            data-tour="website-traffic"
           >
-            <Box sx={{ p: 2 }}>
-              <Grid container spacing={2}>
+            <Box sx={{ p: 1 }}>
+              <Grid container spacing={1}>
                 {websiteTrafficData.map((item, index) => (
-                  <Grid xs={6} key={index}>
+                  <Grid size={{ xs: 6 }} key={`traffic-${item.metric}-${index}`}>
                     <Card
                       sx={{
-                        p: 2,
+                        p: 1.5,
                         background: `linear-gradient(135deg, ${item.color}15 0%, ${item.color}08 100%)`,
                         border: `1px solid ${item.color}30`,
                         borderRadius: 2,
                         transition: 'all 0.3s ease',
+                        minHeight: '120px',
                         '&:hover': {
                           transform: 'translateY(-2px)',
-                          boxShadow: `0 4px 20px ${item.color}20`,
-                        },
+                          boxShadow: `0 4px 20px ${item.color}20`
+                        }
                       }}
                     >
-                      <Box display="flex" alignItems="center" justifyContent="space-between" mb={1}>
-                        <Typography variant="h6" sx={{ color: item.color, fontSize: '1.5rem' }}>
+                      <Box display="flex" alignItems="center" justifyContent="space-between" mb={0.5}>
+                        <Typography variant="h6" sx={{ color: item.color, fontSize: '1.2rem' }}>
                           {item.icon}
                         </Typography>
                         <Typography
                           variant="caption"
-                          sx={{ color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)' }}
+                          sx={{ color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)', fontSize: '0.7rem' }}
                         >
                           {item.metric}
                         </Typography>
                       </Box>
 
                       <Typography
-                        variant="h4"
+                        variant="h5"
                         fontWeight="bold"
-                        sx={{ color: darkMode ? '#ffffff' : '#000000', mb: 0.5 }}
+                        sx={{ color: darkMode ? '#ffffff' : '#000000', mb: 0.3, fontSize: '1.4rem' }}
                       >
                         {item.value >= 1000 ? `${(item.value / 1000).toFixed(1)}k` : item.value}
                         {item.unit || ''}
                       </Typography>
 
-                      <Box display="flex" alignItems="center" gap={1} mb={1}>
+                      <Box display="flex" alignItems="center" gap={1} mb={0.5}>
                         <Typography
                           variant="caption"
-                          sx={{ color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)' }}
+                          sx={{ color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)', fontSize: '0.7rem' }}
                         >
                           Target:{' '}
                           {item.target >= 1000
@@ -432,13 +448,13 @@ export default function Dashboard({ darkMode }) {
                         variant="determinate"
                         value={(item.value / item.target) * 100}
                         sx={{
-                          height: 6,
-                          borderRadius: 3,
+                          height: 4,
+                          borderRadius: 2,
                           backgroundColor: `${item.color}20`,
                           '& .MuiLinearProgress-bar': {
                             background: item.color,
-                            borderRadius: 3,
-                          },
+                            borderRadius: 2
+                          }
                         }}
                       />
 
@@ -448,8 +464,9 @@ export default function Dashboard({ darkMode }) {
                           color:
                             item.value >= item.target ? chartColors.success : chartColors.warning,
                           fontWeight: 'bold',
-                          mt: 0.5,
+                          mt: 0.3,
                           display: 'block',
+                          fontSize: '0.7rem'
                         }}
                       >
                         {item.value >= item.target ? '✅ On Track' : '⚠️ Below Target'}
@@ -462,7 +479,7 @@ export default function Dashboard({ darkMode }) {
           </ChartWrapper>
         </Grid>
 
-        <Grid xs={12} lg={3.5}>
+        <Grid size={{ xs: 12, lg: 3.5 }}>
           <ChartWrapper
             title={t('dashboard.productsByCategory')}
             icon={<PieChart size={20} style={{ marginRight: 8, verticalAlign: 'middle' }} />}
@@ -470,6 +487,7 @@ export default function Dashboard({ darkMode }) {
             tooltip="Visualize your product distribution across categories. Click on segments to filter other charts. This helps you understand your product portfolio and identify category gaps."
             expanded={false}
             onToggleExpand={() => {}}
+            data-tour="category-chart"
           >
             <ResponsiveContainer width="100%" height={300}>
               <BarChart>
@@ -490,7 +508,7 @@ export default function Dashboard({ darkMode }) {
                 >
                   {categoryData.map((entry, index) => (
                     <Cell
-                      key={`cell-${index}`}
+                      key={`cell-${entry.name}-${index}`}
                       fill={entry.color}
                       stroke={darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}
                       strokeWidth={1}
@@ -508,7 +526,7 @@ export default function Dashboard({ darkMode }) {
                     fill: darkMode ? '#ffffff' : '#333333',
                     textShadow: darkMode
                       ? '0 0 10px rgba(255,255,255,0.3)'
-                      : '0 0 10px rgba(0,0,0,0.1)',
+                      : '0 0 10px rgba(0,0,0,0.1)'
                   }}
                 >
                   {categoryData.reduce((sum, item) => sum + item.value, 0)}
@@ -521,7 +539,7 @@ export default function Dashboard({ darkMode }) {
                   style={{
                     fontSize: '10px',
                     fill: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)',
-                    fontWeight: '500',
+                    fontWeight: '500'
                   }}
                 >
                   {t('dashboard.total')}
@@ -531,7 +549,7 @@ export default function Dashboard({ darkMode }) {
           </ChartWrapper>
         </Grid>
 
-        <Grid xs={12} lg={3.5}>
+        <Grid size={{ xs: 12, lg: 3.5 }}>
           <ChartWrapper
             title={t('dashboard.stockLevels')}
             icon={<Package size={20} style={{ marginRight: 8, verticalAlign: 'middle' }} />}
@@ -539,6 +557,7 @@ export default function Dashboard({ darkMode }) {
             tooltip="Monitor current stock levels vs minimum requirements. Click on bars to see product details. This helps prevent stockouts and optimize inventory levels."
             expanded={false}
             onToggleExpand={() => {}}
+            data-tour="stock-levels"
           >
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={stockLevelsData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
@@ -562,7 +581,7 @@ export default function Dashboard({ darkMode }) {
                             borderColor: darkMode ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)',
                             borderRadius: 1,
                             p: 1.5,
-                            backdropFilter: 'blur(10px)',
+                            backdropFilter: 'blur(10px)'
                           }}
                         >
                           <Typography
@@ -584,7 +603,7 @@ export default function Dashboard({ darkMode }) {
                               color:
                                 data.current <= data.minimum
                                   ? chartColors.error
-                                  : chartColors.success,
+                                  : chartColors.success
                             }}
                           >
                             Status: {data.current <= data.minimum ? 'Low Stock' : 'In Stock'}
@@ -620,8 +639,9 @@ export default function Dashboard({ darkMode }) {
 
       {/* Top Performing Products */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid xs={12}>
+        <Grid size={{ xs: 12 }}>
           <Box
+            data-tour="top-products"
             sx={{
               p: 3,
               borderRadius: 2,
@@ -633,8 +653,8 @@ export default function Dashboard({ darkMode }) {
                 boxShadow: darkMode
                   ? '0 8px 32px rgba(16, 172, 132, 0.25), 0 0 0 1px rgba(16, 172, 132, 0.2), 0 0 15px rgba(16, 172, 132, 0.15)'
                   : '0 8px 32px rgba(16, 172, 132, 0.3), 0 0 0 1px rgba(16, 172, 132, 0.2), 0 0 20px rgba(16, 172, 132, 0.1)',
-                transform: 'translateY(-2px)',
-              },
+                transform: 'translateY(-2px)'
+              }
             }}
           >
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
@@ -649,9 +669,9 @@ export default function Dashboard({ darkMode }) {
                       color: chartColors.success,
                       '&:hover': {
                         color: chartColors.primary,
-                        transform: 'scale(1.1)',
+                        transform: 'scale(1.1)'
                       },
-                      transition: 'all 0.3s ease',
+                      transition: 'all 0.3s ease'
                     }}
                   >
                     <HelpCircle size={16} />
@@ -662,7 +682,7 @@ export default function Dashboard({ darkMode }) {
 
             <Grid container spacing={2}>
               {topProductsData.map((product, index) => (
-                <Grid xs={12} sm={6} md={4} lg={2} key={index}>
+                <Grid size={{ xs: 12, sm: 6, md: 4, lg: 2 }} key={`product-${product.name}-${index}`}>
                   <Card
                     sx={{
                       p: 2,
@@ -674,8 +694,8 @@ export default function Dashboard({ darkMode }) {
                       '&:hover': {
                         transform: 'translateY(-4px)',
                         boxShadow: `0 8px 25px ${product.color}30`,
-                        border: `1px solid ${product.color}60`,
-                      },
+                        border: `1px solid ${product.color}60`
+                      }
                     }}
                   >
                     <Box display="flex" alignItems="center" justifyContent="space-between" mb={1}>
@@ -688,7 +708,7 @@ export default function Dashboard({ darkMode }) {
                         sx={{
                           background: product.color,
                           color: 'white',
-                          fontWeight: 'bold',
+                          fontWeight: 'bold'
                         }}
                       />
                     </Box>
@@ -700,7 +720,7 @@ export default function Dashboard({ darkMode }) {
                       sx={{
                         color: darkMode ? 'white' : 'black',
                         fontSize: '0.85rem',
-                        lineHeight: 1.2,
+                        lineHeight: 1.2
                       }}
                     >
                       {product.name.length > 25
@@ -727,8 +747,8 @@ export default function Dashboard({ darkMode }) {
                         backgroundColor: `${product.color}20`,
                         '& .MuiLinearProgress-bar': {
                           background: product.color,
-                          borderRadius: 2,
-                        },
+                          borderRadius: 2
+                        }
                       }}
                     />
                   </Card>
@@ -748,7 +768,7 @@ export default function Dashboard({ darkMode }) {
             borderRadius: 2,
             background: darkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
             backdropFilter: 'blur(10px)',
-            border: darkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)',
+            border: darkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)'
           }}
         >
           <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
@@ -763,9 +783,9 @@ export default function Dashboard({ darkMode }) {
                     color: chartColors.warning,
                     '&:hover': {
                       color: chartColors.error,
-                      transform: 'scale(1.1)',
+                      transform: 'scale(1.1)'
                     },
-                    transition: 'all 0.3s ease',
+                    transition: 'all 0.3s ease'
                   }}
                 >
                   <HelpCircle size={16} />
@@ -775,7 +795,7 @@ export default function Dashboard({ darkMode }) {
           </Box>
           <Grid container spacing={2}>
             {lowStockAlerts.slice(0, 6).map(product => (
-              <Grid xs={12} sm={6} md={4} key={product.id}>
+              <Grid size={{ xs: 12, sm: 6, md: 4 }} key={product.id}>
                 <Paper
                   elevation={2}
                   sx={{
@@ -785,14 +805,14 @@ export default function Dashboard({ darkMode }) {
                     borderRadius: 2,
                     background:
                       product.quantidade === 0
-                        ? 'linear-gradient(135deg, rgba(244,67,54,0.1) 0%, rgba(244,67,54,0.05) 100%)'
-                        : 'linear-gradient(135deg, rgba(255,152,0,0.1) 0%, rgba(255,152,0,0.05) 100%)',
+                        ? 'linear-gradient(135deg, rgba(239,68,68,0.1) 0%, rgba(239,68,68,0.05) 100%)'
+                        : 'linear-gradient(135deg, rgba(245,158,11,0.1) 0%, rgba(245,158,11,0.05) 100%)',
                     transition: 'all 0.3s ease',
                     cursor: 'pointer',
                     '&:hover': {
                       transform: 'translateY(-2px)',
-                      boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-                    },
+                      boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+                    }
                   }}
                 >
                   <Typography variant="subtitle1" fontWeight="600" gutterBottom>
@@ -804,7 +824,14 @@ export default function Dashboard({ darkMode }) {
                   <Box display="flex" alignItems="center" justifyContent="space-between">
                     <Chip
                       label={`Stock: ${product.quantidade}`}
-                      color={product.quantidade === 0 ? 'error' : 'warning'}
+                      sx={{
+                        backgroundColor:
+                          product.quantidade === 0
+                            ? '#ef4444'  // Vermelho para estoque zerado
+                            : '#f59e0b', // Amarelo para estoque baixo
+                        color: 'white',
+                        fontWeight: 'bold'
+                      }}
                       size="small"
                     />
                     <Typography variant="caption" color="textSecondary">
@@ -814,8 +841,19 @@ export default function Dashboard({ darkMode }) {
                   <LinearProgress
                     variant="determinate"
                     value={(product.quantidade / product.estoque_minimo) * 100}
-                    color={product.quantidade === 0 ? 'error' : 'warning'}
-                    sx={{ mt: 1 }}
+                    sx={{
+                      mt: 1,
+                      height: 4,
+                      borderRadius: 2,
+                      backgroundColor: darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+                      '& .MuiLinearProgress-bar': {
+                        backgroundColor:
+                          product.quantidade === 0
+                            ? '#ef4444'  // Vermelho para estoque zerado
+                            : '#f59e0b', // Amarelo para estoque baixo
+                        borderRadius: 2
+                      }
+                    }}
                   />
                 </Paper>
               </Grid>
@@ -823,10 +861,11 @@ export default function Dashboard({ darkMode }) {
           </Grid>
         </Box>
       )}
+
     </Box>
   );
 }
 
 Dashboard.propTypes = {
-  darkMode: PropTypes.bool.isRequired,
+  darkMode: PropTypes.bool.isRequired
 };

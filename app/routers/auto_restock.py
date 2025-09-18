@@ -1,12 +1,9 @@
-from datetime import datetime
-from typing import Dict, List
-
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from ..auth import get_current_active_user
 from ..database import get_db
-from ..models import Product, PurchaseOrder, PurchaseOrderItem, Supplier, User
+from ..models import MovementType, Product, StockMovement, Supplier, User
 
 router = APIRouter(prefix="/auto-restock", tags=["auto-restock"])
 
@@ -27,7 +24,11 @@ def get_stock_analysis(
             current_stock = product.quantidade
             restock_needed = max(0, recommended_stock - current_stock)
 
-            if restock_needed > 0:
+            # Only include products that actually need restocking
+            # Critical: out of stock (0)
+            # High: below minimum stock
+            # Medium: below recommended stock (2x minimum)
+            if current_stock < recommended_stock:
                 # Get supplier info
                 supplier = None
                 if product.fornecedor_id:
@@ -54,7 +55,11 @@ def get_stock_analysis(
                         "supplier": (
                             {
                                 "id": supplier.id if supplier else None,
-                                "nome": supplier.nome if supplier else "No supplier assigned",
+                                "nome": (
+                                    supplier.nome
+                                    if supplier
+                                    else "No supplier assigned"
+                                ),
                             }
                             if supplier
                             else None
@@ -67,43 +72,74 @@ def get_stock_analysis(
                             "urgency": (
                                 "critical"
                                 if current_stock == 0
-                                else "high" if current_stock <= product.estoque_minimo else "medium"
+                                else (
+                                    "high"
+                                    if current_stock <= product.estoque_minimo
+                                    else (
+                                        "medium"
+                                        if current_stock < recommended_stock
+                                        else "low"
+                                    )
+                                )
                             ),
                         },
                     }
                 )
 
-        # Sort by urgency (critical first, then high, then medium)
-        urgency_order = {"critical": 0, "high": 1, "medium": 2}
+        # Sort by urgency (critical first, then high, then medium, then low)
+        urgency_order = {"critical": 0, "high": 1, "medium": 2, "low": 3}
         restock_items.sort(key=lambda x: urgency_order[x["restock_info"]["urgency"]])
 
         return {
             "restock_items": restock_items,
             "total_items": len(restock_items),
-            "total_cost": sum(item["restock_info"]["estimated_cost"] for item in restock_items),
+            "total_cost": sum(
+                item["restock_info"]["estimated_cost"] for item in restock_items
+            ),
             "critical_count": len(
-                [item for item in restock_items if item["restock_info"]["urgency"] == "critical"]
+                [
+                    item
+                    for item in restock_items
+                    if item["restock_info"]["urgency"] == "critical"
+                ]
             ),
             "high_count": len(
-                [item for item in restock_items if item["restock_info"]["urgency"] == "high"]
+                [
+                    item
+                    for item in restock_items
+                    if item["restock_info"]["urgency"] == "high"
+                ]
             ),
             "medium_count": len(
-                [item for item in restock_items if item["restock_info"]["urgency"] == "medium"]
+                [
+                    item
+                    for item in restock_items
+                    if item["restock_info"]["urgency"] == "medium"
+                ]
+            ),
+            "low_count": len(
+                [
+                    item
+                    for item in restock_items
+                    if item["restock_info"]["urgency"] == "low"
+                ]
             ),
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to analyze stock: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to analyze stock: {str(e)}"
+        )
 
 
 @router.post("/restock-all")
 def restock_all_products(
     db: Session = Depends(get_db), current_user: User = Depends(get_current_active_user)
 ):
-    """Restock all products to recommended levels with one click"""
+    """Restock all products to recommended levels with one click - Direct stock update"""
     try:
         products = db.query(Product).filter(Product.user_id == current_user.id).all()
 
-        restock_orders = []
+        restocked_products = []
         total_value = 0
 
         for product in products:
@@ -112,62 +148,50 @@ def restock_all_products(
             current_stock = product.quantidade
             restock_needed = max(0, recommended_stock - current_stock)
 
-            # Only restock if needed and product has a supplier
-            if restock_needed > 0 and product.fornecedor_id:
-                supplier = (
-                    db.query(Supplier)
-                    .filter(
-                        Supplier.id == product.fornecedor_id, Supplier.user_id == current_user.id
-                    )
-                    .first()
+            # Only restock if needed
+            if current_stock < recommended_stock:
+                # Update stock directly
+                product.quantidade = recommended_stock
+
+                # Create stock movement record
+                movement = StockMovement(
+                    user_id=current_user.id,
+                    produto_id=product.id,
+                    tipo=MovementType.IN,
+                    quantidade_alterada=restock_needed,
+                    quantidade_resultante=recommended_stock,
+                    motivo=f"Auto-restock: Reposição automática para {recommended_stock} unidades",
                 )
+                db.add(movement)
 
-                if supplier:
-                    # Calculate order value
-                    order_value = restock_needed * product.preco
-                    total_value += order_value
+                # Calculate cost
+                restock_cost = restock_needed * product.preco
+                total_value += restock_cost
 
-                    # Create purchase order
-                    purchase_order = PurchaseOrder(
-                        fornecedor_id=supplier.id,
-                        user_id=current_user.id,
-                        status="PENDING_APPROVAL",
-                        total_value=order_value,
-                        observacoes=f"Auto-restock: {product.nome} - Restock to {recommended_stock} units",
-                    )
-                    db.add(purchase_order)
-                    db.flush()
-
-                    # Create purchase order item
-                    order_item = PurchaseOrderItem(
-                        purchase_order_id=purchase_order.id,
-                        produto_id=product.id,
-                        quantidade_solicitada=restock_needed,
-                        preco_unitario=product.preco,
-                    )
-                    db.add(order_item)
-
-                    restock_orders.append(
-                        {
-                            "product": product.nome,
-                            "supplier": supplier.nome,
-                            "restock_amount": restock_needed,
-                            "order_value": order_value,
-                            "purchase_order_id": purchase_order.id,
-                        }
-                    )
+                restocked_products.append(
+                    {
+                        "product": product.nome,
+                        "product_id": product.id,
+                        "previous_stock": current_stock,
+                        "new_stock": recommended_stock,
+                        "restock_amount": restock_needed,
+                        "cost": restock_cost,
+                    }
+                )
 
         db.commit()
 
         return {
-            "message": f"Created {len(restock_orders)} restock orders",
-            "orders": restock_orders,
+            "message": f"Successfully restocked {len(restocked_products)} products",
+            "restocked_products": restocked_products,
             "total_value": total_value,
-            "orders_created": len(restock_orders),
+            "products_restocked": len(restocked_products),
         }
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=500, detail=f"Failed to create restock orders: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to restock products: {str(e)}"
+        )
 
 
 @router.post("/restock-product/{product_id}")
@@ -176,7 +200,7 @@ def restock_single_product(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user),
 ):
-    """Restock a specific product to recommended levels"""
+    """Restock a specific product to recommended levels - Direct stock update"""
     try:
         product = (
             db.query(Product)
@@ -187,61 +211,43 @@ def restock_single_product(
         if not product:
             raise HTTPException(status_code=404, detail="Product not found")
 
-        if not product.fornecedor_id:
-            raise HTTPException(status_code=400, detail="Product has no supplier assigned")
-
-        supplier = (
-            db.query(Supplier)
-            .filter(Supplier.id == product.fornecedor_id, Supplier.user_id == current_user.id)
-            .first()
-        )
-
-        if not supplier:
-            raise HTTPException(status_code=404, detail="Supplier not found")
-
         # Calculate recommended stock level
         recommended_stock = product.estoque_minimo * 2
         current_stock = product.quantidade
         restock_needed = max(0, recommended_stock - current_stock)
 
-        if restock_needed <= 0:
+        if current_stock >= recommended_stock:
             return {"message": "Product is already at recommended stock levels"}
 
-        # Create purchase order
-        order_value = restock_needed * product.preco
-        purchase_order = PurchaseOrder(
-            fornecedor_id=supplier.id,
-            user_id=current_user.id,
-            status="PENDING_APPROVAL",
-            total_value=order_value,
-            observacoes=f"Restock: {product.nome} - Restock to {recommended_stock} units",
-        )
-        db.add(purchase_order)
-        db.flush()
+        # Update stock directly
+        product.quantidade = recommended_stock
 
-        # Create purchase order item
-        order_item = PurchaseOrderItem(
-            purchase_order_id=purchase_order.id,
+        # Create stock movement record
+        movement = StockMovement(
+            user_id=current_user.id,
             produto_id=product.id,
-            quantidade_solicitada=restock_needed,
-            preco_unitario=product.preco,
+            tipo=MovementType.IN,
+            quantidade_alterada=restock_needed,
+            quantidade_resultante=recommended_stock,
+            motivo=f"Auto-restock: Reposição automática para {recommended_stock} unidades",
         )
-        db.add(order_item)
+        db.add(movement)
 
         db.commit()
 
         return {
-            "message": "Restock order created successfully",
-            "order": {
-                "purchase_order_id": purchase_order.id,
+            "message": "Product restocked successfully",
+            "restock_info": {
                 "product": product.nome,
-                "supplier": supplier.nome,
+                "product_id": product.id,
+                "previous_stock": current_stock,
+                "new_stock": recommended_stock,
                 "restock_amount": restock_needed,
-                "order_value": order_value,
-                "current_stock": current_stock,
-                "recommended_stock": recommended_stock,
+                "cost": restock_needed * product.preco,
             },
         }
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=500, detail=f"Failed to create restock order: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to restock product: {str(e)}"
+        )

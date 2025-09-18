@@ -1,9 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Box, Typography, IconButton, Tooltip, Chip } from '@mui/material';
+import { Box, Chip, IconButton, Tooltip, Typography } from '@mui/material';
 import { HelpCircle } from 'lucide-react';
-import { getChartTheme } from '../../utils/chartUtils';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { getChartTheme } from '../../utils/chartUtils';
 
 export const ChartWrapper = ({
   title,
@@ -14,6 +15,7 @@ export const ChartWrapper = ({
   expanded,
   onToggleExpand,
   sx = {},
+  ...props
 }) => {
   const theme = getChartTheme(darkMode);
   const { t } = useTranslation();
@@ -21,6 +23,7 @@ export const ChartWrapper = ({
   return (
     <Box
       onClick={onToggleExpand}
+      {...props}
       sx={{
         height: expanded ? 500 : 400,
         transition: 'all 0.3s ease',
@@ -36,7 +39,7 @@ export const ChartWrapper = ({
               boxShadow: darkMode
                 ? `0 8px 32px rgba(102, 126, 234, 0.25), 0 0 0 1px rgba(102, 126, 234, 0.2), 0 0 15px rgba(102, 126, 234, 0.15)`
                 : `0 8px 32px rgba(102, 126, 234, 0.3), 0 0 0 1px rgba(102, 126, 234, 0.2), 0 0 20px rgba(102, 126, 234, 0.1)`,
-              transform: 'translateY(-2px)',
+              transform: 'translateY(-2px)'
             }
           : {},
         '&::before': {
@@ -50,9 +53,9 @@ export const ChartWrapper = ({
           background: darkMode
             ? 'radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.15) 0%, transparent 70%)'
             : 'radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.08) 0%, transparent 70%)',
-          pointerEvents: 'none',
+          pointerEvents: 'none'
         },
-        ...sx,
+        ...sx
       }}
     >
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
@@ -68,9 +71,9 @@ export const ChartWrapper = ({
                   color: '#667eea',
                   '&:hover': {
                     color: '#764ba2',
-                    transform: 'scale(1.1)',
+                    transform: 'scale(1.1)'
                   },
-                  transition: 'all 0.3s ease',
+                  transition: 'all 0.3s ease'
                 }}
               >
                 <HelpCircle size={16} />
@@ -102,5 +105,5 @@ ChartWrapper.propTypes = {
   tooltip: PropTypes.string,
   expanded: PropTypes.bool,
   onToggleExpand: PropTypes.func,
-  sx: PropTypes.object,
+  sx: PropTypes.object
 };

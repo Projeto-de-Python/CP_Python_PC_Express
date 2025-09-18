@@ -1,53 +1,54 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import {
-  Box,
-  Typography,
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Chip,
-  IconButton,
-  Alert,
-  CircularProgress,
-  Grid,
-  Tooltip,
-  Card,
-  CardContent,
-  LinearProgress,
-  Avatar,
+    Alert,
+    Avatar,
+    Box,
+    Button,
+    Card,
+    CardContent,
+    Chip,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControl,
+    Grid,
+    IconButton,
+    InputLabel,
+    LinearProgress,
+    MenuItem,
+    Paper,
+    Select,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    TextField,
+    Tooltip,
+    Typography
 } from '@mui/material';
-import { useTranslation } from 'react-i18next';
 import {
-  Plus,
-  Edit,
-  Trash2,
-  PlusCircle,
-  MinusCircle,
-  Search,
-  RotateCcw,
-  TrendingUp,
-  Package,
-  AlertTriangle,
-  MessageCircle,
-  HelpCircle,
-  Brain,
+    AlertTriangle,
+    Brain,
+    Edit,
+    HelpCircle,
+    MessageCircle,
+    MinusCircle,
+    Package,
+    Plus,
+    PlusCircle,
+    RotateCcw,
+    Search,
+    Trash2,
+    TrendingUp
 } from 'lucide-react';
-import { productsAPI, suppliersAPI, stockAPI } from '../services/api.jsx';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { productsAPI, stockAPI, suppliersAPI } from '../services/api.jsx';
 
 export default function Products({ darkMode }) {
   const [products, setProducts] = useState([]);
@@ -70,7 +71,7 @@ export default function Products({ darkMode }) {
     fornecedor_id: '',
     estoque_minimo: 5,
     lead_time_days: 7,
-    safety_stock: 2,
+    safety_stock: 2
   });
   const [adjustingStock, setAdjustingStock] = useState(new Set());
 
@@ -91,11 +92,11 @@ export default function Products({ darkMode }) {
     };
   }, []);
 
-  const fetchData = async () => {
+  const fetchData = async() => {
     try {
       const [productsRes, suppliersRes] = await Promise.all([
         productsAPI.getAll(),
-        suppliersAPI.getAll(),
+        suppliersAPI.getAll()
       ]);
       setProducts(productsRes.data);
       setSuppliers(suppliersRes.data);
@@ -119,7 +120,7 @@ export default function Products({ darkMode }) {
         fornecedor_id: product.fornecedor_id || '',
         estoque_minimo: product.estoque_minimo,
         lead_time_days: product.lead_time_days || 7,
-        safety_stock: product.safety_stock || 2,
+        safety_stock: product.safety_stock || 2
       });
     } else {
       setEditingProduct(null);
@@ -133,13 +134,13 @@ export default function Products({ darkMode }) {
         fornecedor_id: '',
         estoque_minimo: 5,
         lead_time_days: 7,
-        safety_stock: 2,
+        safety_stock: 2
       });
     }
     setOpenDialog(true);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async() => {
     try {
       if (editingProduct) {
         await productsAPI.update(editingProduct.id, formData);
@@ -154,8 +155,8 @@ export default function Products({ darkMode }) {
         new CustomEvent('productsDataChanged', {
           detail: {
             action: editingProduct ? 'productUpdate' : 'productCreate',
-            productId: editingProduct?.id,
-          },
+            productId: editingProduct?.id
+          }
         })
       );
     } catch (err) {
@@ -174,8 +175,8 @@ export default function Products({ darkMode }) {
           new CustomEvent('productsDataChanged', {
             detail: {
               action: 'productDelete',
-              productId,
-            },
+              productId
+            }
           })
         );
       } catch {
@@ -188,16 +189,18 @@ export default function Products({ darkMode }) {
     // Dispatch event to notify Insights component
     window.dispatchEvent(
       new CustomEvent('productSelectedForML', {
-        detail: { product },
+        detail: { product }
       })
     );
   };
 
-  const handleQuickStockAdjust = async (productId, adjustment) => {
+  const handleQuickStockAdjust = async(productId, adjustment) => {
     try {
       setAdjustingStock(prev => new Set(prev).add(productId));
       const product = products.find(p => p.id === productId);
-      if (!product) return;
+      if (!product) {
+return;
+}
 
       const newQuantity = Math.max(0, product.quantidade + adjustment);
       const reason = adjustment > 0 ? 'Quick stock addition' : 'Quick stock removal';
@@ -212,8 +215,8 @@ export default function Products({ darkMode }) {
             productId,
             newStock: newQuantity,
             action: 'stockAdjustment',
-            adjustment,
-          },
+            adjustment
+          }
         })
       );
     } catch (err) {
@@ -262,6 +265,31 @@ export default function Products({ darkMode }) {
     return matchesSearch && matchesCategory && matchesSupplier;
   });
 
+  // Sort products by stock priority: Red (0) -> Yellow (low) -> Green (good)
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    // Define stock status priority: 0 = red (highest priority), 1 = yellow, 2 = green
+    const getStockPriority = (product) => {
+      if (product.quantidade === 0) {
+return 0;
+} // Red - highest priority
+      if (product.quantidade <= product.estoque_minimo) {
+return 1;
+} // Yellow - medium priority
+      return 2; // Green - lowest priority
+    };
+
+    const priorityA = getStockPriority(a);
+    const priorityB = getStockPriority(b);
+
+    // If same priority, sort by stock quantity (ascending)
+    if (priorityA === priorityB) {
+      return a.quantidade - b.quantidade;
+    }
+
+    // Sort by priority (red first, then yellow, then green)
+    return priorityA - priorityB;
+  });
+
   const categories = [...new Set(products.map(p => p.categoria).filter(Boolean))];
 
   if (loading) {
@@ -283,7 +311,7 @@ export default function Products({ darkMode }) {
             background: 'linear-gradient(45deg, #1976d2, #42a5f5)',
             backgroundClip: 'text',
             WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            WebkitTextFillColor: 'transparent'
           }}
         >
           {t('products.title')}
@@ -295,7 +323,7 @@ export default function Products({ darkMode }) {
               sx={{
                 background: 'linear-gradient(45deg, #1976d2, #42a5f5)',
                 color: 'white',
-                '&:hover': { background: 'linear-gradient(45deg, #1565c0, #1976d2)' },
+                '&:hover': { background: 'linear-gradient(45deg, #1565c0, #1976d2)' }
               }}
             >
               <RotateCcw size={20} />
@@ -307,7 +335,7 @@ export default function Products({ darkMode }) {
             onClick={() => handleOpenDialog()}
             sx={{
               background: 'linear-gradient(45deg, #1976d2, #42a5f5)',
-              '&:hover': { background: 'linear-gradient(45deg, #1565c0, #1976d2)' },
+              '&:hover': { background: 'linear-gradient(45deg, #1565c0, #1976d2)' }
             }}
           >
             {t('products.addProduct')}
@@ -334,8 +362,8 @@ export default function Products({ darkMode }) {
           '&:hover': {
             boxShadow: darkMode
               ? '0 4px 20px rgba(139, 92, 246, 0.15), 0 0 0 1px rgba(139, 92, 246, 0.1)'
-              : '0 4px 20px rgba(139, 92, 246, 0.1), 0 0 0 1px rgba(139, 92, 246, 0.05)',
-          },
+              : '0 4px 20px rgba(139, 92, 246, 0.1), 0 0 0 1px rgba(139, 92, 246, 0.05)'
+          }
         }}
       >
         <CardContent>
@@ -357,7 +385,7 @@ export default function Products({ darkMode }) {
             </Tooltip>
           </Box>
           <Grid container spacing={2} alignItems="center">
-            <Grid item xs={12} md={4}>
+            <Grid size={{ xs: 12, md: 4 }}>
               <TextField
                 fullWidth
                 placeholder="Search products..."
@@ -369,10 +397,10 @@ export default function Products({ darkMode }) {
                       size={20}
                       style={{
                         marginRight: 8,
-                        color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)',
+                        color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)'
                       }}
                     />
-                  ),
+                  )
                 }}
                 sx={{
                   '& .MuiOutlinedInput-root': {
@@ -387,28 +415,28 @@ export default function Products({ darkMode }) {
                         : 'rgba(255,255,255,0.9)',
                       border: darkMode
                         ? '1px solid rgba(255,255,255,0.2)'
-                        : '1px solid rgba(0,0,0,0.2)',
+                        : '1px solid rgba(0,0,0,0.2)'
                     },
                     '&.Mui-focused': {
                       backgroundColor: darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,1)',
                       border: darkMode
                         ? '1px solid rgba(139, 92, 246, 0.5)'
-                        : '1px solid rgba(139, 92, 246, 0.3)',
-                    },
+                        : '1px solid rgba(139, 92, 246, 0.3)'
+                    }
                   },
                   '& .MuiInputLabel-root': {
-                    color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)',
+                    color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)'
                   },
                   '& .MuiInputBase-input': {
                     color: darkMode ? '#ffffff' : '#000000',
                     '&::placeholder': {
-                      color: darkMode ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)',
-                    },
-                  },
+                      color: darkMode ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)'
+                    }
+                  }
                 }}
               />
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid size={{ xs: 12, md: 3 }}>
               <FormControl fullWidth>
                 <InputLabel sx={{ color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)' }}>
                   {t('products.category')}
@@ -428,14 +456,14 @@ export default function Products({ darkMode }) {
                         : 'rgba(255,255,255,0.9)',
                       border: darkMode
                         ? '1px solid rgba(255,255,255,0.2)'
-                        : '1px solid rgba(0,0,0,0.2)',
+                        : '1px solid rgba(0,0,0,0.2)'
                     },
                     '& .MuiSelect-select': {
-                      color: darkMode ? '#ffffff' : '#000000',
+                      color: darkMode ? '#ffffff' : '#000000'
                     },
                     '& .MuiSvgIcon-root': {
-                      color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)',
-                    },
+                      color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)'
+                    }
                   }}
                 >
                   <MenuItem value="">All Categories</MenuItem>
@@ -447,7 +475,7 @@ export default function Products({ darkMode }) {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid size={{ xs: 12, md: 3 }}>
               <FormControl fullWidth>
                 <InputLabel sx={{ color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)' }}>
                   {t('products.supplier')}
@@ -467,14 +495,14 @@ export default function Products({ darkMode }) {
                         : 'rgba(255,255,255,0.9)',
                       border: darkMode
                         ? '1px solid rgba(255,255,255,0.2)'
-                        : '1px solid rgba(0,0,0,0.2)',
+                        : '1px solid rgba(0,0,0,0.2)'
                     },
                     '& .MuiSelect-select': {
-                      color: darkMode ? '#ffffff' : '#000000',
+                      color: darkMode ? '#ffffff' : '#000000'
                     },
                     '& .MuiSvgIcon-root': {
-                      color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)',
-                    },
+                      color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)'
+                    }
                   }}
                 >
                   <MenuItem value="">All Suppliers</MenuItem>
@@ -486,7 +514,7 @@ export default function Products({ darkMode }) {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} md={2}>
+            <Grid size={{ xs: 12, md: 2 }}>
               <Typography
                 variant="body2"
                 sx={{ color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)' }}
@@ -508,7 +536,7 @@ export default function Products({ darkMode }) {
           backdropFilter: 'blur(10px)',
           border: darkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)',
           borderRadius: 2,
-          overflow: 'hidden',
+          overflow: 'hidden'
         }}
       >
         <CardContent>
@@ -535,7 +563,7 @@ export default function Products({ darkMode }) {
               borderRadius: 2,
               overflow: 'hidden',
               background: darkMode ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.8)',
-              backdropFilter: 'blur(10px)',
+              backdropFilter: 'blur(10px)'
             }}
           >
             <Table>
@@ -550,6 +578,9 @@ export default function Products({ darkMode }) {
                   </TableCell>
                   <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>
                     {t('products.stock')}
+                    <Tooltip title="Produtos ordenados por prioridade de estoque: 🔴 Zerados → 🟡 Baixos → 🟢 Normais">
+                      <HelpCircle size={14} style={{ marginLeft: 8, opacity: 0.8, cursor: 'help' }} />
+                    </Tooltip>
                   </TableCell>
                   <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>
                     {t('products.price')}
@@ -564,7 +595,7 @@ export default function Products({ darkMode }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {filteredProducts.map(product => (
+                {sortedProducts.map(product => (
                   <TableRow
                     key={product.id}
                     sx={{
@@ -574,8 +605,8 @@ export default function Products({ darkMode }) {
                       '&:hover': {
                         background: darkMode
                           ? 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.05) 100%)'
-                          : 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
-                      },
+                          : 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'
+                      }
                     }}
                   >
                     <TableCell>
@@ -583,7 +614,7 @@ export default function Products({ darkMode }) {
                         <Avatar
                           sx={{
                             mr: 2,
-                            bgcolor: product.em_estoque_baixo ? 'warning.main' : 'success.main',
+                            bgcolor: product.em_estoque_baixo ? 'warning.main' : 'success.main'
                           }}
                         >
                           <Package size={20} />
@@ -626,7 +657,7 @@ export default function Products({ darkMode }) {
                               p: 0.5,
                               minWidth: 'auto',
                               width: 24,
-                              height: 24,
+                              height: 24
                             }}
                           >
                             {adjustingStock.has(product.id) ? (
@@ -641,7 +672,7 @@ export default function Products({ darkMode }) {
                             sx={{
                               minWidth: 30,
                               textAlign: 'center',
-                              color: darkMode ? '#ffffff' : '#000000',
+                              color: darkMode ? '#ffffff' : '#000000'
                             }}
                           >
                             {product.quantidade}
@@ -655,7 +686,7 @@ export default function Products({ darkMode }) {
                               p: 0.5,
                               minWidth: 'auto',
                               width: 24,
-                              height: 24,
+                              height: 24
                             }}
                           >
                             {adjustingStock.has(product.id) ? (
@@ -664,19 +695,35 @@ export default function Products({ darkMode }) {
                               <PlusCircle size={14} />
                             )}
                           </IconButton>
-                          {product.em_estoque_baixo && <AlertTriangle size={16} color="#ff9800" />}
+                          {product.quantidade <= product.estoque_minimo && (
+                            <AlertTriangle
+                              size={16}
+                              color={
+                                product.quantidade === 0
+                                  ? "#ef4444"  // Vermelho para estoque zerado
+                                  : "#f59e0b"  // Amarelo para estoque baixo
+                              }
+                            />
+                          )}
                         </Box>
                         <LinearProgress
                           variant="determinate"
                           value={Math.min((product.quantidade / product.estoque_minimo) * 100, 100)}
-                          color={
-                            product.quantidade === 0
-                              ? 'error'
-                              : product.em_estoque_baixo
-                                ? 'warning'
-                                : 'success'
-                          }
-                          sx={{ mt: 0.5, height: 4, borderRadius: 2 }}
+                          sx={{
+                            mt: 0.5,
+                            height: 4,
+                            borderRadius: 2,
+                            backgroundColor: darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+                            '& .MuiLinearProgress-bar': {
+                              backgroundColor:
+                                product.quantidade === 0
+                                  ? '#ef4444'  // Vermelho para estoque zerado
+                                  : product.quantidade <= product.estoque_minimo
+                                    ? '#f59e0b'  // Amarelo para estoque baixo
+                                    : '#10b981', // Verde para estoque bom
+                              borderRadius: 2
+                            }
+                          }}
                         />
                         <Typography
                           variant="caption"
@@ -783,7 +830,7 @@ export default function Products({ darkMode }) {
         </DialogTitle>
         <DialogContent>
           <Grid container spacing={2} sx={{ mt: 1 }}>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Code"
@@ -792,7 +839,7 @@ export default function Products({ darkMode }) {
                 disabled={!!editingProduct}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Name"
@@ -800,7 +847,7 @@ export default function Products({ darkMode }) {
                 onChange={e => setFormData({ ...formData, nome: e.target.value })}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Category"
@@ -808,7 +855,7 @@ export default function Products({ darkMode }) {
                 onChange={e => setFormData({ ...formData, categoria: e.target.value })}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <FormControl fullWidth>
                 <InputLabel>Supplier</InputLabel>
                 <Select
@@ -824,7 +871,7 @@ export default function Products({ darkMode }) {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 type="number"
@@ -833,7 +880,7 @@ export default function Products({ darkMode }) {
                 onChange={e => setFormData({ ...formData, preco: parseFloat(e.target.value) || 0 })}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 type="number"
@@ -844,7 +891,7 @@ export default function Products({ darkMode }) {
                 }
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 type="number"
@@ -856,7 +903,7 @@ export default function Products({ darkMode }) {
                 helperText="Days for supplier to deliver"
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 type="number"
@@ -868,7 +915,7 @@ export default function Products({ darkMode }) {
                 helperText="Buffer stock quantity"
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 multiline
@@ -887,7 +934,7 @@ export default function Products({ darkMode }) {
             variant="contained"
             sx={{
               background: 'linear-gradient(45deg, #1976d2, #42a5f5)',
-              '&:hover': { background: 'linear-gradient(45deg, #1565c0, #1976d2)' },
+              '&:hover': { background: 'linear-gradient(45deg, #1565c0, #1976d2)' }
             }}
           >
             {editingProduct ? 'Update' : 'Create'}
@@ -899,5 +946,5 @@ export default function Products({ darkMode }) {
 }
 
 Products.propTypes = {
-  darkMode: PropTypes.bool.isRequired,
+  darkMode: PropTypes.bool.isRequired
 };

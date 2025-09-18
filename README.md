@@ -150,10 +150,43 @@ git clone <url-do-repositorio>
 cd CP_Python_PC_Express
 ```
 
-### **2. Inicialização Automática (Recomendado)**
+### **2. Opções de Instalação**
+
+#### **Opção A: Instalação Automática (Recomendado)**
 
 ```powershell
+# Windows
 .\start.ps1
+
+# Linux/Mac
+chmod +x start.sh
+./start.sh
+```
+
+#### **Opção B: Setup Manual**
+
+```bash
+# Windows
+.\setup.bat
+
+# Linux/Mac
+chmod +x setup.sh
+./setup.sh
+```
+
+#### **Opção C: Docker (Ambiente Isolado)**
+
+```bash
+# Instalar e executar com Docker
+docker-compose up --build
+
+# Ou apenas backend
+docker build -f Dockerfile.backend -t pc-express-backend .
+docker run -p 8000:8000 pc-express-backend
+
+# Ou apenas frontend
+docker build -f Dockerfile.frontend -t pc-express-frontend .
+docker run -p 5173:5173 pc-express-frontend
 ```
 
 **O script fará automaticamente:**

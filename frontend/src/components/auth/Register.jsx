@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   Box,
   Paper,
@@ -11,13 +11,14 @@ import {
   Container,
   useTheme,
   IconButton,
-  InputAdornment,
+  InputAdornment
 } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Computer } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
+
+import { useAuth } from '../../contexts/AuthContext';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -93,8 +94,8 @@ const Register = () => {
               theme.palette.mode === 'dark'
                 ? 'radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%)'
                 : 'radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%)',
-            pointerEvents: 'none',
-          },
+            pointerEvents: 'none'
+          }
         }}
       >
         <Paper
@@ -116,7 +117,7 @@ const Register = () => {
             boxShadow:
               theme.palette.mode === 'dark'
                 ? '0 8px 32px rgba(0, 0, 0, 0.3)'
-                : '0 8px 32px rgba(0, 0, 0, 0.1)',
+                : '0 8px 32px rgba(0, 0, 0, 0.1)'
           }}
         >
           <Box sx={{ textAlign: 'center', mb: 4 }}>
@@ -128,7 +129,7 @@ const Register = () => {
                   filter:
                     theme.palette.mode === 'dark'
                       ? 'drop-shadow(0 0 10px rgba(102, 126, 234, 0.5))'
-                      : 'none',
+                      : 'none'
                 }}
               />
             </Box>
@@ -146,7 +147,7 @@ const Register = () => {
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 textShadow:
-                  theme.palette.mode === 'dark' ? '0 0 20px rgba(102, 126, 234, 0.3)' : 'none',
+                  theme.palette.mode === 'dark' ? '0 0 20px rgba(102, 126, 234, 0.3)' : 'none'
               }}
             >
               PC Express
@@ -156,7 +157,7 @@ const Register = () => {
               sx={{
                 color:
                   theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)',
-                fontWeight: 400,
+                fontWeight: 400
               }}
             >
               {t('auth.register')}
@@ -175,7 +176,7 @@ const Register = () => {
                 border:
                   theme.palette.mode === 'dark'
                     ? '1px solid rgba(244, 67, 54, 0.3)'
-                    : '1px solid rgba(244, 67, 54, 0.3)',
+                    : '1px solid rgba(244, 67, 54, 0.3)'
               }}
             >
               {error}
@@ -206,21 +207,21 @@ const Register = () => {
                     background:
                       theme.palette.mode === 'dark'
                         ? 'rgba(255, 255, 255, 0.08)'
-                        : 'rgba(0, 0, 0, 0.04)',
+                        : 'rgba(0, 0, 0, 0.04)'
                   },
                   '&.Mui-focused': {
                     background:
                       theme.palette.mode === 'dark'
                         ? 'rgba(255, 255, 255, 0.1)'
-                        : 'rgba(0, 0, 0, 0.06)',
-                  },
+                        : 'rgba(0, 0, 0, 0.06)'
+                  }
                 },
                 '& .MuiInputLabel-root': {
                   color:
                     theme.palette.mode === 'dark'
                       ? 'rgba(255, 255, 255, 0.7)'
-                      : 'rgba(0, 0, 0, 0.6)',
-                },
+                      : 'rgba(0, 0, 0, 0.6)'
+                }
               }}
             />
             <TextField
@@ -246,21 +247,21 @@ const Register = () => {
                     background:
                       theme.palette.mode === 'dark'
                         ? 'rgba(255, 255, 255, 0.08)'
-                        : 'rgba(0, 0, 0, 0.04)',
+                        : 'rgba(0, 0, 0, 0.04)'
                   },
                   '&.Mui-focused': {
                     background:
                       theme.palette.mode === 'dark'
                         ? 'rgba(255, 255, 255, 0.1)'
-                        : 'rgba(0, 0, 0, 0.06)',
-                  },
+                        : 'rgba(0, 0, 0, 0.06)'
+                  }
                 },
                 '& .MuiInputLabel-root': {
                   color:
                     theme.palette.mode === 'dark'
                       ? 'rgba(255, 255, 255, 0.7)'
-                      : 'rgba(0, 0, 0, 0.6)',
-                },
+                      : 'rgba(0, 0, 0, 0.6)'
+                }
               }}
               InputProps={{
                 endAdornment: (
@@ -273,13 +274,13 @@ const Register = () => {
                         color:
                           theme.palette.mode === 'dark'
                             ? 'rgba(255, 255, 255, 0.7)'
-                            : 'rgba(0, 0, 0, 0.6)',
+                            : 'rgba(0, 0, 0, 0.6)'
                       }}
                     >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
-                ),
+                )
               }}
             />
             <TextField
@@ -305,21 +306,21 @@ const Register = () => {
                     background:
                       theme.palette.mode === 'dark'
                         ? 'rgba(255, 255, 255, 0.08)'
-                        : 'rgba(0, 0, 0, 0.04)',
+                        : 'rgba(0, 0, 0, 0.04)'
                   },
                   '&.Mui-focused': {
                     background:
                       theme.palette.mode === 'dark'
                         ? 'rgba(255, 255, 255, 0.1)'
-                        : 'rgba(0, 0, 0, 0.06)',
-                  },
+                        : 'rgba(0, 0, 0, 0.06)'
+                  }
                 },
                 '& .MuiInputLabel-root': {
                   color:
                     theme.palette.mode === 'dark'
                       ? 'rgba(255, 255, 255, 0.7)'
-                      : 'rgba(0, 0, 0, 0.6)',
-                },
+                      : 'rgba(0, 0, 0, 0.6)'
+                }
               }}
               InputProps={{
                 endAdornment: (
@@ -332,13 +333,13 @@ const Register = () => {
                         color:
                           theme.palette.mode === 'dark'
                             ? 'rgba(255, 255, 255, 0.7)'
-                            : 'rgba(0, 0, 0, 0.6)',
+                            : 'rgba(0, 0, 0, 0.6)'
                       }}
                     >
                       {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
-                ),
+                )
               }}
             />
             <Button
@@ -359,7 +360,7 @@ const Register = () => {
                 '&:hover': {
                   background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
                   boxShadow: '0 6px 20px rgba(102, 126, 234, 0.6)',
-                  transform: 'translateY(-1px)',
+                  transform: 'translateY(-1px)'
                 },
                 '&:disabled': {
                   background:
@@ -367,9 +368,9 @@ const Register = () => {
                       ? 'rgba(255, 255, 255, 0.1)'
                       : 'rgba(0, 0, 0, 0.1)',
                   boxShadow: 'none',
-                  transform: 'none',
+                  transform: 'none'
                 },
-                transition: 'all 0.3s ease',
+                transition: 'all 0.3s ease'
               }}
             >
               {loading ? <CircularProgress size={24} color="inherit" /> : t('auth.registerButton')}
@@ -384,8 +385,8 @@ const Register = () => {
                   textDecoration: 'none',
                   '&:hover': {
                     textDecoration: 'underline',
-                    color: theme.palette.mode === 'dark' ? '#5a6fd8' : '#5a6fd8',
-                  },
+                    color: theme.palette.mode === 'dark' ? '#5a6fd8' : '#5a6fd8'
+                  }
                 }}
               >
                 {t('auth.alreadyHaveAccount')}

@@ -29,6 +29,20 @@
     "clickToExpand": "Click to expand",
     "clickToMinimize": "Click to minimize"
   },
+  "tour": {
+    "previous": "Previous",
+    "next": "Next",
+    "finish": "Finish",
+    "waiting": "Waiting for interaction...",
+    "step": "Step",
+    "of": "of",
+    "play": "Play",
+    "pause": "Pause",
+    "skipToEnd": "Skip to End",
+    "restart": "Restart",
+    "interactiveMode": "Interactive Mode",
+    "interactWithElement": "Please interact with the highlighted element to continue"
+  },
   "auth": {
     "login": "Login",
     "register": "Register",

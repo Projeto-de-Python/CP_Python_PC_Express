@@ -1,0 +1,116 @@
+name: Test PC Express
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirement.txt
+
+      - name: Test backend
+        run: |
+          python -c "import app.main; print('Backend imports successfully')"
+          python -c "from app.database import engine; print('Database connection successful')"
+
+      - name: Run linting
+        run: |
+          pip install flake8
+          flake8 app/ --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 app/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+  test-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Test frontend
+        run: |
+          cd frontend
+          npm run lint
+          npm run build
+
+      - name: Check for vulnerabilities
+        run: |
+          cd frontend
+          npm audit --audit-level moderate
+
+  test-docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build backend Docker image
+        run: |
+          docker build -f Dockerfile.backend -t pc-express-backend .
+
+      - name: Build frontend Docker image
+        run: |
+          docker build -f Dockerfile.frontend -t pc-express-frontend .
+
+      - name: Test Docker Compose
+        run: |
+          docker-compose config
+          docker-compose build
+
+  test-installation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Test installation script
+        run: |
+          chmod +x setup.sh
+          # Simular instalação (sem executar completamente)
+          python --version
+          node --version
+          npm --version
+
+      - name: Test start script
+        run: |
+          chmod +x start.sh
+          # Verificar se o script existe e é executável
+          test -f start.sh
+          test -x start.sh

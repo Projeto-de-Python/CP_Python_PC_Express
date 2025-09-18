@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Typography } from '@mui/material';
 import { Dashboard, Psychology, Smartphone, Notifications } from '@mui/icons-material';
+import { Typography } from '@mui/material';
 import { Computer } from 'lucide-react';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+
 import { LeftPanel, HoverEffect } from './LoginStyles';
 
 const LoginLeftPanel = ({ isDark }) => {
@@ -12,23 +13,23 @@ const LoginLeftPanel = ({ isDark }) => {
     {
       icon: <Dashboard />,
       title: 'Dashboard Inteligente',
-      description: 'Visão completa do seu negócio em tempo real',
+      description: 'Visão completa do seu negócio em tempo real'
     },
     {
       icon: <Psychology />,
       title: 'IA e Machine Learning',
-      description: 'Previsões de demanda e otimização de preços',
+      description: 'Previsões de demanda e otimização de preços'
     },
     {
       icon: <Smartphone />,
       title: 'Responsivo',
-      description: 'Funciona perfeitamente em qualquer dispositivo',
+      description: 'Funciona perfeitamente em qualquer dispositivo'
     },
     {
       icon: <Notifications />,
       title: 'Alertas Inteligentes',
-      description: 'Notificações automáticas para estoque baixo',
-    },
+      description: 'Notificações automáticas para estoque baixo'
+    }
   ];
 
   return (
@@ -44,7 +45,7 @@ const LoginLeftPanel = ({ isDark }) => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          marginBottom: '3rem',
+          marginBottom: '3rem'
         }}
       >
         <div
@@ -62,7 +63,7 @@ const LoginLeftPanel = ({ isDark }) => {
             boxShadow: isDark
               ? '0 8px 32px rgba(0, 255, 255, 0.3)'
               : '0 8px 32px rgba(0, 255, 255, 0.3)',
-            animation: 'pulse 2s ease-in-out infinite',
+            animation: 'pulse 2s ease-in-out infinite'
           }}
         >
           <Computer size={60} color="white" />
@@ -81,7 +82,7 @@ const LoginLeftPanel = ({ isDark }) => {
             backgroundClip: 'text',
             fontWeight: 700,
             textAlign: 'center',
-            marginBottom: '0.5rem',
+            marginBottom: '0.5rem'
           }}
         >
           PC Express
@@ -93,7 +94,7 @@ const LoginLeftPanel = ({ isDark }) => {
             color: isDark ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)',
             fontWeight: 400,
             textAlign: 'center',
-            maxWidth: '400px',
+            maxWidth: '400px'
           }}
         >
           Sistema de Gestão de Estoque Inteligente
@@ -115,7 +116,7 @@ const LoginLeftPanel = ({ isDark }) => {
               border: isDark
                 ? '1px solid rgba(0, 255, 255, 0.1)'
                 : '1px solid rgba(0, 255, 255, 0.1)',
-              transition: 'all 0.3s ease',
+              transition: 'all 0.3s ease'
             }}
             onMouseEnter={e => {
               e.currentTarget.style.transform = 'translateX(10px)';
@@ -142,7 +143,7 @@ const LoginLeftPanel = ({ isDark }) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginRight: '1rem',
-                color: 'white',
+                color: 'white'
               }}
             >
               {feature.icon}
@@ -154,7 +155,7 @@ const LoginLeftPanel = ({ isDark }) => {
                 style={{
                   color: isDark ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.9)',
                   fontWeight: 600,
-                  marginBottom: '0.25rem',
+                  marginBottom: '0.25rem'
                 }}
               >
                 {feature.title}
@@ -164,7 +165,7 @@ const LoginLeftPanel = ({ isDark }) => {
                 variant="body2"
                 style={{
                   color: isDark ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)',
-                  lineHeight: 1.4,
+                  lineHeight: 1.4
                 }}
               >
                 {feature.description}
@@ -178,7 +179,7 @@ const LoginLeftPanel = ({ isDark }) => {
 };
 
 LoginLeftPanel.propTypes = {
-  isDark: PropTypes.bool.isRequired,
+  isDark: PropTypes.bool.isRequired
 };
 
 export default LoginLeftPanel;

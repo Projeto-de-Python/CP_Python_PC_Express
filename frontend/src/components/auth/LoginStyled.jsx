@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   TextField,
   Button,
@@ -8,13 +7,16 @@ import {
   Link,
   Container,
   IconButton,
-  InputAdornment,
+  InputAdornment
 } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Computer } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { useAuth } from '../../contexts/AuthContext';
+
 
 // Styled Components
 const LoginContainer = styled.div`
@@ -199,7 +201,7 @@ const LoginStyled = () => {
 
   // Mock theme for styled-components
   const theme = {
-    mode: 'light', // Você pode integrar com o tema do MUI
+    mode: 'light' // Você pode integrar com o tema do MUI
   };
 
   const handleSubmit = async e => {
@@ -244,7 +246,7 @@ const LoginStyled = () => {
                 border:
                   theme.mode === 'dark'
                     ? '1px solid rgba(244, 67, 54, 0.3)'
-                    : '1px solid rgba(244, 67, 54, 0.3)',
+                    : '1px solid rgba(244, 67, 54, 0.3)'
               }}
             >
               {error}
@@ -284,13 +286,13 @@ const LoginStyled = () => {
                       edge="end"
                       sx={{
                         color:
-                          theme.mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)',
+                          theme.mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)'
                       }}
                     >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
-                ),
+                )
               }}
             />
             <GradientButton

@@ -1,18 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { DarkMode, LightMode } from '@mui/icons-material';
+import React, { useEffect, useRef, useState } from 'react';
+
 import {
-  GlobalStyles,
-  LoginContainer,
-  ParticlesContainer,
-  Particle,
-  ThemeToggleButton,
-  InteractiveBackground,
-  AnimatedGradient,
-  WaveEffect,
+    AnimatedGradient,
+    GlobalStyles,
+    InteractiveBackground,
+    LoginContainer,
+    Particle,
+    ParticlesContainer,
+    WaveEffect
 } from './LoginStyles';
 
-const LoginBackground = ({ isDark, onToggleDarkMode, children }) => {
+const LoginBackground = ({ isDark, children }) => {
   const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
   const containerRef = useRef(null);
 
@@ -27,7 +26,7 @@ const LoginBackground = ({ isDark, onToggleDarkMode, children }) => {
         size: Math.random() * 4 + 2,
         opacity: Math.random() * 0.6 + 0.2,
         duration: Math.random() * 10 + 5,
-        delay: Math.random() * 5,
+        delay: Math.random() * 5
       });
     }
     return particles;
@@ -57,10 +56,6 @@ const LoginBackground = ({ isDark, onToggleDarkMode, children }) => {
     <>
       <GlobalStyles />
       <LoginContainer $isDark={isDark} ref={containerRef}>
-        {/* Botão de troca de tema */}
-        <ThemeToggleButton $isDark={isDark} onClick={onToggleDarkMode} aria-label="toggle theme">
-          {isDark ? <LightMode /> : <DarkMode />}
-        </ThemeToggleButton>
 
         {/* Partículas dinâmicas */}
         <ParticlesContainer>
@@ -99,8 +94,7 @@ const LoginBackground = ({ isDark, onToggleDarkMode, children }) => {
 
 LoginBackground.propTypes = {
   isDark: PropTypes.bool.isRequired,
-  onToggleDarkMode: PropTypes.func.isRequired,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired
 };
 
 export default LoginBackground;

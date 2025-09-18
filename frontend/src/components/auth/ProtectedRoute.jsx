@@ -1,8 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
 import { CircularProgress, Box } from '@mui/material';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+
+import { useAuth } from '../../contexts/AuthContext';
+
 
 const ProtectedRoute = ({ children }) => {
   const { token, loading } = useAuth();
@@ -26,7 +28,7 @@ const ProtectedRoute = ({ children }) => {
 };
 
 ProtectedRoute.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired
 };
 
 export default ProtectedRoute;

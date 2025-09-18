@@ -1,33 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import {
-  Box,
-  Typography,
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  IconButton,
-  Alert,
-  CircularProgress,
-  Grid,
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import {
-  Add as AddIcon,
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  Help as HelpIcon,
+    Add as AddIcon,
+    Delete as DeleteIcon,
+    Edit as EditIcon,
+    Help as HelpIcon
 } from '@mui/icons-material';
+import {
+    Alert,
+    Box,
+    Button,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Grid,
+    IconButton,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    TextField,
+    Typography
+} from '@mui/material';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { suppliersAPI } from '../services/api';
 
 export default function Suppliers({ darkMode }) {
@@ -42,14 +43,14 @@ export default function Suppliers({ darkMode }) {
     email: '',
     telefone: '',
     cnpj: '',
-    observacoes: '',
+    observacoes: ''
   });
 
   useEffect(() => {
     fetchSuppliers();
   }, []);
 
-  const fetchSuppliers = async () => {
+  const fetchSuppliers = async() => {
     try {
       const response = await suppliersAPI.getAll();
       setSuppliers(response.data);
@@ -68,7 +69,7 @@ export default function Suppliers({ darkMode }) {
         email: supplier.email || '',
         telefone: supplier.telefone || '',
         cnpj: supplier.cnpj || '',
-        observacoes: supplier.observacoes || '',
+        observacoes: supplier.observacoes || ''
       });
     } else {
       setEditingSupplier(null);
@@ -77,13 +78,13 @@ export default function Suppliers({ darkMode }) {
         email: '',
         telefone: '',
         cnpj: '',
-        observacoes: '',
+        observacoes: ''
       });
     }
     setOpenDialog(true);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async() => {
     try {
       if (editingSupplier) {
         await suppliersAPI.update(editingSupplier.id, formData);
@@ -193,7 +194,7 @@ export default function Suppliers({ darkMode }) {
         </DialogTitle>
         <DialogContent>
           <Grid container spacing={2} sx={{ mt: 1 }}>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label={t('suppliers.supplierName')}
@@ -202,7 +203,7 @@ export default function Suppliers({ darkMode }) {
                 required
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label={t('suppliers.email')}
@@ -211,7 +212,7 @@ export default function Suppliers({ darkMode }) {
                 onChange={e => setFormData({ ...formData, email: e.target.value })}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label={t('suppliers.phone')}
@@ -219,7 +220,7 @@ export default function Suppliers({ darkMode }) {
                 onChange={e => setFormData({ ...formData, telefone: e.target.value })}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="CNPJ"
@@ -227,7 +228,7 @@ export default function Suppliers({ darkMode }) {
                 onChange={e => setFormData({ ...formData, cnpj: e.target.value })}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 multiline
@@ -251,5 +252,5 @@ export default function Suppliers({ darkMode }) {
 }
 
 Suppliers.propTypes = {
-  darkMode: PropTypes.bool.isRequired,
+  darkMode: PropTypes.bool.isRequired
 };

@@ -2,7 +2,14 @@ from datetime import datetime, timedelta
 from enum import Enum
 from typing import List, Optional
 
-from pydantic import BaseModel, EmailStr, Field, NonNegativeFloat, NonNegativeInt, PositiveInt
+from pydantic import (
+    BaseModel,
+    EmailStr,
+    Field,
+    NonNegativeFloat,
+    NonNegativeInt,
+    PositiveInt,
+)
 
 
 # Authentication Schemas
@@ -145,6 +152,7 @@ class Product(ProductBase):
     last_sale_date: Optional[datetime] = None
     criado_em: datetime
     atualizado_em: datetime
+    em_estoque_baixo: bool
 
     class Config:
         from_attributes = True
@@ -261,8 +269,8 @@ class PurchaseOrderItemOut(BaseModel):
     id: int
     produto_id: int
     quantidade_solicitada: int
+    quantidade_recebida: Optional[int] = 0
     preco_unitario: float
-    quantidade_recebida: int
     criado_em: datetime
     produto_nome: str
     produto_codigo: str
@@ -304,6 +312,8 @@ class PurchaseOrderOut(BaseModel):
     observacoes: Optional[str]
     criado_em: datetime
     aprovado_em: Optional[datetime]
+    rejeitado_em: Optional[datetime]
+    motivo_rejeicao: Optional[str]
     fornecedor_nome: str
     items: List[PurchaseOrderItemOut]
 

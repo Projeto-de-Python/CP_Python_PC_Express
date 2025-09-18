@@ -1,23 +1,24 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material';
-import { useAuth } from '../../contexts/AuthContext';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { useAuth } from '../../contexts/AuthContext';
+
 import LoginBackground from './LoginBackground';
-import LoginLeftPanel from './LoginLeftPanel';
 import LoginCard from './LoginCard';
+import LoginLeftPanel from './LoginLeftPanel';
 import { LoginWrapper, RightPanel } from './LoginStyles';
+import TeamMembers from './TeamMembers';
 
 const Login = ({ onToggleDarkMode }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
   const theme = useTheme();
 
-  const handleSubmit = async (email, password) => {
+  const handleSubmit = async(email, password) => {
     setError('');
     setLoading(true);
 
@@ -35,7 +36,8 @@ const Login = ({ onToggleDarkMode }) => {
   const isDark = theme.palette.mode === 'dark';
 
   return (
-    <LoginBackground isDark={isDark} onToggleDarkMode={onToggleDarkMode}>
+    <LoginBackground isDark={isDark}>
+      <TeamMembers isDark={isDark} />
       <LoginWrapper>
         <LoginLeftPanel isDark={isDark} />
 
@@ -48,7 +50,7 @@ const Login = ({ onToggleDarkMode }) => {
 };
 
 Login.propTypes = {
-  onToggleDarkMode: PropTypes.func.isRequired,
+  onToggleDarkMode: PropTypes.func.isRequired
 };
 
 export default Login;

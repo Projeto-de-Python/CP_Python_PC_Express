@@ -9,6 +9,7 @@ from .routers import (
     insights,
     products,
     purchase_orders,
+    simulation,
     stock,
     suppliers,
 )
@@ -20,6 +21,10 @@ app = FastAPI(
     title="PC Express API",
     description="API para gerenciamento de estoque de produtos de informática",
     version="1.0.0",
+    # Otimizações integradas do sistema
+    docs_url="/docs",
+    redoc_url="/redoc",
+    openapi_url="/openapi.json",
 )
 
 # Configuração CORS
@@ -46,6 +51,12 @@ app.include_router(alerts.router)
 app.include_router(purchase_orders.router)
 app.include_router(insights.router)
 app.include_router(auto_restock.router)
+app.include_router(simulation.router)
+
+
+@app.get("/")
+def root():
+    return {"message": "PC Express API", "version": "1.0.0", "status": "running"}
 
 
 @app.get("/health")

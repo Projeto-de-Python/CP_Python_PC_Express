@@ -1,37 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import {
-  Box,
-  Typography,
-  Card,
-  CardContent,
-  Grid,
-  Button,
-  Chip,
-  Alert,
-  CircularProgress,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  IconButton,
-  Tooltip,
-  Snackbar,
+    Alert,
+    Box,
+    Button,
+    Card,
+    CardContent,
+    Chip,
+    CircularProgress,
+    Grid,
+    IconButton,
+    Paper,
+    Snackbar,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Tooltip,
+    Typography
 } from '@mui/material';
-import { useTranslation } from 'react-i18next';
 import {
-  Package,
-  AlertTriangle,
-  Zap,
-  RefreshCw,
-  CheckCircle,
-  Clock,
-  DollarSign,
-  HelpCircle,
+    AlertTriangle,
+    CheckCircle,
+    Clock,
+    DollarSign,
+    HelpCircle,
+    Package,
+    RefreshCw,
+    Zap
 } from 'lucide-react';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { autoRestockAPI } from '../services/api.jsx';
 
 export default function AutoRestock({ darkMode }) {
@@ -47,9 +48,14 @@ export default function AutoRestock({ darkMode }) {
 
   useEffect(() => {
     fetchData();
+
+    // Auto-refresh every 30 seconds
+    const interval = setInterval(fetchData, 30000);
+
+    return () => clearInterval(interval);
   }, []);
 
-  const fetchData = async () => {
+  const fetchData = async() => {
     try {
       setLoading(true);
       setError(null);
@@ -63,7 +69,7 @@ export default function AutoRestock({ darkMode }) {
     }
   };
 
-  const handleRestockAll = async () => {
+  const handleRestockAll = async() => {
     try {
       setProcessingRestock(true);
 
@@ -74,12 +80,12 @@ export default function AutoRestock({ darkMode }) {
 
       const response = await autoRestockAPI.restockAll();
       setSuccessMessage(
-        `Successfully created ${response.data.orders_created} restock orders worth $${response.data.total_value.toFixed(2)}`
+        `Successfully restocked ${response.data.products_restocked} products worth $${response.data.total_value.toFixed(2)}`
       );
       setShowSuccess(true);
       fetchData(); // Refresh data
     } catch {
-      setError('Failed to create restock orders. Please try again.');
+      setError('Failed to restock products. Please try again.');
     } finally {
       setProcessingRestock(false);
     }
@@ -108,6 +114,8 @@ export default function AutoRestock({ darkMode }) {
         return 'warning';
       case 'medium':
         return 'info';
+      case 'low':
+        return 'success';
       default:
         return 'default';
     }
@@ -121,6 +129,8 @@ export default function AutoRestock({ darkMode }) {
         return <Clock size={16} />;
       case 'medium':
         return <Package size={16} />;
+      case 'low':
+        return <CheckCircle size={16} />;
       default:
         return <Package size={16} />;
     }
@@ -145,7 +155,7 @@ export default function AutoRestock({ darkMode }) {
             background: 'linear-gradient(45deg, #ff6b35, #f7931e)',
             backgroundClip: 'text',
             WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            WebkitTextFillColor: 'transparent'
           }}
         >
           {t('autoRestock.title')}
@@ -157,7 +167,7 @@ export default function AutoRestock({ darkMode }) {
               sx={{
                 background: 'linear-gradient(45deg, #ff6b35, #f7931e)',
                 color: 'white',
-                '&:hover': { background: 'linear-gradient(45deg, #e55a2b, #e8851a)' },
+                '&:hover': { background: 'linear-gradient(45deg, #e55a2b, #e8851a)' }
               }}
             >
               <RefreshCw size={20} />
@@ -171,7 +181,7 @@ export default function AutoRestock({ darkMode }) {
             sx={{
               background: 'linear-gradient(45deg, #ff6b35, #f7931e)',
               '&:hover': { background: 'linear-gradient(45deg, #e55a2b, #e8851a)' },
-              '&:disabled': { background: 'rgba(0,0,0,0.12)' },
+              '&:disabled': { background: 'rgba(0,0,0,0.12)' }
             }}
           >
             {processingRestock ? t('common.loading') : t('autoRestock.restockAll')}
@@ -188,7 +198,7 @@ export default function AutoRestock({ darkMode }) {
       {/* Summary Cards */}
       {stockAnalysis && (
         <Grid container spacing={3} mb={3}>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Card
               sx={{
                 background: darkMode
@@ -196,7 +206,7 @@ export default function AutoRestock({ darkMode }) {
                   : 'linear-gradient(135deg, #fff5f2 0%, #ffe8d6 100%)',
                 border: darkMode
                   ? '1px solid rgba(255,255,255,0.1)'
-                  : '1px solid rgba(255,107,53,0.2)',
+                  : '1px solid rgba(255,107,53,0.2)'
               }}
             >
               <CardContent>
@@ -221,7 +231,7 @@ export default function AutoRestock({ darkMode }) {
                       height: 48,
                       borderRadius: '50%',
                       background: 'rgba(211, 47, 47, 0.1)',
-                      border: '1px solid rgba(211, 47, 47, 0.3)',
+                      border: '1px solid rgba(211, 47, 47, 0.3)'
                     }}
                   >
                     <AlertTriangle size={24} color="#d32f2f" />
@@ -231,7 +241,7 @@ export default function AutoRestock({ darkMode }) {
             </Card>
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Card
               sx={{
                 background: darkMode
@@ -239,7 +249,7 @@ export default function AutoRestock({ darkMode }) {
                   : 'linear-gradient(135deg, #fff5f2 0%, #ffe8d6 100%)',
                 border: darkMode
                   ? '1px solid rgba(255,255,255,0.1)'
-                  : '1px solid rgba(255,107,53,0.2)',
+                  : '1px solid rgba(255,107,53,0.2)'
               }}
             >
               <CardContent>
@@ -264,7 +274,7 @@ export default function AutoRestock({ darkMode }) {
                       height: 48,
                       borderRadius: '50%',
                       background: 'rgba(237, 108, 2, 0.1)',
-                      border: '1px solid rgba(237, 108, 2, 0.3)',
+                      border: '1px solid rgba(237, 108, 2, 0.3)'
                     }}
                   >
                     <Clock size={24} color="#ed6c02" />
@@ -274,7 +284,7 @@ export default function AutoRestock({ darkMode }) {
             </Card>
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Card
               sx={{
                 background: darkMode
@@ -282,7 +292,7 @@ export default function AutoRestock({ darkMode }) {
                   : 'linear-gradient(135deg, #fff5f2 0%, #ffe8d6 100%)',
                 border: darkMode
                   ? '1px solid rgba(255,255,255,0.1)'
-                  : '1px solid rgba(255,107,53,0.2)',
+                  : '1px solid rgba(255,107,53,0.2)'
               }}
             >
               <CardContent>
@@ -307,7 +317,7 @@ export default function AutoRestock({ darkMode }) {
                       height: 48,
                       borderRadius: '50%',
                       background: 'rgba(2, 136, 209, 0.1)',
-                      border: '1px solid rgba(2, 136, 209, 0.3)',
+                      border: '1px solid rgba(2, 136, 209, 0.3)'
                     }}
                   >
                     <Package size={24} color="#0288d1" />
@@ -317,7 +327,7 @@ export default function AutoRestock({ darkMode }) {
             </Card>
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Card
               sx={{
                 background: darkMode
@@ -325,7 +335,50 @@ export default function AutoRestock({ darkMode }) {
                   : 'linear-gradient(135deg, #fff5f2 0%, #ffe8d6 100%)',
                 border: darkMode
                   ? '1px solid rgba(255,255,255,0.1)'
-                  : '1px solid rgba(255,107,53,0.2)',
+                  : '1px solid rgba(255,107,53,0.2)'
+              }}
+            >
+              <CardContent>
+                <Box display="flex" alignItems="center" justifyContent="space-between">
+                  <Box>
+                    <Typography variant="h4" fontWeight="bold" color="success.main">
+                      {stockAnalysis.low_count || 0}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)' }}
+                    >
+                      Low Priority
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      borderRadius: '50%',
+                      background: 'rgba(46, 125, 50, 0.1)',
+                      border: '1px solid rgba(46, 125, 50, 0.3)'
+                    }}
+                  >
+                    <CheckCircle size={24} color="#2e7d32" />
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Card
+              sx={{
+                background: darkMode
+                  ? 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)'
+                  : 'linear-gradient(135deg, #fff5f2 0%, #ffe8d6 100%)',
+                border: darkMode
+                  ? '1px solid rgba(255,255,255,0.1)'
+                  : '1px solid rgba(255,107,53,0.2)'
               }}
             >
               <CardContent>
@@ -350,7 +403,7 @@ export default function AutoRestock({ darkMode }) {
                       height: 48,
                       borderRadius: '50%',
                       background: 'rgba(46, 125, 50, 0.1)',
-                      border: '1px solid rgba(46, 125, 50, 0.3)',
+                      border: '1px solid rgba(46, 125, 50, 0.3)'
                     }}
                   >
                     <DollarSign size={24} color="#2e7d32" />
@@ -369,7 +422,7 @@ export default function AutoRestock({ darkMode }) {
             background: darkMode
               ? 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)'
               : 'linear-gradient(135deg, #fff5f2 0%, #ffe8d6 100%)',
-            border: darkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(255,107,53,0.2)',
+            border: darkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(255,107,53,0.2)'
           }}
         >
           <CardContent>
@@ -396,7 +449,7 @@ export default function AutoRestock({ darkMode }) {
               sx={{
                 borderRadius: 2,
                 overflow: 'hidden',
-                background: darkMode ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.8)',
+                background: darkMode ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.8)'
               }}
             >
               <Table>
@@ -424,8 +477,8 @@ export default function AutoRestock({ darkMode }) {
                         '&:hover': {
                           background: darkMode
                             ? 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.05) 100%)'
-                            : 'linear-gradient(135deg, #fff5f2 0%, #ffe8d6 100%)',
-                        },
+                            : 'linear-gradient(135deg, #fff5f2 0%, #ffe8d6 100%)'
+                        }
                       }}
                     >
                       <TableCell>
@@ -494,8 +547,8 @@ export default function AutoRestock({ darkMode }) {
                             color: '#ff6b35',
                             '&:hover': {
                               borderColor: '#e55a2b',
-                              backgroundColor: 'rgba(255,107,53,0.1)',
-                            },
+                              backgroundColor: 'rgba(255,107,53,0.1)'
+                            }
                           }}
                         >
                           {restockingProduct === item.product.id ? (
@@ -518,7 +571,7 @@ export default function AutoRestock({ darkMode }) {
             background: darkMode
               ? 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)'
               : 'linear-gradient(135deg, #fff5f2 0%, #ffe8d6 100%)',
-            border: darkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(255,107,53,0.2)',
+            border: darkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(255,107,53,0.2)'
           }}
         >
           <CardContent>
@@ -532,7 +585,7 @@ export default function AutoRestock({ darkMode }) {
                 sx={{
                   mt: 1,
                   color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)',
-                  textAlign: 'center',
+                  textAlign: 'center'
                 }}
               >
                 No products need restocking at the moment. Your inventory is in good shape.
@@ -558,5 +611,5 @@ export default function AutoRestock({ darkMode }) {
 }
 
 AutoRestock.propTypes = {
-  darkMode: PropTypes.bool.isRequired,
+  darkMode: PropTypes.bool.isRequired
 };

@@ -29,6 +29,20 @@
     "clickToExpand": "Clique para expandir",
     "clickToMinimize": "Clique para minimizar"
   },
+  "tour": {
+    "previous": "Anterior",
+    "next": "Próximo",
+    "finish": "Finalizar",
+    "waiting": "Aguardando interação...",
+    "step": "Passo",
+    "of": "de",
+    "play": "Reproduzir",
+    "pause": "Pausar",
+    "skipToEnd": "Pular para o Final",
+    "restart": "Reiniciar",
+    "interactiveMode": "Modo Interativo",
+    "interactWithElement": "Por favor, interaja com o elemento destacado para continuar"
+  },
   "auth": {
     "login": "Entrar",
     "register": "Cadastrar",

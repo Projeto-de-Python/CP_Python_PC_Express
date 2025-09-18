@@ -1,25 +1,26 @@
-import React, { useState, useEffect } from 'react';
 import {
-  Box,
-  Typography,
-  Card,
-  CardContent,
-  Grid,
-  Chip,
-  Alert,
-  CircularProgress,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Button,
-  IconButton,
+    Alert,
+    Box,
+    Button,
+    Card,
+    CardContent,
+    Chip,
+    CircularProgress,
+    Grid,
+    IconButton,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography
 } from '@mui/material';
+import { AlertTriangle, HelpCircle, Package } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AlertTriangle, Package, HelpCircle } from 'lucide-react';
+
 import { alertsAPI } from '../services/api';
 
 export default function Alerts() {
@@ -45,7 +46,7 @@ export default function Alerts() {
     };
   }, []);
 
-  const fetchLowStockAlerts = async () => {
+  const fetchLowStockAlerts = async() => {
     try {
       const response = await alertsAPI.getLowStock();
       setLowStockProducts(response.data);
@@ -57,14 +58,22 @@ export default function Alerts() {
   };
 
   const getStockStatusColor = product => {
-    if (product.quantidade === 0) return 'error';
-    if (product.quantidade <= product.estoque_minimo / 2) return 'error';
+    if (product.quantidade === 0) {
+return 'error';
+}
+    if (product.quantidade <= product.estoque_minimo / 2) {
+return 'error';
+}
     return 'warning';
   };
 
   const getStockStatusText = product => {
-    if (product.quantidade === 0) return t('products.outOfStock');
-    if (product.quantidade <= product.estoque_minimo / 2) return 'Critical';
+    if (product.quantidade === 0) {
+return t('products.outOfStock');
+}
+    if (product.quantidade <= product.estoque_minimo / 2) {
+return 'Critical';
+}
     return t('products.lowStock');
   };
 
@@ -116,7 +125,7 @@ export default function Alerts() {
         <>
           {/* Summary Cards */}
           <Grid container spacing={3} sx={{ mb: 4 }}>
-            <Grid item xs={12} sm={4}>
+            <Grid size={{ xs: 12, sm: 4 }}>
               <Card>
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>
@@ -128,7 +137,7 @@ export default function Alerts() {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid size={{ xs: 12, sm: 4 }}>
               <Card>
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>
@@ -140,7 +149,7 @@ export default function Alerts() {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid size={{ xs: 12, sm: 4 }}>
               <Card>
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>

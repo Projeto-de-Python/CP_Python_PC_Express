@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Typography } from '@mui/material';
 import { Computer } from 'lucide-react';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  LoginCard as StyledLoginCard,
-  LogoSection,
-  FormLogoContainer,
-  FormComputer,
-  GradientTitle,
-  SubTitle,
-  HoverEffect,
-} from './LoginStyles';
+
 import LoginForm from './LoginForm';
+import {
+    FormComputer,
+    FormLogoContainer,
+    GradientTitle,
+    HoverEffect,
+    LogoSection,
+    LoginCard as StyledLoginCard,
+    SubTitle
+} from './LoginStyles';
 
 const LoginCard = ({ isDark, onSubmit, loading, error }) => {
   const { t } = useTranslation();
@@ -33,11 +33,11 @@ const LoginCard = ({ isDark, onSubmit, loading, error }) => {
           </FormComputer>
         </FormLogoContainer>
 
-        <GradientTitle variant="h4" component="h2" gutterBottom $isDark={isDark}>
+        <GradientTitle $isDark={isDark}>
           Bem-vindo de volta
         </GradientTitle>
 
-        <SubTitle variant="h6" $isDark={isDark}>
+        <SubTitle $isDark={isDark}>
           {t('auth.login')}
         </SubTitle>
       </LogoSection>
@@ -51,7 +51,7 @@ LoginCard.propTypes = {
   isDark: PropTypes.bool.isRequired,
   onSubmit: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
-  error: PropTypes.string,
+  error: PropTypes.string
 };
 
 export default LoginCard;

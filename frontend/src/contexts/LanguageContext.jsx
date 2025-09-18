@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const LanguageContext = createContext();
@@ -33,12 +33,12 @@ export const LanguageProvider = ({ children }) => {
 
   const value = {
     currentLanguage,
-    changeLanguage,
+    changeLanguage
   };
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 };
 
 LanguageProvider.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired
 };

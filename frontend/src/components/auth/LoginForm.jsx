@@ -1,23 +1,22 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import {
-  TextField,
-  Button,
-  Alert,
-  CircularProgress,
-  Link,
-  IconButton,
-  InputAdornment,
-} from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Link as RouterLink } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import {
-  StyledTextField,
-  GradientButton,
-  StyledLink,
-  DemoCredentials,
-  DemoText,
+    Alert,
+    CircularProgress,
+    IconButton,
+    InputAdornment,
+    TextField
+} from '@mui/material';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link as RouterLink } from 'react-router-dom';
+
+import {
+    DemoCredentials,
+    DemoText,
+    GradientButton,
+    StyledLink,
+    StyledTextField
 } from './LoginStyles';
 
 const LoginForm = ({ isDark, onSubmit, loading, error }) => {
@@ -45,7 +44,7 @@ const LoginForm = ({ isDark, onSubmit, loading, error }) => {
             background: isDark ? 'rgba(244, 67, 54, 0.1)' : 'rgba(244, 67, 54, 0.1)',
             border: isDark
               ? '1px solid rgba(244, 67, 54, 0.3)'
-              : '1px solid rgba(244, 67, 54, 0.3)',
+              : '1px solid rgba(244, 67, 54, 0.3)'
           }}
         >
           {error}
@@ -93,22 +92,20 @@ const LoginForm = ({ isDark, onSubmit, loading, error }) => {
                         color: isDark ? 'rgba(0, 255, 255, 0.9)' : 'rgba(0, 255, 255, 0.8)',
                         backgroundColor: isDark
                           ? 'rgba(0, 255, 255, 0.15)'
-                          : 'rgba(0, 255, 255, 0.1)',
-                      },
+                          : 'rgba(0, 255, 255, 0.1)'
+                      }
                     }}
                   >
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
-              ),
+              )
             }}
           />
         </StyledTextField>
 
         <GradientButton
           type="submit"
-          fullWidth
-          variant="contained"
           disabled={loading}
           $isDark={isDark}
         >
@@ -116,14 +113,14 @@ const LoginForm = ({ isDark, onSubmit, loading, error }) => {
         </GradientButton>
 
         <div style={{ textAlign: 'center' }}>
-          <StyledLink component={RouterLink} to="/register" variant="body2" $isDark={isDark}>
+          <StyledLink as={RouterLink} to="/register" $isDark={isDark}>
             {t('auth.dontHaveAccount')}
           </StyledLink>
         </div>
       </form>
 
       <DemoCredentials $isDark={isDark}>
-        <DemoText variant="body2" $isDark={isDark}>
+        <DemoText $isDark={isDark}>
           <strong>Demo Credentials:</strong>
           <br />
           Email: admin@pc-express.com
@@ -139,7 +136,7 @@ LoginForm.propTypes = {
   isDark: PropTypes.bool.isRequired,
   onSubmit: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
-  error: PropTypes.string,
+  error: PropTypes.string
 };
 
 export default LoginForm;

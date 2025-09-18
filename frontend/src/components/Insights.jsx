@@ -1,43 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { ExpandMore } from '@mui/icons-material';
 import {
-  Box,
-  Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Chip,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Alert,
-  CircularProgress,
-  Card,
-  CardContent,
-  Grid,
-  LinearProgress,
-  Tabs,
-  Tab,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Alert,
+    Box,
+    Button,
+    Card,
+    CardContent,
+    Chip,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Grid,
+    LinearProgress,
+    Paper,
+    Tab,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Tabs,
+    Typography
 } from '@mui/material';
 import {
-  TrendingUp,
-  Package,
-  DollarSign,
-  RefreshCw,
-  Database,
-  AlertTriangle as Warning,
-  Brain,
+    Brain,
+    Database,
+    DollarSign,
+    Package,
+    RefreshCw,
+    TrendingUp,
+    AlertTriangle as Warning
 } from 'lucide-react';
-import { ExpandMore } from '@mui/icons-material';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+
 import { insightsAPI } from '../services/api.jsx';
 
 export default function Insights() {
@@ -71,7 +72,7 @@ export default function Insights() {
     };
   }, []);
 
-  const fetchData = async () => {
+  const fetchData = async() => {
     try {
       setLoading(true);
       setError(null);
@@ -85,7 +86,7 @@ export default function Insights() {
         low_stock_products: [],
         total_low_stock: 0,
         critical_count: 0,
-        high_count: 0,
+        high_count: 0
       });
     } catch (error) {
       setError(
@@ -96,7 +97,7 @@ export default function Insights() {
     }
   };
 
-  const generateSalesData = async (days = 30) => {
+  const generateSalesData = async(days = 30) => {
     try {
       setGeneratingData(true);
       const response = await insightsAPI.generateSalesData(days);
@@ -118,7 +119,7 @@ export default function Insights() {
       const response = await insightsAPI.getMLProductInsights(productId);
       setMlInsights(prev => ({
         ...prev,
-        [productId]: response.data,
+        [productId]: response.data
       }));
     } catch {
       alert('Failed to load ML insights. Please try again.');
@@ -133,7 +134,9 @@ export default function Insights() {
 
   // ML Insights Components
   const MLInsightsCard = ({ insights }) => {
-    if (!insights) return null;
+    if (!insights) {
+return null;
+}
 
     return (
       <Card sx={{ mb: 2 }}>
@@ -153,25 +156,25 @@ export default function Insights() {
               </AccordionSummary>
               <AccordionDetails>
                 <Grid container spacing={2}>
-                  <Grid item xs={6} md={3}>
+                  <Grid size={{ xs: 6, md: 3 }}>
                     <Typography variant="body2">
                       <strong>Avg Daily Demand:</strong>{' '}
                       {insights.demand_prediction.avg_daily_demand?.toFixed(2)} units
                     </Typography>
                   </Grid>
-                  <Grid item xs={6} md={3}>
+                  <Grid size={{ xs: 6, md: 3 }}>
                     <Typography variant="body2">
                       <strong>Total Predicted:</strong>{' '}
                       {insights.demand_prediction.total_predicted_demand?.toFixed(0)} units
                     </Typography>
                   </Grid>
-                  <Grid item xs={6} md={3}>
+                  <Grid size={{ xs: 6, md: 3 }}>
                     <Typography variant="body2">
                       <strong>Model Accuracy:</strong>{' '}
                       {(insights.demand_prediction.model_accuracy * 100).toFixed(1)}%
                     </Typography>
                   </Grid>
-                  <Grid item xs={6} md={3}>
+                  <Grid size={{ xs: 6, md: 3 }}>
                     <Typography variant="body2">
                       <strong>Data Points:</strong>{' '}
                       {insights.demand_prediction.historical_data_points}
@@ -192,24 +195,24 @@ export default function Insights() {
               </AccordionSummary>
               <AccordionDetails>
                 <Grid container spacing={2}>
-                  <Grid item xs={6} md={3}>
+                  <Grid size={{ xs: 6, md: 3 }}>
                     <Typography variant="body2">
                       <strong>Current Price:</strong> R$ {insights.price_optimization.current_price}
                     </Typography>
                   </Grid>
-                  <Grid item xs={6} md={3}>
+                  <Grid size={{ xs: 6, md: 3 }}>
                     <Typography variant="body2">
                       <strong>Optimal Price:</strong> R$ {insights.price_optimization.optimal_price}
                     </Typography>
                   </Grid>
                   {insights.price_optimization.revenue_increase > 0 && (
-                    <Grid item xs={12}>
+                    <Grid size={{ xs: 12 }}>
                       <Alert severity="success">
                         +{insights.price_optimization.revenue_increase}% revenue potential
                       </Alert>
                     </Grid>
                   )}
-                  <Grid item xs={6} md={3}>
+                  <Grid size={{ xs: 6, md: 3 }}>
                     <Typography variant="body2">
                       <strong>Model Accuracy:</strong>{' '}
                       {(insights.price_optimization.model_accuracy * 100).toFixed(1)}%
@@ -230,23 +233,23 @@ export default function Insights() {
               </AccordionSummary>
               <AccordionDetails>
                 <Grid container spacing={2}>
-                  <Grid item xs={6} md={3}>
+                  <Grid size={{ xs: 6, md: 3 }}>
                     <Typography variant="body2">
                       <strong>Current Stock:</strong> {insights.stock_optimization.current_stock}
                     </Typography>
                   </Grid>
-                  <Grid item xs={6} md={3}>
+                  <Grid size={{ xs: 6, md: 3 }}>
                     <Typography variant="body2">
                       <strong>Reorder Point:</strong> {insights.stock_optimization.reorder_point}
                     </Typography>
                   </Grid>
-                  <Grid item xs={6} md={3}>
+                  <Grid size={{ xs: 6, md: 3 }}>
                     <Typography variant="body2">
                       <strong>Stock Coverage:</strong>{' '}
                       {insights.stock_optimization.stock_cover_days} days
                     </Typography>
                   </Grid>
-                  <Grid item xs={6} md={3}>
+                  <Grid size={{ xs: 6, md: 3 }}>
                     <Typography variant="body2">
                       <strong>Optimal Stock:</strong> {insights.stock_optimization.optimal_stock}
                     </Typography>
@@ -304,7 +307,7 @@ export default function Insights() {
   };
 
   MLInsightsCard.propTypes = {
-    insights: PropTypes.object.isRequired,
+    insights: PropTypes.object.isRequired
   };
 
   if (loading) {
@@ -367,30 +370,30 @@ export default function Insights() {
       {/* Overview Tab */}
       {activeTab === 0 && overview && (
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Card>
               <CardContent>
                 <Typography variant="h6" mb={2}>
                   📦 Inventory Summary
                 </Typography>
                 <Grid container spacing={2}>
-                  <Grid item xs={6} md={3}>
+                  <Grid size={{ xs: 6, md: 3 }}>
                     <Typography variant="body2">
                       <strong>Total Products:</strong> {overview.inventory_summary.total_products}
                     </Typography>
                   </Grid>
-                  <Grid item xs={6} md={3}>
+                  <Grid size={{ xs: 6, md: 3 }}>
                     <Typography variant="body2">
                       <strong>Total Value:</strong> R${' '}
                       {overview.inventory_summary.total_stock_value?.toFixed(2)}
                     </Typography>
                   </Grid>
-                  <Grid item xs={6} md={3}>
+                  <Grid size={{ xs: 6, md: 3 }}>
                     <Typography variant="body2">
                       <strong>Low Stock:</strong> {overview.inventory_summary.low_stock_count}
                     </Typography>
                   </Grid>
-                  <Grid item xs={6} md={3}>
+                  <Grid size={{ xs: 6, md: 3 }}>
                     <Typography variant="body2">
                       <strong>Out of Stock:</strong> {overview.inventory_summary.out_of_stock_count}
                     </Typography>
@@ -411,25 +414,25 @@ export default function Insights() {
             </Card>
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Card>
               <CardContent>
                 <Typography variant="h6" mb={2}>
                   💰 Sales Analysis (30 days)
                 </Typography>
                 <Grid container spacing={2}>
-                  <Grid item xs={6} md={4}>
+                  <Grid size={{ xs: 6, md: 4 }}>
                     <Typography variant="body2">
                       <strong>Total Sales:</strong> {overview.sales_analysis.total_sales}
                     </Typography>
                   </Grid>
-                  <Grid item xs={6} md={4}>
+                  <Grid size={{ xs: 6, md: 4 }}>
                     <Typography variant="body2">
                       <strong>Total Value:</strong> R${' '}
                       {overview.sales_analysis.total_sales_value?.toFixed(2)}
                     </Typography>
                   </Grid>
-                  <Grid item xs={6} md={4}>
+                  <Grid size={{ xs: 6, md: 4 }}>
                     <Typography variant="body2">
                       <strong>Avg Sale:</strong> R${' '}
                       {overview.sales_analysis.average_sale_value?.toFixed(2)}
@@ -440,7 +443,7 @@ export default function Insights() {
             </Card>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <Card>
               <CardContent>
                 <Typography variant="h6" mb={2}>
@@ -512,7 +515,7 @@ export default function Insights() {
           </Typography>
 
           <Grid container spacing={2} mb={2}>
-            <Grid item xs={4} md={4}>
+            <Grid size={{ xs: 4, md: 4 }}>
               <Card>
                 <CardContent>
                   <Typography variant="h4" color="error">
@@ -522,7 +525,7 @@ export default function Insights() {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={4} md={4}>
+            <Grid size={{ xs: 4, md: 4 }}>
               <Card>
                 <CardContent>
                   <Typography variant="h4" color="warning.main">
@@ -532,7 +535,7 @@ export default function Insights() {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={4} md={4}>
+            <Grid size={{ xs: 4, md: 4 }}>
               <Card>
                 <CardContent>
                   <Typography variant="h4" color="info.main">
@@ -602,27 +605,27 @@ export default function Insights() {
         <DialogContent>
           {productInsights && (
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <Card>
                   <CardContent>
                     <Typography variant="h6">Product Information</Typography>
                     <Grid container spacing={2}>
-                      <Grid item xs={6} md={6}>
+                      <Grid size={{ xs: 6, md: 6 }}>
                         <Typography variant="body2">
                           <strong>Code:</strong> {productInsights.product.codigo}
                         </Typography>
                       </Grid>
-                      <Grid item xs={6} md={6}>
+                      <Grid size={{ xs: 6, md: 6 }}>
                         <Typography variant="body2">
                           <strong>Category:</strong> {productInsights.product.categoria}
                         </Typography>
                       </Grid>
-                      <Grid item xs={6} md={6}>
+                      <Grid size={{ xs: 6, md: 6 }}>
                         <Typography variant="body2">
                           <strong>Stock:</strong> {productInsights.product.quantidade}
                         </Typography>
                       </Grid>
-                      <Grid item xs={6} md={6}>
+                      <Grid size={{ xs: 6, md: 6 }}>
                         <Typography variant="body2">
                           <strong>Price:</strong> R$ {productInsights.product.preco}
                         </Typography>
@@ -632,30 +635,30 @@ export default function Insights() {
                 </Card>
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <Card>
                   <CardContent>
                     <Typography variant="h6">Sales Analysis (30 days)</Typography>
                     <Grid container spacing={2}>
-                      <Grid item xs={6} md={3}>
+                      <Grid size={{ xs: 6, md: 3 }}>
                         <Typography variant="body2">
                           <strong>Total Sold:</strong>{' '}
                           {productInsights.sales_analysis.total_sold_30d}
                         </Typography>
                       </Grid>
-                      <Grid item xs={6} md={3}>
+                      <Grid size={{ xs: 6, md: 3 }}>
                         <Typography variant="body2">
                           <strong>Sales Value:</strong> R${' '}
                           {productInsights.sales_analysis.total_sales_value_30d?.toFixed(2)}
                         </Typography>
                       </Grid>
-                      <Grid item xs={6} md={3}>
+                      <Grid size={{ xs: 6, md: 3 }}>
                         <Typography variant="body2">
                           <strong>Avg Sale Qty:</strong>{' '}
                           {productInsights.sales_analysis.average_sale_quantity?.toFixed(2)}
                         </Typography>
                       </Grid>
-                      <Grid item xs={6} md={3}>
+                      <Grid size={{ xs: 6, md: 3 }}>
                         <Typography variant="body2">
                           <strong>Sales Count:</strong> {productInsights.sales_analysis.sales_count}
                         </Typography>
@@ -665,7 +668,7 @@ export default function Insights() {
                 </Card>
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <Card>
                   <CardContent>
                     <Typography variant="h6">Price Analysis</Typography>
@@ -686,7 +689,7 @@ export default function Insights() {
                 </Card>
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <Card>
                   <CardContent>
                     <Typography variant="h6">Recommendations</Typography>

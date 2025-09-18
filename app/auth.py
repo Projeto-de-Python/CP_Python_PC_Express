@@ -58,18 +58,24 @@ def verify_token(token: str, credentials_exception: HTTPException) -> TokenData:
         raise credentials_exception
 
 
-def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:
+def get_current_user(
+    token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
+) -> User:
     """Get the current authenticated user."""
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
-    token_data = verify_token(token, credentials_exception)
-    user = db.query(User).filter(User.email == token_data.email).first()
-    if user is None:
+
+    try:
+        token_data = verify_token(token, credentials_exception)
+        user = db.query(User).filter(User.email == token_data.email).first()
+        if user is None:
+            raise credentials_exception
+        return user
+    except Exception:
         raise credentials_exception
-    return user
 
 
 def get_current_active_user(current_user: User = Depends(get_current_user)) -> User:

@@ -1,52 +1,56 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import {
-  Box,
-  AppBar,
-  Toolbar,
-  Typography,
-  IconButton,
-  Drawer,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Avatar,
-  Menu,
-  MenuItem,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  Switch,
-  FormControlLabel,
-  Chip,
-  Divider,
-  Select,
-  FormControl,
-  InputLabel,
+    AppBar,
+    Avatar,
+    Box,
+    Button,
+    Chip,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Divider,
+    Drawer,
+    FormControl,
+    FormControlLabel,
+    IconButton,
+    InputLabel,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Menu,
+    MenuItem,
+    Select,
+    Switch,
+    Toolbar,
+    Typography
 } from '@mui/material';
 import {
-  Menu as MenuIcon,
-  Activity,
-  Package,
-  Users,
-  ShoppingCart,
-  BarChart3,
-  AlertTriangle,
-  Sparkles,
-  Settings,
-  LogOut,
-  User,
-  Moon,
-  Sun,
-  HelpCircle,
+    Activity,
+    AlertTriangle,
+    BarChart3,
+    LogOut,
+    Menu as MenuIcon,
+    Moon,
+    Package,
+    PlayCircle,
+    Settings,
+    ShoppingCart,
+    Sparkles,
+    Sun,
+    User,
+    Users
 } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useTour } from '../contexts/TourContext';
+import AppTour from './Tour/Tour';
+
 
 const drawerWidth = 0; // No left sidebar
 
@@ -60,6 +64,7 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
   const { user, logout } = useAuth();
   const { t } = useTranslation();
   const { currentLanguage, changeLanguage } = useLanguage();
+  const { startTour } = useTour();
 
   const menuItems = [
     { text: t('common.dashboard'), icon: <Activity size={20} />, path: '/' },
@@ -68,11 +73,11 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
     {
       text: t('common.purchaseOrders'),
       icon: <ShoppingCart size={20} />,
-      path: '/purchase-orders',
+      path: '/purchase-orders'
     },
     { text: t('common.insights'), icon: <BarChart3 size={20} />, path: '/insights' },
     { text: t('common.alerts'), icon: <AlertTriangle size={20} />, path: '/alerts' },
-    { text: t('common.autoRestock'), icon: <Sparkles size={20} />, path: '/auto-restock' },
+    { text: t('common.autoRestock'), icon: <Sparkles size={20} />, path: '/auto-restock' }
   ];
 
   const handleDrawerToggle = () => {
@@ -126,7 +131,7 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
             backgroundClip: 'text',
             WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            WebkitTextFillColor: 'transparent'
           }}
         >
           PC Express
@@ -142,9 +147,9 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
               backgroundColor:
                 location.pathname === item.path ? 'rgba(102, 126, 234, 0.1)' : 'transparent',
               '&:hover': {
-                backgroundColor: 'rgba(102, 126, 234, 0.05)',
+                backgroundColor: 'rgba(102, 126, 234, 0.05)'
               },
-              cursor: 'pointer',
+              cursor: 'pointer'
             }}
           >
             <ListItemIcon sx={{ color: location.pathname === item.path ? '#667eea' : 'inherit' }}>
@@ -154,7 +159,7 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
               primary={item.text}
               sx={{
                 color: location.pathname === item.path ? '#667eea' : 'inherit',
-                fontWeight: location.pathname === item.path ? 'bold' : 'normal',
+                fontWeight: location.pathname === item.path ? 'bold' : 'normal'
               }}
             />
           </ListItem>
@@ -178,7 +183,7 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
           borderBottom: darkMode
             ? '1px solid rgba(255,255,255,0.1)'
             : '1px solid rgba(255,255,255,0.2)',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
         }}
       >
         <Toolbar sx={{ justifyContent: 'space-between' }}>
@@ -202,7 +207,7 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
                 backgroundClip: 'text',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-                display: { xs: 'none', sm: 'block' },
+                display: { xs: 'none', sm: 'block' }
               }}
             >
               PC Express
@@ -210,7 +215,7 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
           </Box>
 
           {/* Center - Navigation Menu */}
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1 }}>
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1 }} data-tour="navigation">
             {menuItems.map(item => (
               <Button
                 key={item.text}
@@ -226,12 +231,12 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
                     background:
                       location.pathname === item.path
                         ? 'rgba(255,255,255,0.3)'
-                        : 'rgba(255,255,255,0.1)',
+                        : 'rgba(255,255,255,0.1)'
                   },
                   textTransform: 'none',
                   fontWeight: location.pathname === item.path ? 'bold' : 'normal',
                   minWidth: 'auto',
-                  px: 2,
+                  px: 2
                 }}
               >
                 {item.text}
@@ -241,6 +246,21 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
 
           {/* Right side - User controls */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            {/* Tour Button */}
+            <IconButton
+              onClick={startTour}
+              sx={{
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 255, 255, 0.1)',
+                  color: '#00ffff'
+                }
+              }}
+              title="Iniciar Tour"
+            >
+              <PlayCircle size={20} />
+            </IconButton>
+
             {/* User Email Display */}
             {user && (
               <Chip
@@ -250,8 +270,8 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
                   color: 'white',
                   background: 'rgba(255,255,255,0.2)',
                   '& .MuiChip-label': {
-                    color: 'white',
-                  },
+                    color: 'white'
+                  }
                 }}
               />
             )}
@@ -263,9 +283,9 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
                 color: 'white',
                 '&:hover': {
                   background: 'rgba(255,255,255,0.1)',
-                  transform: 'scale(1.1)',
+                  transform: 'scale(1.1)'
                 },
-                transition: 'all 0.3s ease',
+                transition: 'all 0.3s ease'
               }}
             >
               {darkMode ? <Sun size={20} /> : <Moon size={20} />}
@@ -279,18 +299,18 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
                 sx={{
                   color: 'white',
                   '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'rgba(255,255,255,0.3)',
+                    borderColor: 'rgba(255,255,255,0.3)'
                   },
                   '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'rgba(255,255,255,0.5)',
+                    borderColor: 'rgba(255,255,255,0.5)'
                   },
                   '& .MuiSelect-icon': {
-                    color: 'white',
+                    color: 'white'
                   },
                   '& .MuiSelect-select': {
                     color: 'white',
-                    fontSize: '0.875rem',
-                  },
+                    fontSize: '0.875rem'
+                  }
                 }}
                 MenuProps={{
                   PaperProps: {
@@ -299,9 +319,9 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
                       backdropFilter: 'blur(20px)',
                       border: darkMode
                         ? '1px solid rgba(255,255,255,0.1)'
-                        : '1px solid rgba(0,0,0,0.1)',
-                    },
-                  },
+                        : '1px solid rgba(0,0,0,0.1)'
+                    }
+                  }
                 }}
               >
                 <MenuItem value="en">{t('common.english')}</MenuItem>
@@ -309,30 +329,18 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
               </Select>
             </FormControl>
 
-            {/* Help Button */}
-            <IconButton
-              sx={{
-                color: 'white',
-                '&:hover': {
-                  background: 'rgba(255,255,255,0.1)',
-                  transform: 'scale(1.1)',
-                },
-                transition: 'all 0.3s ease',
-              }}
-            >
-              <HelpCircle size={20} />
-            </IconButton>
 
             {/* User Menu */}
             <IconButton
+              id="user-profile-menu"
               onClick={handleUserMenuOpen}
               sx={{
                 color: 'white',
                 '&:hover': {
                   background: 'rgba(255,255,255,0.1)',
-                  transform: 'scale(1.1)',
+                  transform: 'scale(1.1)'
                 },
-                transition: 'all 0.3s ease',
+                transition: 'all 0.3s ease'
               }}
             >
               <Avatar sx={{ width: 32, height: 32, bgcolor: 'rgba(255,255,255,0.2)' }}>
@@ -344,13 +352,13 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
       </AppBar>
 
       {/* Mobile Navigation Drawer */}
-      <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}>
+      <Box component="nav" id="main-sidebar-nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}>
         <Drawer
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true,
+            keepMounted: true
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },
@@ -359,8 +367,8 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
               width: 240,
               background: darkMode ? 'rgba(30,30,30,0.95)' : 'rgba(255,255,255,0.95)',
               backdropFilter: 'blur(20px)',
-              border: darkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)',
-            },
+              border: darkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)'
+            }
           }}
         >
           {drawer}
@@ -374,7 +382,7 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
           flexGrow: 1,
           p: 3,
           width: '100%',
-          mt: 8, // Account for top navigation
+          mt: 8 // Account for top navigation
         }}
       >
         {children}
@@ -391,8 +399,8 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
             backdropFilter: 'blur(20px)',
             border: darkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)',
             borderRadius: 2,
-            mt: 1,
-          },
+            mt: 1
+          }
         }}
       >
         <MenuItem onClick={handleSettingsOpen}>
@@ -449,6 +457,9 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Tour Component */}
+      <AppTour />
     </Box>
   );
 }
@@ -456,5 +467,5 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
   darkMode: PropTypes.bool.isRequired,
-  onToggleDarkMode: PropTypes.func.isRequired,
+  onToggleDarkMode: PropTypes.func.isRequired
 };

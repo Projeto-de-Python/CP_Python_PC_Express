@@ -1,6 +1,6 @@
 import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import { initReactI18next } from 'react-i18next';
 
 // Importar as traduções
 import enTranslations from './locales/en.json';
@@ -8,11 +8,11 @@ import ptTranslations from './locales/pt.json';
 
 const resources = {
   en: {
-    translation: enTranslations,
+    translation: enTranslations
   },
   pt: {
-    translation: ptTranslations,
-  },
+    translation: ptTranslations
+  }
 };
 
 i18n
@@ -24,13 +24,13 @@ i18n
     debug: false,
 
     interpolation: {
-      escapeValue: false, // React já escapa por padrão
+      escapeValue: false // React já escapa por padrão
     },
 
     detection: {
       order: ['localStorage', 'navigator', 'htmlTag'],
-      caches: ['localStorage'],
-    },
+      caches: ['localStorage']
+    }
   });
 
 export default i18n;

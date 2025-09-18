@@ -1,6 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { Box, Typography, Button, Paper } from '@mui/material';
+import PropTypes from 'prop-types';
+import React from 'react';
+
 import { chartColors } from '../../utils/chartUtils';
 
 export const EmptyState = ({
@@ -10,7 +11,7 @@ export const EmptyState = ({
   actionLabel,
   onAction,
   showAction = true,
-  sx = {},
+  sx = {}
 }) => {
   return (
     <Paper
@@ -21,7 +22,7 @@ export const EmptyState = ({
         backdropFilter: 'blur(10px)',
         border: '1px solid rgba(255,255,255,0.1)',
         borderRadius: 2,
-        ...sx,
+        ...sx
       }}
     >
       <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
@@ -35,7 +36,7 @@ export const EmptyState = ({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              border: `1px solid ${chartColors.primary}40`,
+              border: `1px solid ${chartColors.primary}40`
             }}
           >
             <Icon size={40} color={chartColors.primary} />
@@ -58,8 +59,8 @@ export const EmptyState = ({
               mt: 2,
               background: chartColors.gradientColors.primary,
               '&:hover': {
-                background: chartColors.gradientColors.secondary,
-              },
+                background: chartColors.gradientColors.secondary
+              }
             }}
           >
             {actionLabel}
@@ -77,5 +78,5 @@ EmptyState.propTypes = {
   actionLabel: PropTypes.string,
   onAction: PropTypes.func,
   showAction: PropTypes.bool,
-  sx: PropTypes.object,
+  sx: PropTypes.object
 };

@@ -44,4 +44,32 @@ ehthumbs.db
 # --- Misc ---
 *.log
 
+# --- Docker ---
+.dockerignore
+docker-compose.override.yml
 
+# --- Scripts de setup ---
+setup.sh
+setup.bat
+start.sh
+
+# --- Arquivos de configuração local ---
+.env.local
+.env.development
+.env.production
+
+# --- Arquivos de backup ---
+*.bak
+*.backup
+*.tmp
+*.temp
+
+# --- Arquivos de teste ---
+test_*.py
+*_test.py
+tests/
+
+# --- Arquivos de build ---
+*.egg-info/
+build/
+dist/
