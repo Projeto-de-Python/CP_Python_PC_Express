@@ -572,42 +572,46 @@ return;
             </Typography>
             <Box display="flex" alignItems="center" gap={1}>
               <Tooltip title="Approve All Pending Orders">
-                <Button
-                  size="small"
-                  variant="outlined"
-                  startIcon={<CheckCircle size={16} />}
-                  onClick={handleApproveAll}
-                  disabled={!purchaseOrders.some(po => po.status === 'PENDING_APPROVAL')}
-                  sx={{
-                    borderColor: '#4caf50',
-                    color: '#4caf50',
-                    '&:hover': {
-                      borderColor: '#2e7d32',
-                      backgroundColor: 'rgba(76, 175, 80, 0.1)'
-                    }
-                  }}
-                >
-                  Approve All
-                </Button>
+                <span>
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    startIcon={<CheckCircle size={16} />}
+                    onClick={handleApproveAll}
+                    disabled={!purchaseOrders.some(po => po.status === 'PENDING_APPROVAL')}
+                    sx={{
+                      borderColor: '#4caf50',
+                      color: '#4caf50',
+                      '&:hover': {
+                        borderColor: '#2e7d32',
+                        backgroundColor: 'rgba(76, 175, 80, 0.1)'
+                      }
+                    }}
+                  >
+                    Approve All
+                  </Button>
+                </span>
               </Tooltip>
               <Tooltip title="Clear Approved Orders">
-                <Button
-                  size="small"
-                  variant="outlined"
-                  startIcon={<Trash2 size={16} />}
-                  onClick={handleClearApproved}
-                  disabled={!purchaseOrders.some(po => po.status === 'APPROVED')}
-                  sx={{
-                    borderColor: '#f44336',
-                    color: '#f44336',
-                    '&:hover': {
-                      borderColor: '#d32f2f',
-                      backgroundColor: 'rgba(244, 67, 54, 0.1)'
-                    }
-                  }}
-                >
-                  Clear Approved
-                </Button>
+                <span>
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    startIcon={<Trash2 size={16} />}
+                    onClick={handleClearApproved}
+                    disabled={!purchaseOrders.some(po => po.status === 'APPROVED')}
+                    sx={{
+                      borderColor: '#f44336',
+                      color: '#f44336',
+                      '&:hover': {
+                        borderColor: '#d32f2f',
+                        backgroundColor: 'rgba(244, 67, 54, 0.1)'
+                      }
+                    }}
+                  >
+                    Clear Approved
+                  </Button>
+                </span>
               </Tooltip>
               <Tooltip title="View all purchase orders and their current status. Click the eye icon to see details, edit icon to modify, or approve/reject pending orders.">
                 <IconButton
