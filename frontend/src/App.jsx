@@ -1,3 +1,18 @@
+/*
+PC-Express - Sistema de Gerenciamento de Inventário
+Copyright (c) 2024 Equipe Big 5
+
+Desenvolvido por:
+- Lucca Phelipe Masini RM 564121
+- Luiz Henrique Poss RM 562177  
+- Luis Fernando de Oliveira Salgado RM 561401
+- Igor Paixão Sarak RM 563726
+- Bernardo Braga Perobeli RM 56246
+
+PROPRIEDADE INTELECTUAL - NÃO COPIAR PARA TRABALHOS ACADÊMICOS
+Trabalho acadêmico original - Uso apenas para referência e estudo
+*/
+
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import React, { useState } from 'react';

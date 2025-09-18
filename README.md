@@ -1,6 +1,50 @@
 # 🚀 PC-Express - Sistema de Gerenciamento de Inventário
 
+<div align="center">
+
+## 🚨 **AVISO DE PROPRIEDADE INTELECTUAL** 🚨
+
+**Este projeto é propriedade da Equipe Big 5**  
+**Desenvolvido como trabalho acadêmico**  
+**NÃO COPIAR PARA TRABALHOS ACADÊMICOS**
+
+---
+
+</div>
+
 Um sistema completo de gerenciamento de inventário desenvolvido com FastAPI (backend) e React (frontend), oferecendo uma interface moderna e intuitiva para controle de estoque, fornecedores, alertas e insights de negócio com **Machine Learning**.
+
+## ⚖️ **Direitos Autorais e Uso**
+
+### 📋 **Propriedade Intelectual:**
+- **Código**: © 2024 Equipe Big 5
+- **Documentação**: © 2024 Equipe Big 5  
+- **Conceitos**: © 2024 Equipe Big 5
+- **Apresentação**: © 2024 Equipe Big 5
+
+### ✅ **Uso Permitido:**
+- ✅ Estudo e aprendizado pessoal
+- ✅ Referência acadêmica (com citação adequada)
+- ✅ Inspiração para projetos próprios
+- ✅ Demonstração de conceitos
+
+### ❌ **Uso Proibido:**
+- ❌ **Cópia integral** para trabalhos acadêmicos
+- ❌ **Plágio** de código ou documentação
+- ❌ **Fork** para fins acadêmicos sem citação
+- ❌ **Uso comercial** sem autorização
+- ❌ **Apresentação** como trabalho próprio
+
+### 📚 **Para Estudantes:**
+Se você é estudante e quer usar este projeto como referência:
+
+1. **CITE adequadamente** a fonte original
+2. **NÃO copie** código diretamente
+3. **Use apenas como inspiração** para seu próprio projeto
+4. **Desenvolva sua própria implementação** baseada nos conceitos
+5. **Mencione** que foi inspirado no PC-Express da Equipe Big 5
+
+---
 
 ## 📚 **[Apresentação para o Professor](ABOUT.md)**
 *Clique aqui para ver a apresentação didática focada em Python + SQL, com exemplos práticos e diagramas visuais.*
@@ -468,6 +512,25 @@ Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalh
 3. Luis Fernando de Oliveira Salgado RM 561401
 4. Igor Paixão Sarak RM 563726
 5. Bernardo Braga Perobeli RM 56246
+
+## 🎓 **Informações Acadêmicas**
+
+### 📅 **Detalhes do Trabalho:**
+- **Data de Desenvolvimento**: 2024
+- **Tipo**: Trabalho Acadêmico
+- **Apresentação**: Realizada em sala de aula
+- **Status**: Concluído e avaliado
+
+### 📚 **Contexto Acadêmico:**
+Este projeto foi desenvolvido como trabalho acadêmico para demonstrar:
+- Integração de Python com SQL
+- Desenvolvimento de APIs REST
+- Machine Learning aplicado
+- Desenvolvimento Full-Stack
+- Boas práticas de programação
+
+### ⚖️ **Aviso Final:**
+**Este é um trabalho acadêmico original da Equipe Big 5. Qualquer uso indevido, cópia ou plágio será considerado violação de propriedade intelectual e pode resultar em consequências acadêmicas.**
 
 ## 📞 **Suporte**
 

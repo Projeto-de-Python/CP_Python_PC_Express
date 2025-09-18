@@ -1,0 +1,24 @@
+# Equipe Big 5 - Proprietários do código
+# Este arquivo define quem são os proprietários do código
+
+# Todos os arquivos pertencem à Equipe Big 5
+* @Projeto-de-Python
+
+# Arquivos específicos da equipe
+app/ @Projeto-de-Python
+frontend/ @Projeto-de-Python
+scripts/ @Projeto-de-Python
+*.md @Projeto-de-Python
+*.py @Projeto-de-Python
+*.jsx @Projeto-de-Python
+*.js @Projeto-de-Python
+
+# Documentação acadêmica
+ABOUT.md @Projeto-de-Python
+README.md @Projeto-de-Python
+LICENSE @Projeto-de-Python
+
+# Configurações
+.github/ @Projeto-de-Python
+docker-compose.yml @Projeto-de-Python
+Dockerfile* @Projeto-de-Python
