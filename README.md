@@ -2,6 +2,9 @@
 
 Um sistema completo de gerenciamento de inventário desenvolvido com FastAPI (backend) e React (frontend), oferecendo uma interface moderna e intuitiva para controle de estoque, fornecedores, alertas e insights de negócio com **Machine Learning**.
 
+## 📚 **[Apresentação para o Professor](ABOUT.md)**
+*Clique aqui para ver a apresentação didática focada em Python + SQL, com exemplos práticos e diagramas visuais.*
+
 ## ⚡ **Início Rápido**
 
 ### **Para Novos Usuários:**
