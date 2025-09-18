@@ -104,13 +104,14 @@ def get_simulation_status(
     )
 
     # Calcula valor total aprovado
+    from sqlalchemy import func
     approved_value = (
         db.query(PurchaseOrder)
         .filter(
             PurchaseOrder.user_id == current_user.id,
             PurchaseOrder.status == PurchaseOrderStatus.APPROVED,
         )
-        .with_entities(db.func.sum(PurchaseOrder.total_value))
+        .with_entities(func.sum(PurchaseOrder.total_value))
         .scalar()
         or 0
     )
