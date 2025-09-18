@@ -4,6 +4,7 @@ from typing import List, Optional
 from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 
 from . import models, schemas
 
@@ -335,7 +336,7 @@ def get_purchase_orders_statistics(db: Session, user_id: int) -> dict:
             models.PurchaseOrder.user_id == user_id,
             models.PurchaseOrder.status == models.PurchaseOrderStatus.APPROVED,
         )
-        .with_entities(db.func.sum(models.PurchaseOrder.total_value))
+        .with_entities(func.sum(models.PurchaseOrder.total_value))
         .scalar()
         or 0
     )
