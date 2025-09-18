@@ -63,10 +63,10 @@ if not exist "frontend\node_modules" (
 REM Parar processos existentes nas portas
 echo.
 echo 5. Parando processos existentes...
-for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":8000"') do (
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":8000" 2^>nul') do (
     taskkill /F /PID %%a >nul 2>&1
 )
-for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":5173"') do (
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":5173" 2^>nul') do (
     taskkill /F /PID %%a >nul 2>&1
 )
 

@@ -113,7 +113,7 @@ function Stop-ExistingServers {
                 Write-Debug "Parou processo backend PID: $pid"
             }
             catch {
-                Write-Debug "Erro ao parar processo $pid`: $($_.Exception.Message)"
+                Write-Debug "Erro ao parar processo $pid: $($_.Exception.Message)"
             }
         }
 
@@ -128,14 +128,14 @@ function Stop-ExistingServers {
                 Write-Debug "Parou processo frontend PID: $pid"
             }
             catch {
-                Write-Debug "Erro ao parar processo $pid`: $($_.Exception.Message)"
+                Write-Debug "Erro ao parar processo $pid: $($_.Exception.Message)"
             }
         }
 
         Start-Sleep -Seconds 3
     }
     catch {
-        Write-Debug "Error stopping existing processes`: $($_.Exception.Message)"
+        Write-Debug "Error stopping existing processes: $($_.Exception.Message)"
     }
 }
 
