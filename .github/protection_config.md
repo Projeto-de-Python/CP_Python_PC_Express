@@ -9,6 +9,9 @@
 - [ ] **Discussions**: Desabilitar
 - [ ] **Projects**: Desabilitar
 - [ ] **Packages**: Desabilitar
+- [ ] **Allow forking**: Desabilitar (IMPORTANTE!)
+- [ ] **Allow cloning**: Manter habilitado (para demonstração)
+- [ ] **Allow downloads**: Desabilitar
 
 ### **2. Settings → Actions**
 
@@ -33,6 +36,20 @@
 - [ ] **Allow squash merging**: Desabilitar
 - [ ] **Allow rebase merging**: Desabilitar
 - [ ] **Allow auto-merge**: Desabilitar
+
+### **6. Settings → Danger Zone (IMPORTANTE!)**
+
+- [ ] **Make this repository private**: Considerar após avaliação
+- [ ] **Transfer ownership**: Não permitir
+- [ ] **Delete this repository**: Não permitir
+- [ ] **Archive this repository**: Não permitir
+
+### **7. Settings → Manage access**
+
+- [ ] **Add people**: Apenas Equipe Big 5
+- [ ] **Add teams**: Apenas equipe autorizada
+- [ ] **Invite collaborators**: Desabilitar
+- [ ] **Grant access**: Apenas com autorização expressa
 
 ## 🚨 **Avisos de Proteção**
 

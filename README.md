@@ -10,6 +10,23 @@
 
 ---
 
+## ⚠️ **AVISO LEGAL - CLONAGEM E USO** ⚠️
+
+**AO CLONAR, FORKAR OU USAR ESTE REPOSITÓRIO, VOCÊ CONFIRMA QUE:**
+
+✅ **CONCORDA** com todos os termos de uso
+✅ **ACEITA** as sanções por violação
+✅ **COMPROMETE-SE** a não copiar para trabalhos acadêmicos
+✅ **RECONHECE** a propriedade intelectual da Equipe Big 5
+
+**VIOLAÇÕES RESULTARÃO EM:**
+❌ **Sanções Acadêmicas** (reprovação, expulsão)
+❌ **Ações Legais** por violação de direitos autorais
+❌ **Denúncia** às autoridades competentes
+❌ **Bloqueio** permanente do GitHub
+
+---
+
 </div>
 
 Um sistema completo de gerenciamento de inventário desenvolvido com FastAPI (backend) e React (frontend), oferecendo uma interface moderna e intuitiva para controle de estoque, fornecedores, alertas e insights de negócio com **Machine Learning**.
@@ -544,6 +561,54 @@ Este projeto foi desenvolvido como trabalho acadêmico para demonstrar:
 ### ⚖️ **Aviso Final:**
 
 **Este é um trabalho acadêmico original da Equipe Big 5. Qualquer uso indevido, cópia ou plágio será considerado violação de propriedade intelectual e pode resultar em consequências acadêmicas.**
+
+## 📋 **TERMOS DE USO E SANÇÕES**
+
+### **🔒 Uso Autorizado:**
+- ✅ **Visualização** para fins educacionais
+- ✅ **Estudo** de conceitos e arquitetura
+- ✅ **Referência** com citação adequada
+- ✅ **Inspiração** para projetos próprios
+
+### **🚫 Uso Proibido:**
+- ❌ **Clonagem** para trabalhos acadêmicos
+- ❌ **Fork** sem autorização expressa
+- ❌ **Cópia** de código ou documentação
+- ❌ **Plágio** de qualquer parte do projeto
+- ❌ **Apresentação** como trabalho próprio
+- ❌ **Uso comercial** sem licença
+
+### **⚖️ Sanções por Violação:**
+
+#### **Acadêmicas:**
+- 📚 **Reprovação** na disciplina
+- 🎓 **Suspensão** acadêmica
+- 🚫 **Expulsão** da instituição
+- 📝 **Registro** de plágio no histórico
+
+#### **Legais:**
+- ⚖️ **Processo** por violação de direitos autorais
+- 💰 **Multas** e indenizações
+- 🚫 **Bloqueio** de contas GitHub
+- 📋 **Registro** em bases de dados de plágio
+
+#### **Técnicas:**
+- 🔍 **Monitoramento** contínuo via GitHub API
+- 📊 **Relatórios** automáticos de violação
+- 🚨 **Alertas** para autoridades competentes
+- 📱 **Notificações** para a Equipe Big 5
+
+### **📞 Denúncia de Violações:**
+Para reportar violações, entre em contato:
+- **GitHub**: Reportar violação de direitos autorais
+- **Professor**: Informar sobre plágio acadêmico
+- **Instituição**: Seguir protocolo de ética acadêmica
+
+### **🛡️ Proteções Ativas:**
+- 🔍 **Monitoramento** automatizado de repositórios
+- 📊 **Análise** de código suspeito
+- 🚨 **Alertas** em tempo real
+- 📋 **Relatórios** detalhados de violações
 
 ## 📞 **Suporte**
 
