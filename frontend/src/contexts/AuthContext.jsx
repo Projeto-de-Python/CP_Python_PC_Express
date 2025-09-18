@@ -97,6 +97,7 @@ export const AuthProvider = ({ children }) => {
         if (currentToken) {
           config.headers.Authorization = `Bearer ${currentToken}`;
           console.log('🔑 Request interceptor - Authorization header set');
+          console.log('🔑 Request interceptor - Full header:', config.headers.Authorization);
         } else {
           console.log('❌ Request interceptor - No token found');
         }

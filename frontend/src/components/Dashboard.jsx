@@ -79,7 +79,7 @@ export default function Dashboard({ darkMode }) {
       setProducts(productsRes.data || []);
       setSuppliers(suppliersRes.data || []);
       setLowStockAlerts(alertsRes.data || []);
-      
+
       // Set top products from sales data
       if (topProductsRes.data?.top_products) {
         setTopProducts(topProductsRes.data.top_products);
