@@ -567,62 +567,28 @@ Este projeto foi desenvolvido como trabalho acadêmico para demonstrar:
 
 **Este é um trabalho acadêmico original da Equipe Big 5. Qualquer uso indevido, cópia ou plágio será considerado violação de propriedade intelectual e pode resultar em consequências acadêmicas.**
 
-## 📋 **TERMOS DE USO E SANÇÕES**
+## 📋 **TERMOS DE USO**
+
+**Para termos completos, sanções e proteções legais, consulte: [TERMS_OF_USE.md](TERMS_OF_USE.md)**
 
 ### **🔒 Uso Autorizado:**
-
 - ✅ **Visualização** para fins educacionais
 - ✅ **Estudo** de conceitos e arquitetura
 - ✅ **Referência** com citação adequada
 - ✅ **Inspiração** para projetos próprios
 
 ### **🚫 Uso Proibido:**
-
 - ❌ **Clonagem** para trabalhos acadêmicos
 - ❌ **Fork** sem autorização expressa
 - ❌ **Cópia** de código ou documentação
 - ❌ **Plágio** de qualquer parte do projeto
 - ❌ **Apresentação** como trabalho próprio
-- ❌ **Uso comercial** sem licença
 
 ### **⚖️ Sanções por Violação:**
-
-#### **Financeiras:**
-
-- 💰 **Multa** de R$ 1.000,00 a R$ 5.000,00 por violação
-- 💰 **Indenização** por danos morais e materiais
-- 💰 **Custas** processuais e advocatícias
-- 💰 **Multa** adicional por cada dia de descumprimento
-
-#### **Técnicas:**
-
-- 🚫 **Bloqueio** permanente do acesso ao repositório
-- 🔍 **Monitoramento** contínuo via GitHub API
-- 📊 **Relatórios** automáticos de violação
-- 📱 **Notificações** para a Equipe Big 5
-- 🚨 **Denúncia** ao GitHub por violação de DMCA
-
-#### **Reputacionais:**
-
+- 💰 **Multas** de R$ 1.000,00 a R$ 5.000,00
+- 🚫 **Bloqueio** permanente do acesso
 - 📢 **Exposição pública** da violação
-- 📋 **Registro** em bases de dados de plágio
-- 🚫 **Bloqueio** de contas GitHub relacionadas
-- 📱 **Divulgação** em redes sociais e fóruns
-
-### **📞 Denúncia de Violações:**
-
-Para reportar violações, entre em contato:
-
-- **GitHub**: Reportar violação de DMCA
-- **Equipe Big 5**: Contato direto para resolução
-- **Advogado**: Para ações legais quando necessário
-
-### **🛡️ Proteções Ativas:**
-
-- 🔍 **Monitoramento** automatizado de repositórios
-- 📊 **Análise** de código suspeito
-- 🚨 **Alertas** em tempo real
-- 📋 **Relatórios** detalhados de violações
+- 🚨 **Denúncia** ao GitHub (DMCA)
 
 ## 📞 **Suporte**
 

@@ -23,6 +23,7 @@ Este repositório contém um **trabalho acadêmico original** desenvolvido pela 
 - **Bernardo Braga Perobeli** (RM 56246)
 
 **Art. 24** - São direitos morais do autor:
+
 - I - o de reivindicar, a qualquer tempo, a autoria da obra;
 - II - o de ter seu nome, pseudônimo ou sinal convencional indicado ou anunciado, como sendo o do autor, na utilização de sua obra;
 - III - o de conservar a obra inédita;
@@ -60,6 +61,7 @@ Você está autorizado a:
 **Art. 103** - Quem, na utilização de obra intelectual, deixar de indicar ou de anunciar, como tal, o nome, pseudônimo ou sinal convencional do autor e do intérprete, além de responder por danos morais, está obrigado a divulgar-lhes a identidade.
 
 **Baseado na legislação, as sanções financeiras incluem:**
+
 - 💰 **Multa** de R$ 1.000,00 a R$ 5.000,00 por violação
 - 💰 **Indenização** por danos morais e materiais (Art. 102 e 103)
 - 💰 **Custas** processuais e advocatícias
@@ -145,6 +147,7 @@ Estes termos são fundamentados na seguinte legislação brasileira:
 **Art. 22** - Pertencem ao autor os direitos morais e patrimoniais sobre a obra que criou.
 
 **Art. 24** - São direitos morais do autor:
+
 - I - o de reivindicar, a qualquer tempo, a autoria da obra;
 - II - o de ter seu nome, pseudônimo ou sinal convencional indicado ou anunciado, como sendo o do autor, na utilização de sua obra;
 - III - o de conservar a obra inédita;
@@ -173,6 +176,7 @@ Estes termos são fundamentados na seguinte legislação brasileira:
 #### **9.4 Marco Civil da Internet (Lei 12.965/14):**
 
 **Art. 3º** - A disciplina do uso da internet no Brasil tem os seguintes princípios:
+
 - I - garantia da liberdade de expressão, comunicação e manifestação de pensamento, nos termos da Constituição Federal;
 - II - proteção da privacidade;
 - III - proteção dos dados pessoais, na forma da lei;
@@ -182,7 +186,64 @@ Estes termos são fundamentados na seguinte legislação brasileira:
 - VII - preservação da natureza participativa da rede;
 - VIII - liberdade dos modelos de negócios promovidos na internet, desde que não conflitem com os demais princípios estabelecidos nesta Lei.
 
-### **10. 📋 Aceitação dos Termos**
+### **10. 🔍 Monitoramento de Plágio**
+
+A Equipe Big 5 mantém sistema ativo de monitoramento:
+
+#### **10.1 Ferramentas de Detecção:**
+- 🔍 **GitHub Search**: Busca por trechos únicos do código
+- 🌐 **Google Alerts**: Alertas para palavras-chave específicas
+- 📊 **Scripts automatizados**: Monitoramento via GitHub API
+- 🚨 **Relatórios**: Geração automática de relatórios de violação
+
+#### **10.2 Palavras-chave Monitoradas:**
+- "PC-Express"
+- "Equipe Big 5"
+- "Sistema de Gerenciamento de Inventário"
+- Nomes dos integrantes da equipe
+- Trechos únicos de código
+
+#### **10.3 Ações em Caso de Violação:**
+1. **Documentação** da violação
+2. **Notificação** ao violador
+3. **Denúncia** ao GitHub (DMCA)
+4. **Ação legal** se necessário
+
+### **11. 👨‍🏫 Acesso do Professor**
+
+#### **11.1 Para Adicionar o Professor:**
+1. **Entre em contato** com a Equipe Big 5
+2. **Forneça** username do GitHub
+3. **Aguarde** convite de colaboração
+4. **Aceite** o convite
+
+#### **11.2 Permissões do Professor:**
+- ✅ **Read**: Visualizar todo o código
+- ✅ **Write**: Modificar código e documentação
+- ✅ **Admin**: Gerenciar configurações (se necessário)
+
+#### **11.3 Restrições do Professor:**
+- ❌ **Não redistribuir** sem autorização
+- ❌ **Não remover** avisos de propriedade
+- ❌ **Não permitir** que alunos copiem o código
+- ❌ **Não usar** em outros trabalhos sem citação
+
+### **12. 🛡️ Configurações de Proteção GitHub**
+
+#### **12.1 Configurações Recomendadas:**
+- [ ] **Issues**: Desabilitar
+- [ ] **Wiki**: Desabilitar
+- [ ] **Discussions**: Desabilitar
+- [ ] **Allow forking**: Desabilitar
+- [ ] **Allow downloads**: Desabilitar
+
+#### **12.2 Branch Protection:**
+- [x] **Require pull request** before merging
+- [x] **Require approvals**: 1
+- [x] **Dismiss stale approvals** when new commits are pushed
+- [x] **Require review** from code owners
+
+### **13. 📋 Aceitação dos Termos**
 
 **AO CLONAR, FORKAR OU USAR ESTE REPOSITÓRIO, VOCÊ CONFIRMA QUE:**
 
@@ -196,12 +257,12 @@ Estes termos são fundamentados na seguinte legislação brasileira:
 
 ## 🚨 **AVISO FINAL**
 
-**Este é um trabalho acadêmico original da Equipe Big 5. Qualquer violação dos termos acima resultará em sanções acadêmicas, legais e técnicas. A clonagem ou uso deste repositório constitui aceitação automática destes termos.**
+**Este é um trabalho acadêmico original da Equipe Big 5. Qualquer violação dos termos acima resultará em sanções financeiras, técnicas e reputacionais. A clonagem ou uso deste repositório constitui aceitação automática destes termos.**
 
 ---
 
 **© 2024 Equipe Big 5 - Todos os direitos reservados**
 
-**Data de criação**: 2024
-**Última atualização**: 2024
-**Versão**: 1.0
+**Data de criação**: 2024  
+**Última atualização**: 2024  
+**Versão**: 2.0 (Centralizada)
