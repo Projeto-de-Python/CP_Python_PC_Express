@@ -664,40 +664,90 @@ def get_top_selling_products(db: Session, user_id: int, limit: int = 5) -> List[
     """Get top selling products based on sales data."""
     from sqlalchemy.orm import joinedload
     
-    # Query to get products with their sales data
-    products_with_sales = (
-        db.query(models.Product)
-        .options(joinedload(models.Product.sales))
-        .filter(models.Product.user_id == user_id)
-        .all()
-    )
-    
-    # Calculate total sales for each product
-    product_sales = []
-    for product in products_with_sales:
-        total_sales = 0
-        total_quantity_sold = 0
+    try:
+        # Query to get all sales with their items and products
+        sales_with_items = (
+            db.query(models.Sale)
+            .options(
+                joinedload(models.Sale.items).joinedload(models.SaleItem.produto)
+            )
+            .filter(models.Sale.user_id == user_id)
+            .all()
+        )
         
-        for sale in product.sales:
+        # Calculate total sales for each product
+        product_sales = {}
+        
+        for sale in sales_with_items:
             for item in sale.items:
-                if item.produto_id == product.id:
-                    total_sales += item.preco_total
-                    total_quantity_sold += item.quantidade
+                if item.produto:
+                    product_id = item.produto.id
+                    if product_id not in product_sales:
+                        product_sales[product_id] = {
+                            "id": item.produto.id,
+                            "nome": item.produto.nome,
+                            "codigo": item.produto.codigo,
+                            "total_sales": 0,
+                            "total_quantity_sold": 0,
+                            "current_stock": item.produto.quantidade,
+                            "preco": item.produto.preco
+                        }
+                    
+                    product_sales[product_id]["total_sales"] += item.preco_total
+                    product_sales[product_id]["total_quantity_sold"] += item.quantidade
         
-        if total_sales > 0:  # Only include products that have been sold
-            product_sales.append({
-                "id": product.id,
-                "nome": product.nome,
-                "codigo": product.codigo,
-                "total_sales": total_sales,
-                "total_quantity_sold": total_quantity_sold,
-                "current_stock": product.quantidade,
-                "preco": product.preco
-            })
-    
-    # Sort by total sales and return top products
-    product_sales.sort(key=lambda x: x["total_sales"], reverse=True)
-    return product_sales[:limit]
+        # Convert to list and sort by total sales
+        product_sales_list = list(product_sales.values())
+        product_sales_list.sort(key=lambda x: x["total_sales"], reverse=True)
+        
+        # If no sales data, return top products by stock value
+        if not product_sales_list:
+            products = (
+                db.query(models.Product)
+                .filter(models.Product.user_id == user_id)
+                .order_by((models.Product.preco * models.Product.quantidade).desc())
+                .limit(limit)
+                .all()
+            )
+            
+            return [
+                {
+                    "id": p.id,
+                    "nome": p.nome,
+                    "codigo": p.codigo,
+                    "total_sales": 0,
+                    "total_quantity_sold": 0,
+                    "current_stock": p.quantidade,
+                    "preco": p.preco
+                }
+                for p in products
+            ]
+        
+        return product_sales_list[:limit]
+        
+    except Exception as e:
+        print(f"Error in get_top_selling_products: {e}")
+        # Fallback to products by stock value
+        products = (
+            db.query(models.Product)
+            .filter(models.Product.user_id == user_id)
+            .order_by((models.Product.preco * models.Product.quantidade).desc())
+            .limit(limit)
+            .all()
+        )
+        
+        return [
+            {
+                "id": p.id,
+                "nome": p.nome,
+                "codigo": p.codigo,
+                "total_sales": 0,
+                "total_quantity_sold": 0,
+                "current_stock": p.quantidade,
+                "preco": p.preco
+            }
+            for p in products
+        ]
 
 
 def create_sale_from_purchase_order(db: Session, po_id: int, user_id: int) -> models.Sale:
