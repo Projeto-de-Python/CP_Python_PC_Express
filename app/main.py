@@ -9,6 +9,7 @@ from .routers import (
     insights,
     products,
     purchase_orders,
+    sales,
     simulation,
     stock,
     suppliers,
@@ -39,7 +40,7 @@ app.add_middleware(
         "http://127.0.0.1:3000",
     ],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
@@ -49,6 +50,7 @@ app.include_router(products.router)
 app.include_router(stock.router)
 app.include_router(alerts.router)
 app.include_router(purchase_orders.router)
+app.include_router(sales.router)
 app.include_router(insights.router)
 app.include_router(auto_restock.router)
 app.include_router(simulation.router)

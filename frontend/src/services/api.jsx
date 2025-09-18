@@ -95,6 +95,13 @@ export const autoRestockAPI = {
   restockProduct: productId => api.post(`/auto-restock/restock-product/${productId}`)
 };
 
+// Sales API
+export const salesAPI = {
+  getAll: (limit = 100) => api.get(`/sales?limit=${limit}`),
+  getById: id => api.get(`/sales/${id}`),
+  getTopProducts: (limit = 5) => api.get(`/sales/analytics/top-products?limit=${limit}`)
+};
+
 // Simulation API
 export const simulationAPI = {
   start: (durationMinutes = 10, maxPendingOrders = 5) =>

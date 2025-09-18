@@ -37,7 +37,7 @@ import {
   YAxis
 } from 'recharts';
 
-import { alertsAPI, productsAPI, suppliersAPI } from '../services/api.jsx';
+import { alertsAPI, productsAPI, salesAPI, suppliersAPI } from '../services/api.jsx';
 import { chartColors, formatCurrency } from '../utils/chartUtils';
 
 import { ChartWrapper, ErrorMessage, LoadingSpinner, StatCard } from './common';
@@ -48,6 +48,7 @@ export default function Dashboard({ darkMode }) {
   const [products, setProducts] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
   const [lowStockAlerts, setLowStockAlerts] = useState([]);
+  const [topProducts, setTopProducts] = useState([]);
   const [refreshKey, setRefreshKey] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -68,15 +69,21 @@ export default function Dashboard({ darkMode }) {
       setLoading(true);
       setError(null);
 
-      const [productsRes, suppliersRes, alertsRes] = await Promise.all([
+      const [productsRes, suppliersRes, alertsRes, topProductsRes] = await Promise.all([
         productsAPI.getAll(),
         suppliersAPI.getAll(),
-        alertsAPI.getLowStock()
+        alertsAPI.getLowStock(),
+        salesAPI.getTopProducts(5)
       ]);
 
       setProducts(productsRes.data || []);
       setSuppliers(suppliersRes.data || []);
       setLowStockAlerts(alertsRes.data || []);
+      
+      // Set top products from sales data
+      if (topProductsRes.data?.top_products) {
+        setTopProducts(topProductsRes.data.top_products);
+      }
     } catch (error) {
       setError(`Failed to load dashboard data: ${error.message}`);
     } finally {
@@ -230,52 +237,74 @@ export default function Dashboard({ darkMode }) {
         ];
 
   // Top Performing Products Data
-  const topProductsData =
-    products.length > 0
+  // Top Performing Products Data - Now based on real sales data
+  const topProductsData = topProducts.length > 0
+    ? topProducts.map((product, index) => ({
+        name: product.nome,
+        code: product.codigo,
+        value: product.total_sales,
+        stock: product.current_stock,
+        price: product.preco,
+        quantitySold: product.total_quantity_sold,
+        color: chartColors.chartColors[index % chartColors.chartColors.length]
+      }))
+    : products.length > 0
       ? products
           .sort((a, b) => b.preco * b.quantidade - a.preco * a.quantidade)
           .slice(0, 5)
           .map((product, index) => ({
             name: product.nome,
+            code: product.codigo,
             value: product.preco * product.quantidade,
             stock: product.quantidade,
             price: product.preco,
+            quantitySold: 0,
             color: chartColors.chartColors[index % chartColors.chartColors.length]
           }))
       : [
           {
             name: 'AMD Ryzen 7 5800X',
+            code: 'PROC-001',
             value: 15999.0,
             stock: 10,
             price: 1599.9,
+            quantitySold: 0,
             color: chartColors.chartColors[0]
           },
           {
             name: 'NVIDIA RTX 4060 8GB',
+            code: 'GPU-001',
             value: 21999.0,
             stock: 10,
             price: 2199.9,
+            quantitySold: 0,
             color: chartColors.chartColors[1]
           },
           {
             name: 'SSD NVMe 1TB Kingston',
+            code: 'SSD-001',
             value: 4299.0,
             stock: 10,
             price: 429.9,
+            quantitySold: 0,
             color: chartColors.chartColors[2]
           },
           {
             name: 'Monitor 24" 144Hz',
+            code: 'MON-001',
             value: 8999.0,
             stock: 10,
             price: 899.9,
+            quantitySold: 0,
             color: chartColors.chartColors[3]
           },
           {
             name: 'Teclado Mecânico RGB',
+            code: 'KB-001',
             value: 2999.0,
             stock: 10,
             price: 299.9,
+            quantitySold: 0,
             color: chartColors.chartColors[4]
           }
         ];
@@ -727,6 +756,19 @@ export default function Dashboard({ darkMode }) {
                         ? `${product.name.substring(0, 25)}...`
                         : product.name}
                     </Typography>
+                    {product.code && (
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)',
+                          fontSize: '0.75rem',
+                          display: 'block',
+                          mb: 1
+                        }}
+                      >
+                        Código: {product.code}
+                      </Typography>
+                    )}
 
                     <Box display="flex" justifyContent="space-between" alignItems="center" mt={1}>
                       <Typography variant="caption" color="textSecondary">

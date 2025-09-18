@@ -278,7 +278,7 @@ def create_purchase_order(
 
 def get_purchase_order(db: Session, po_id: int, user_id: int) -> models.PurchaseOrder:
     from sqlalchemy.orm import joinedload
-    
+
     po = (
         db.query(models.PurchaseOrder)
         .options(
@@ -298,7 +298,7 @@ def get_purchase_order(db: Session, po_id: int, user_id: int) -> models.Purchase
 def get_purchase_order_with_details(db: Session, po_id: int, user_id: int) -> dict:
     """Get purchase order with product details for API response"""
     from sqlalchemy.orm import joinedload
-    
+
     po = (
         db.query(models.PurchaseOrder)
         .options(
@@ -312,7 +312,7 @@ def get_purchase_order_with_details(db: Session, po_id: int, user_id: int) -> di
     )
     if not po:
         raise HTTPException(status_code=404, detail="Pedido de compra não encontrado.")
-    
+
     # Build response with product details
     items_with_details = []
     for item in po.items:
@@ -326,7 +326,7 @@ def get_purchase_order_with_details(db: Session, po_id: int, user_id: int) -> di
             "produto_nome": item.produto.nome if item.produto else "Produto não encontrado",
             "produto_codigo": item.produto.codigo if item.produto else "N/A"
         })
-    
+
     return {
         "id": po.id,
         "fornecedor_id": po.fornecedor_id,
@@ -438,6 +438,14 @@ def approve_purchase_order(
 
     po.status = models.PurchaseOrderStatus.APPROVED
     po.aprovado_em = datetime.now()
+
+    # Create a real sale from the approved purchase order
+    try:
+        sale = create_sale_from_purchase_order(db, po_id, user_id)
+        print(f"✅ Venda criada: Sale #{sale.id} - R$ {sale.total_value:.2f}")
+    except Exception as e:
+        print(f"❌ Erro ao criar venda: {e}")
+        # Continue with approval even if sale creation fails
 
     db.commit()
     db.refresh(po)
@@ -557,3 +565,183 @@ def auto_generate_purchase_order(
     db.commit()
     db.refresh(po)
     return po
+
+
+# Sales CRUD
+def create_sale(db: Session, sale_data: schemas.SaleCreate, user_id: int) -> models.Sale:
+    """Create a new sale and update product stock."""
+    # Create the sale
+    sale = models.Sale(
+        user_id=user_id,
+        total_value=sale_data.total_value,
+        status=sale_data.status
+    )
+    db.add(sale)
+    db.flush()  # To get the sale ID
+    
+    # Create sale items and update stock
+    for item_data in sale_data.items:
+        # Create sale item
+        sale_item = models.SaleItem(
+            sale_id=sale.id,
+            produto_id=item_data.produto_id,
+            quantidade=item_data.quantidade,
+            preco_unitario=item_data.preco_unitario,
+            preco_total=item_data.preco_total
+        )
+        db.add(sale_item)
+        
+        # Update product stock
+        product = db.query(models.Product).filter(
+            models.Product.id == item_data.produto_id,
+            models.Product.user_id == user_id
+        ).first()
+        
+        if product:
+            # Reduce stock
+            product.quantidade = max(0, product.quantidade - item_data.quantidade)
+            # Update last sale date
+            product.last_sale_date = func.now()
+    
+    db.commit()
+    db.refresh(sale)
+    return sale
+
+
+def get_sales(db: Session, user_id: int, limit: int = 100) -> List[models.Sale]:
+    """Get all sales for a user."""
+    return (
+        db.query(models.Sale)
+        .filter(models.Sale.user_id == user_id)
+        .order_by(models.Sale.criado_em.desc())
+        .limit(limit)
+        .all()
+    )
+
+
+def get_sale_with_details(db: Session, sale_id: int, user_id: int) -> dict:
+    """Get sale with product details for API response."""
+    from sqlalchemy.orm import joinedload
+    
+    sale = (
+        db.query(models.Sale)
+        .options(
+            joinedload(models.Sale.items).joinedload(models.SaleItem.produto)
+        )
+        .filter(
+            models.Sale.id == sale_id,
+            models.Sale.user_id == user_id
+        )
+        .first()
+    )
+    if not sale:
+        raise HTTPException(status_code=404, detail="Venda não encontrada.")
+    
+    # Build response with product details
+    items_with_details = []
+    for item in sale.items:
+        items_with_details.append({
+            "id": item.id,
+            "produto_id": item.produto_id,
+            "quantidade": item.quantidade,
+            "preco_unitario": item.preco_unitario,
+            "preco_total": item.preco_total,
+            "criado_em": item.criado_em,
+            "produto_nome": item.produto.nome if item.produto else "Produto não encontrado",
+            "produto_codigo": item.produto.codigo if item.produto else "N/A"
+        })
+    
+    return {
+        "id": sale.id,
+        "total_value": sale.total_value,
+        "status": sale.status,
+        "criado_em": sale.criado_em,
+        "items": items_with_details
+    }
+
+
+def get_top_selling_products(db: Session, user_id: int, limit: int = 5) -> List[dict]:
+    """Get top selling products based on sales data."""
+    from sqlalchemy.orm import joinedload
+    
+    # Query to get products with their sales data
+    products_with_sales = (
+        db.query(models.Product)
+        .options(joinedload(models.Product.sales))
+        .filter(models.Product.user_id == user_id)
+        .all()
+    )
+    
+    # Calculate total sales for each product
+    product_sales = []
+    for product in products_with_sales:
+        total_sales = 0
+        total_quantity_sold = 0
+        
+        for sale in product.sales:
+            for item in sale.items:
+                if item.produto_id == product.id:
+                    total_sales += item.preco_total
+                    total_quantity_sold += item.quantidade
+        
+        if total_sales > 0:  # Only include products that have been sold
+            product_sales.append({
+                "id": product.id,
+                "nome": product.nome,
+                "codigo": product.codigo,
+                "total_sales": total_sales,
+                "total_quantity_sold": total_quantity_sold,
+                "current_stock": product.quantidade,
+                "preco": product.preco
+            })
+    
+    # Sort by total sales and return top products
+    product_sales.sort(key=lambda x: x["total_sales"], reverse=True)
+    return product_sales[:limit]
+
+
+def create_sale_from_purchase_order(db: Session, po_id: int, user_id: int) -> models.Sale:
+    """Create a sale from an approved purchase order."""
+    from sqlalchemy.orm import joinedload
+    
+    # Get the purchase order with items and products
+    po = (
+        db.query(models.PurchaseOrder)
+        .options(
+            joinedload(models.PurchaseOrder.items).joinedload(models.PurchaseOrderItem.produto)
+        )
+        .filter(
+            models.PurchaseOrder.id == po_id,
+            models.PurchaseOrder.user_id == user_id
+        )
+        .first()
+    )
+    
+    if not po:
+        raise HTTPException(status_code=404, detail="Purchase order não encontrada.")
+    
+    if po.status != models.PurchaseOrderStatus.APPROVED:
+        raise HTTPException(status_code=400, detail="Purchase order deve estar aprovada para criar venda.")
+    
+    # Create sale items from purchase order items
+    sale_items = []
+    total_value = 0
+    
+    for po_item in po.items:
+        sale_item_data = schemas.SaleItemCreate(
+            produto_id=po_item.produto_id,
+            quantidade=po_item.quantidade_solicitada,
+            preco_unitario=po_item.preco_unitario,
+            preco_total=po_item.quantidade_solicitada * po_item.preco_unitario
+        )
+        sale_items.append(sale_item_data)
+        total_value += sale_item_data.preco_total
+    
+    # Create the sale
+    sale_data = schemas.SaleCreate(
+        total_value=total_value,
+        status=schemas.SaleStatus.COMPLETED,
+        items=sale_items
+    )
+    
+    return create_sale(db, sale_data, user_id)
