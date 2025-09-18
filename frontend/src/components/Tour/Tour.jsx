@@ -1,5 +1,7 @@
 import React from 'react';
+
 import Joyride from 'react-joyride';
+
 import { useTour } from '../../contexts/TourContext';
 import { steps } from './tourSteps';
 
@@ -30,7 +32,7 @@ const AppTour = () => {
           overlayColor: 'rgba(0, 0, 0, 0.4)',
           arrowColor: 'rgba(0, 0, 0, 0.8)',
           width: 320,
-          zIndex: 10000,
+          zIndex: 10000
         },
         tooltip: {
           backgroundColor: 'rgba(0, 0, 0, 0.9)',
@@ -40,10 +42,10 @@ const AppTour = () => {
           padding: 20,
           backdropFilter: 'blur(5px)',
           border: '1px solid rgba(0, 255, 255, 0.3)',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
         },
         tooltipContainer: {
-          textAlign: 'left',
+          textAlign: 'left'
         },
         tooltipTitle: {
           color: '#00ffff',

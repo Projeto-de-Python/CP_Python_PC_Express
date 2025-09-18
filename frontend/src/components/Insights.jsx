@@ -101,11 +101,11 @@ export default function Insights() {
     try {
       setGeneratingData(true);
       const response = await insightsAPI.generateSalesData(days);
-      alert(response.data.message);
+      // Sales data generated successfully
       fetchData(); // Refresh data
     } catch (error) {
-      console.error('❌ Error generating sales data:', error);
-      alert(
+      // Error generating sales data
+      setError(
         `Failed to generate sales data: ${error.response?.data?.detail || error.message || 'Unknown error'}`
       );
     } finally {
@@ -122,7 +122,7 @@ export default function Insights() {
         [productId]: response.data
       }));
     } catch {
-      alert('Failed to load ML insights. Please try again.');
+      setError('Failed to load ML insights. Please try again.');
     } finally {
       setMlLoading(false);
     }

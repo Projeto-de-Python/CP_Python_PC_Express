@@ -1,4 +1,4 @@
-# Use a imagem base do Python
+a"# Use a imagem base do Python
 FROM mcr.microsoft.com/devcontainers/python:3.11
 
 # Instalar Node.js

@@ -83,7 +83,7 @@ export default function Dashboard({ darkMode }) {
       setLoading(false);
       setIsFetching(false);
     }
-  }, []); // Removido isFetching da dependência para evitar loop
+  }, [isFetching]); // Adicionado isFetching de volta
 
   useEffect(() => {
     fetchDashboardData();
@@ -113,7 +113,7 @@ export default function Dashboard({ darkMode }) {
     }, 300000); // 5 minutos
 
     return () => clearInterval(interval);
-  }, []); // Removido dependências para evitar loop
+  }, [fetchDashboardData, isFetching]); // Adicionado dependências
 
   const handleRefresh = () => {
     setRefreshKey(prev => prev + 1);
@@ -394,8 +394,8 @@ export default function Dashboard({ darkMode }) {
           >
             <Box sx={{ p: 1 }}>
               <Grid container spacing={1}>
-                {websiteTrafficData.map((item, index) => (
-                  <Grid size={{ xs: 6 }} key={`traffic-${item.metric}-${index}`}>
+                {websiteTrafficData.map((item) => (
+                  <Grid size={{ xs: 6 }} key={`traffic-${item.metric}`}>
                     <Card
                       sx={{
                         p: 1.5,
@@ -506,9 +506,9 @@ export default function Dashboard({ darkMode }) {
                   style={{ cursor: 'pointer' }}
                   paddingAngle={1}
                 >
-                  {categoryData.map((entry, index) => (
+                  {categoryData.map((entry) => (
                     <Cell
-                      key={`cell-${entry.name}-${index}`}
+                      key={`cell-${entry.name}`}
                       fill={entry.color}
                       stroke={darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}
                       strokeWidth={1}
@@ -681,8 +681,8 @@ export default function Dashboard({ darkMode }) {
             </Box>
 
             <Grid container spacing={2}>
-              {topProductsData.map((product, index) => (
-                <Grid size={{ xs: 12, sm: 6, md: 4, lg: 2 }} key={`product-${product.name}-${index}`}>
+              {topProductsData.map((product) => (
+                <Grid size={{ xs: 12, sm: 6, md: 4, lg: 2 }} key={`product-${product.name}`}>
                   <Card
                     sx={{
                       p: 2,

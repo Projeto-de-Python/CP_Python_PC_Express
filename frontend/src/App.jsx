@@ -11,6 +11,7 @@ import Layout from './components/Layout';
 import Products from './components/Products';
 import PurchaseOrders from './components/PurchaseOrders';
 import Suppliers from './components/Suppliers';
+
 import Login from './components/auth/Login';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Register from './components/auth/Register';

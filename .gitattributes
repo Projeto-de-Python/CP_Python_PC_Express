@@ -1,16 +1,9 @@
-# Normalize line endings
-* text=auto eol=lf
+# Auto detect text files and perform LF normalization
+* text=auto
 
-# Preserve CRLF where needed on Windows scripts
-*.bat text eol=crlf
-*.cmd text eol=crlf
-*.ps1 text eol=crlf
-
-# Common text files
+# Shell scripts
 *.sh text eol=lf
-*.md text eol=lf
-*.json text eol=lf
-*.yml text eol=lf
-*.yaml text eol=lf
+*.bat text eol=crlf
 
-
+# Make shell scripts executable
+*.sh linguist-language=Shell
