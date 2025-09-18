@@ -92,8 +92,13 @@ export const AuthProvider = ({ children }) => {
     const requestInterceptor = api.interceptors.request.use(
       config => {
         const currentToken = getAuthToken();
+        console.log('🔑 Request interceptor - Token:', currentToken ? 'EXISTS' : 'MISSING');
+        console.log('🔑 Request interceptor - URL:', config.url);
         if (currentToken) {
           config.headers.Authorization = `Bearer ${currentToken}`;
+          console.log('🔑 Request interceptor - Authorization header set');
+        } else {
+          console.log('❌ Request interceptor - No token found');
         }
         return config;
       },

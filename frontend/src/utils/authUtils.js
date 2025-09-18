@@ -25,12 +25,15 @@ export const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutos em ms
  */
 export const saveAuthToken = (token, refreshToken = null) => {
   try {
+    console.log('💾 saveAuthToken - Saving token:', token ? token.substring(0, 20) + '...' : 'null');
     // Salva o token principal
     Cookies.set(AUTH_KEYS.TOKEN, token, COOKIE_OPTIONS);
+    console.log('💾 saveAuthToken - Token saved to cookies');
 
     // Salva o refresh token se fornecido
     if (refreshToken) {
       Cookies.set(AUTH_KEYS.REFRESH_TOKEN, refreshToken, COOKIE_OPTIONS);
+      console.log('💾 saveAuthToken - Refresh token saved');
     }
 
     // Atualiza a última atividade
@@ -52,7 +55,10 @@ export const saveAuthToken = (token, refreshToken = null) => {
  */
 export const getAuthToken = () => {
   try {
-    return Cookies.get(AUTH_KEYS.TOKEN);
+    const token = Cookies.get(AUTH_KEYS.TOKEN);
+    console.log('🍪 getAuthToken - Token from cookies:', token ? 'EXISTS' : 'MISSING');
+    console.log('🍪 getAuthToken - Token value:', token ? token.substring(0, 20) + '...' : 'null');
+    return token;
   } catch (error) {
     console.error('Erro ao recuperar token:', error);
     return null;
