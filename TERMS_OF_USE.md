@@ -43,26 +43,30 @@ Você está autorizado a:
 
 ### **4. ⚖️ Sanções por Violação**
 
-#### **4.1 Sanções Acadêmicas:**
-- 📚 **Reprovação** na disciplina
-- 🎓 **Suspensão** acadêmica temporária
-- 🚫 **Expulsão** da instituição
-- 📝 **Registro** de plágio no histórico acadêmico
-- 🚫 **Bloqueio** de matrícula em disciplinas futuras
+#### **4.1 Sanções Financeiras:**
 
-#### **4.2 Sanções Legais:**
-- ⚖️ **Processo judicial** por violação de direitos autorais
-- 💰 **Multas** de até R$ 50.000,00 (Lei 9.610/98)
-- 💰 **Indenizações** por danos morais e materiais
-- 🚫 **Bloqueio** permanente de contas GitHub
-- 📋 **Registro** em bases de dados de plágio
+- 💰 **Multa** de R$ 1.000,00 a R$ 5.000,00 por violação
+- 💰 **Indenização** por danos morais e materiais
+- 💰 **Custas** processuais e advocatícias
+- 💰 **Multa** adicional de R$ 100,00 por dia de descumprimento
+- 💰 **Honorários** advocatícios de 20% sobre o valor da causa
 
-#### **4.3 Sanções Técnicas:**
+#### **4.2 Sanções Técnicas:**
+
+- 🚫 **Bloqueio** permanente do acesso ao repositório
 - 🔍 **Monitoramento** contínuo via GitHub API
 - 📊 **Análise** automatizada de código suspeito
-- 🚨 **Alertas** em tempo real para autoridades
 - 📱 **Notificações** automáticas para a Equipe Big 5
-- 🚫 **Bloqueio** de acesso ao repositório
+- 🚨 **Denúncia** ao GitHub por violação de DMCA
+- 🚫 **Bloqueio** de contas GitHub relacionadas
+
+#### **4.3 Sanções Reputacionais:**
+
+- 📢 **Exposição pública** da violação
+- 📋 **Registro** em bases de dados de plágio
+- 📱 **Divulgação** em redes sociais e fóruns
+- 🚫 **Bloqueio** de acesso a futuros projetos da equipe
+- 📝 **Documentação** permanente da violação
 
 ### **5. 🔍 Monitoramento Ativo**
 
@@ -79,18 +83,21 @@ A Equipe Big 5 mantém:
 Para reportar violações:
 
 #### **GitHub:**
+
 - **DMCA**: https://github.com/contact/dmca
 - **Report Abuse**: https://github.com/contact/report-abuse
 
-#### **Acadêmico:**
-- **Professor** da disciplina
-- **Coordenação** do curso
-- **Comitê de ética** acadêmica
+#### **Equipe Big 5:**
+
+- **Contato direto** para resolução amigável
+- **Negociação** de multas e indenizações
+- **Acordo** de cessação da violação
 
 #### **Legal:**
-- **Ministério Público**
-- **Defensoria Pública**
+
 - **Advogado** especializado em propriedade intelectual
+- **Ação judicial** por violação de direitos autorais
+- **Medição** de danos e indenizações
 
 ### **7. 🛡️ Proteções Implementadas**
 
@@ -141,6 +148,6 @@ Estes termos são regidos:
 
 **© 2024 Equipe Big 5 - Todos os direitos reservados**
 
-**Data de criação**: 2024  
-**Última atualização**: 2024  
+**Data de criação**: 2024
+**Última atualização**: 2024
 **Versão**: 1.0

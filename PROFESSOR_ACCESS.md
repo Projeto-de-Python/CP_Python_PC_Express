@@ -11,6 +11,7 @@ Este documento contém informações sobre como o professor pode acessar e contr
 **PC-Express** é um sistema de gerenciamento de inventário desenvolvido pela **Equipe Big 5** como trabalho acadêmico.
 
 ### **Equipe Big 5:**
+
 - **Lucca Phelipe Masini** (RM 564121)
 - **Luiz Henrique Poss** (RM 562177)
 - **Luis Fernando de Oliveira Salgado** (RM 561401)
@@ -29,6 +30,7 @@ Este documento contém informações sobre como o professor pode acessar e contr
 4. **Aceite** o convite no GitHub
 
 ### **Permissões que serão concedidas:**
+
 - ✅ **Read**: Visualizar todo o código
 - ✅ **Write**: Modificar código e documentação
 - ✅ **Admin**: Gerenciar configurações (se necessário)
@@ -38,6 +40,7 @@ Este documento contém informações sobre como o professor pode acessar e contr
 ## 📚 **Estrutura do Projeto**
 
 ### **Backend (Python/FastAPI):**
+
 ```
 app/
 ├── main.py              # Aplicação principal
@@ -54,6 +57,7 @@ app/
 ```
 
 ### **Frontend (React):**
+
 ```
 frontend/src/
 ├── App.jsx              # Aplicação principal
@@ -64,6 +68,7 @@ frontend/src/
 ```
 
 ### **Documentação:**
+
 ```
 ├── README.md            # Documentação principal
 ├── ABOUT.md             # Apresentação acadêmica
@@ -76,6 +81,7 @@ frontend/src/
 ## 🚀 **Como Executar o Projeto**
 
 ### **Windows:**
+
 ```cmd
 # Opção 1: Script automático
 iniciar.bat
@@ -85,11 +91,13 @@ iniciar.bat
 ```
 
 ### **Linux/Mac:**
+
 ```bash
 ./start.sh
 ```
 
 ### **Manual:**
+
 ```bash
 # Backend
 python -m venv .venv
@@ -108,29 +116,34 @@ npm run dev
 ## 🔍 **Funcionalidades Principais**
 
 ### **1. Gerenciamento de Produtos**
+
 - CRUD completo
 - Controle de estoque
 - Categorização
 - Preços e códigos
 
 ### **2. Sistema de Vendas**
+
 - Registro de vendas
 - Cálculo automático
 - Histórico completo
 - Relatórios
 
 ### **3. Fornecedores**
+
 - Cadastro completo
 - Informações de contato
 - Histórico de relacionamento
 
 ### **4. Machine Learning**
+
 - Previsão de demanda
 - Otimização de preços
 - Detecção de anomalias
 - Otimização de estoque
 
 ### **5. Alertas**
+
 - Estoque baixo
 - Produtos em falta
 - Notificações em tempo real
@@ -140,6 +153,7 @@ npm run dev
 ## 📊 **Banco de Dados**
 
 ### **Tabelas Principais:**
+
 - **users**: Usuários do sistema
 - **products**: Produtos
 - **suppliers**: Fornecedores
@@ -149,6 +163,7 @@ npm run dev
 - **purchase_orders**: Pedidos de compra
 
 ### **Tecnologia:**
+
 - **SQLite** para desenvolvimento
 - **SQLAlchemy** como ORM
 - **Pydantic** para validação
@@ -158,6 +173,7 @@ npm run dev
 ## 🎓 **Aspectos Acadêmicos**
 
 ### **Conceitos Demonstrados:**
+
 - **Python**: Programação orientada a objetos
 - **SQL**: Consultas complexas e relacionamentos
 - **FastAPI**: Desenvolvimento de APIs REST
@@ -167,6 +183,7 @@ npm run dev
 - **Git**: Controle de versão
 
 ### **Boas Práticas:**
+
 - **Clean Code**: Código limpo e documentado
 - **SOLID**: Princípios de design
 - **DRY**: Don't Repeat Yourself
@@ -179,6 +196,7 @@ npm run dev
 ## 🔧 **Contribuições do Professor**
 
 ### **Áreas de Contribuição:**
+
 - ✅ **Code Review**: Revisão de código
 - ✅ **Documentação**: Melhorias na documentação
 - ✅ **Funcionalidades**: Novas features
@@ -187,6 +205,7 @@ npm run dev
 - ✅ **Testes**: Adição de testes
 
 ### **Processo de Contribuição:**
+
 1. **Crie uma branch** para sua contribuição
 2. **Faça as modificações** necessárias
 3. **Teste** as mudanças
@@ -198,11 +217,13 @@ npm run dev
 ## 📞 **Contato**
 
 ### **Para Dúvidas ou Sugestões:**
+
 - **GitHub Issues**: Use o sistema de issues (se habilitado)
 - **Email**: Entre em contato com a equipe
 - **Reuniões**: Agende reuniões para discussões
 
 ### **Para Emergências:**
+
 - **Contato direto** com a Equipe Big 5
 - **GitHub**: Use o sistema de notificações
 
@@ -211,6 +232,7 @@ npm run dev
 ## ⚖️ **Termos de Uso**
 
 O professor está autorizado a:
+
 - ✅ **Visualizar** todo o código
 - ✅ **Modificar** código e documentação
 - ✅ **Contribuir** com melhorias
@@ -218,14 +240,17 @@ O professor está autorizado a:
 - ✅ **Referenciar** em outros trabalhos
 
 **Restrições:**
+
 - ❌ **Não redistribuir** sem autorização
 - ❌ **Não remover** avisos de propriedade
 - ❌ **Não usar** comercialmente
+- ❌ **Não permitir** que alunos copiem o código
+- ❌ **Não usar** em outros trabalhos acadêmicos sem citação
 
 ---
 
 **© 2024 Equipe Big 5 - Acesso Autorizado para Professor**
 
-**Data de criação**: 2024  
-**Última atualização**: 2024  
+**Data de criação**: 2024
+**Última atualização**: 2024
 **Versão**: 1.0

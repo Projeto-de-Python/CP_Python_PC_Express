@@ -20,10 +20,11 @@
 ✅ **RECONHECE** a propriedade intelectual da Equipe Big 5
 
 **VIOLAÇÕES RESULTARÃO EM:**
-❌ **Sanções Acadêmicas** (reprovação, expulsão)
+❌ **Multas** de até R$ 5.000,00 por violação
 ❌ **Ações Legais** por violação de direitos autorais
-❌ **Denúncia** às autoridades competentes
-❌ **Bloqueio** permanente do GitHub
+❌ **Denúncia** ao GitHub por violação de DMCA
+❌ **Bloqueio** permanente do acesso ao repositório
+❌ **Exposição pública** da violação
 
 ---
 
@@ -565,12 +566,14 @@ Este projeto foi desenvolvido como trabalho acadêmico para demonstrar:
 ## 📋 **TERMOS DE USO E SANÇÕES**
 
 ### **🔒 Uso Autorizado:**
+
 - ✅ **Visualização** para fins educacionais
 - ✅ **Estudo** de conceitos e arquitetura
 - ✅ **Referência** com citação adequada
 - ✅ **Inspiração** para projetos próprios
 
 ### **🚫 Uso Proibido:**
+
 - ❌ **Clonagem** para trabalhos acadêmicos
 - ❌ **Fork** sem autorização expressa
 - ❌ **Cópia** de código ou documentação
@@ -580,31 +583,38 @@ Este projeto foi desenvolvido como trabalho acadêmico para demonstrar:
 
 ### **⚖️ Sanções por Violação:**
 
-#### **Acadêmicas:**
-- 📚 **Reprovação** na disciplina
-- 🎓 **Suspensão** acadêmica
-- 🚫 **Expulsão** da instituição
-- 📝 **Registro** de plágio no histórico
+#### **Financeiras:**
 
-#### **Legais:**
-- ⚖️ **Processo** por violação de direitos autorais
-- 💰 **Multas** e indenizações
-- 🚫 **Bloqueio** de contas GitHub
-- 📋 **Registro** em bases de dados de plágio
+- 💰 **Multa** de R$ 1.000,00 a R$ 5.000,00 por violação
+- 💰 **Indenização** por danos morais e materiais
+- 💰 **Custas** processuais e advocatícias
+- 💰 **Multa** adicional por cada dia de descumprimento
 
 #### **Técnicas:**
+
+- 🚫 **Bloqueio** permanente do acesso ao repositório
 - 🔍 **Monitoramento** contínuo via GitHub API
 - 📊 **Relatórios** automáticos de violação
-- 🚨 **Alertas** para autoridades competentes
 - 📱 **Notificações** para a Equipe Big 5
+- 🚨 **Denúncia** ao GitHub por violação de DMCA
+
+#### **Reputacionais:**
+
+- 📢 **Exposição pública** da violação
+- 📋 **Registro** em bases de dados de plágio
+- 🚫 **Bloqueio** de contas GitHub relacionadas
+- 📱 **Divulgação** em redes sociais e fóruns
 
 ### **📞 Denúncia de Violações:**
+
 Para reportar violações, entre em contato:
-- **GitHub**: Reportar violação de direitos autorais
-- **Professor**: Informar sobre plágio acadêmico
-- **Instituição**: Seguir protocolo de ética acadêmica
+
+- **GitHub**: Reportar violação de DMCA
+- **Equipe Big 5**: Contato direto para resolução
+- **Advogado**: Para ações legais quando necessário
 
 ### **🛡️ Proteções Ativas:**
+
 - 🔍 **Monitoramento** automatizado de repositórios
 - 📊 **Análise** de código suspeito
 - 🚨 **Alertas** em tempo real
