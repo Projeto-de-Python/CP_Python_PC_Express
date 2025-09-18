@@ -4,8 +4,8 @@
 
 ## 🚨 **AVISO DE PROPRIEDADE INTELECTUAL** 🚨
 
-**Este projeto é propriedade da Equipe Big 5**  
-**Desenvolvido como trabalho acadêmico**  
+**Este projeto é propriedade da Equipe Big 5**
+**Desenvolvido como trabalho acadêmico**
 **NÃO COPIAR PARA TRABALHOS ACADÊMICOS**
 
 ---
@@ -17,18 +17,21 @@ Um sistema completo de gerenciamento de inventário desenvolvido com FastAPI (ba
 ## ⚖️ **Direitos Autorais e Uso**
 
 ### 📋 **Propriedade Intelectual:**
+
 - **Código**: © 2024 Equipe Big 5
-- **Documentação**: © 2024 Equipe Big 5  
+- **Documentação**: © 2024 Equipe Big 5
 - **Conceitos**: © 2024 Equipe Big 5
 - **Apresentação**: © 2024 Equipe Big 5
 
 ### ✅ **Uso Permitido:**
+
 - ✅ Estudo e aprendizado pessoal
 - ✅ Referência acadêmica (com citação adequada)
 - ✅ Inspiração para projetos próprios
 - ✅ Demonstração de conceitos
 
 ### ❌ **Uso Proibido:**
+
 - ❌ **Cópia integral** para trabalhos acadêmicos
 - ❌ **Plágio** de código ou documentação
 - ❌ **Fork** para fins acadêmicos sem citação
@@ -36,6 +39,7 @@ Um sistema completo de gerenciamento de inventário desenvolvido com FastAPI (ba
 - ❌ **Apresentação** como trabalho próprio
 
 ### 📚 **Para Estudantes:**
+
 Se você é estudante e quer usar este projeto como referência:
 
 1. **CITE adequadamente** a fonte original
@@ -47,28 +51,33 @@ Se você é estudante e quer usar este projeto como referência:
 ---
 
 ## 📚 **[Apresentação para o Professor](ABOUT.md)**
-*Clique aqui para ver a apresentação didática focada em Python + SQL, com exemplos práticos e diagramas visuais.*
+
+_Clique aqui para ver a apresentação didática focada em Python + SQL, com exemplos práticos e diagramas visuais._
 
 ## ⚡ **Início Rápido**
 
 ### **Para Novos Usuários:**
 
 #### 🖥️ **Windows (Recomendado):**
+
 ```cmd
 iniciar.bat
 ```
 
 #### 🖥️ **Windows (PowerShell):**
+
 ```powershell
 .\start.ps1
 ```
 
 #### 🐧 **Linux / 🍎 Mac:**
+
 ```bash
 ./start.sh
 ```
 
 ### **Se der erro de permissão no PowerShell:**
+
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 .\start.ps1
@@ -86,6 +95,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 - ✅ **Otimizações de performance** integradas
 
 ### **📋 Pré-requisitos:**
+
 - **Python 3.8+** - [Download](https://www.python.org/downloads/)
 - **Node.js 16+** - [Download](https://nodejs.org/)
 
@@ -490,7 +500,6 @@ Para deploy em produção, considere:
 - Configurar variáveis de ambiente
 - Usar um servidor WSGI para o FastAPI
 
-
 ## 🤝 **Contribuição**
 
 1. Faça um fork do projeto
@@ -516,13 +525,16 @@ Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalh
 ## 🎓 **Informações Acadêmicas**
 
 ### 📅 **Detalhes do Trabalho:**
+
 - **Data de Desenvolvimento**: 2024
 - **Tipo**: Trabalho Acadêmico
 - **Apresentação**: Realizada em sala de aula
 - **Status**: Concluído e avaliado
 
 ### 📚 **Contexto Acadêmico:**
+
 Este projeto foi desenvolvido como trabalho acadêmico para demonstrar:
+
 - Integração de Python com SQL
 - Desenvolvimento de APIs REST
 - Machine Learning aplicado
@@ -530,6 +542,7 @@ Este projeto foi desenvolvido como trabalho acadêmico para demonstrar:
 - Boas práticas de programação
 
 ### ⚖️ **Aviso Final:**
+
 **Este é um trabalho acadêmico original da Equipe Big 5. Qualquer uso indevido, cópia ou plágio será considerado violação de propriedade intelectual e pode resultar em consequências acadêmicas.**
 
 ## 📞 **Suporte**
