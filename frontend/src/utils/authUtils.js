@@ -27,7 +27,7 @@ export const saveAuthToken = (token, refreshToken = null) => {
   try {
     // Clean token before saving
     const cleanToken = token ? token.trim() : token;
-    
+
     // Salva o token principal
     Cookies.set(AUTH_KEYS.TOKEN, cleanToken, COOKIE_OPTIONS);
 
@@ -56,7 +56,7 @@ export const saveAuthToken = (token, refreshToken = null) => {
 export const getAuthToken = () => {
   try {
     const token = Cookies.get(AUTH_KEYS.TOKEN);
-    
+
     // Clean token if it has extra whitespace or newlines
     if (token) {
       const cleanToken = token.trim();
@@ -65,7 +65,7 @@ export const getAuthToken = () => {
         return cleanToken;
       }
     }
-    
+
     return token;
   } catch (error) {
     console.error('Erro ao recuperar token:', error);
