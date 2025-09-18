@@ -34,12 +34,16 @@ Um sistema completo de gerenciamento de inventário desenvolvido com FastAPI (ba
 
 ## ⚖️ **Direitos Autorais e Uso**
 
-### 📋 **Propriedade Intelectual:**
+### 📋 **Propriedade Intelectual (Lei 9.610/98):**
 
-- **Código**: © 2024 Equipe Big 5
-- **Documentação**: © 2024 Equipe Big 5
-- **Conceitos**: © 2024 Equipe Big 5
-- **Apresentação**: © 2024 Equipe Big 5
+**Art. 7º** - São obras intelectuais protegidas as criações do espírito, expressas por qualquer meio ou fixadas em qualquer suporte, tangível ou intangível, conhecido ou que se invente no futuro.
+
+**Art. 22** - Pertencem ao autor os direitos morais e patrimoniais sobre a obra que criou.
+
+- **Código**: © 2024 Equipe Big 5 (Lei 9.610/98)
+- **Documentação**: © 2024 Equipe Big 5 (Lei 9.610/98)
+- **Conceitos**: © 2024 Equipe Big 5 (Lei 9.610/98)
+- **Apresentação**: © 2024 Equipe Big 5 (Lei 9.610/98)
 
 ### ✅ **Uso Permitido:**
 

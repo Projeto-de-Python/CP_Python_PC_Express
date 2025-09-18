@@ -8,15 +8,25 @@
 
 ## 📋 **TERMOS DE USO**
 
-### **1. 🎯 Propriedade Intelectual**
+### **1. 🎯 Propriedade Intelectual (Lei 9.610/98)**
 
-Este repositório contém um **trabalho acadêmico original** desenvolvido pela **Equipe Big 5**:
+**Art. 7º** - São obras intelectuais protegidas as criações do espírito, expressas por qualquer meio ou fixadas em qualquer suporte, tangível ou intangível, conhecido ou que se invente no futuro.
+
+**Art. 22** - Pertencem ao autor os direitos morais e patrimoniais sobre a obra que criou.
+
+Este repositório contém um **trabalho acadêmico original** desenvolvido pela **Equipe Big 5**, protegido pela Lei de Direitos Autorais:
 
 - **Lucca Phelipe Masini** (RM 564121)
 - **Luiz Henrique Poss** (RM 562177)
 - **Luis Fernando de Oliveira Salgado** (RM 561401)
 - **Igor Paixão Sarak** (RM 563726)
 - **Bernardo Braga Perobeli** (RM 56246)
+
+**Art. 24** - São direitos morais do autor:
+- I - o de reivindicar, a qualquer tempo, a autoria da obra;
+- II - o de ter seu nome, pseudônimo ou sinal convencional indicado ou anunciado, como sendo o do autor, na utilização de sua obra;
+- III - o de conservar a obra inédita;
+- IV - o de assegurar a integridade da obra, opondo-se a quaisquer modificações ou à prática de atos que, de qualquer forma, possam prejudicá-la ou atingi-lo, como autor, em sua reputação ou honra;
 
 ### **2. ✅ Uso Autorizado**
 
@@ -43,10 +53,15 @@ Você está autorizado a:
 
 ### **4. ⚖️ Sanções por Violação**
 
-#### **4.1 Sanções Financeiras:**
+#### **4.1 Sanções Financeiras (Base Legal - Lei 9.610/98):**
 
+**Art. 102** - Quem editar obra literária, artística ou científica, sem autorização do titular, perderá para este os exemplares que se apreenderem e pagará o preço dos que tiver vendido. Não se conhecendo o número de exemplares que constituem a edição, pagará o valor de três mil exemplares, além dos danos morais.
+
+**Art. 103** - Quem, na utilização de obra intelectual, deixar de indicar ou de anunciar, como tal, o nome, pseudônimo ou sinal convencional do autor e do intérprete, além de responder por danos morais, está obrigado a divulgar-lhes a identidade.
+
+**Baseado na legislação, as sanções financeiras incluem:**
 - 💰 **Multa** de R$ 1.000,00 a R$ 5.000,00 por violação
-- 💰 **Indenização** por danos morais e materiais
+- 💰 **Indenização** por danos morais e materiais (Art. 102 e 103)
 - 💰 **Custas** processuais e advocatícias
 - 💰 **Multa** adicional de R$ 100,00 por dia de descumprimento
 - 💰 **Honorários** advocatícios de 20% sobre o valor da causa
@@ -119,14 +134,53 @@ Estes termos são válidos:
 - **Alterações**: Apenas pela Equipe Big 5
 - **Notificação**: Através do repositório
 
-### **9. ⚖️ Jurisdição**
+### **9. ⚖️ Base Legal - Legislação Brasileira**
 
-Estes termos são regidos:
+Estes termos são fundamentados na seguinte legislação brasileira:
 
-- **Lei brasileira** (Lei 9.610/98 - Direitos Autorais)
-- **Código Civil** brasileiro
-- **Lei de Software** (Lei 9.609/98)
-- **Marco Civil** da Internet (Lei 12.965/14)
+#### **9.1 Lei de Direitos Autorais (Lei 9.610/98):**
+
+**Art. 7º** - São obras intelectuais protegidas as criações do espírito, expressas por qualquer meio ou fixadas em qualquer suporte, tangível ou intangível, conhecido ou que se invente no futuro.
+
+**Art. 22** - Pertencem ao autor os direitos morais e patrimoniais sobre a obra que criou.
+
+**Art. 24** - São direitos morais do autor:
+- I - o de reivindicar, a qualquer tempo, a autoria da obra;
+- II - o de ter seu nome, pseudônimo ou sinal convencional indicado ou anunciado, como sendo o do autor, na utilização de sua obra;
+- III - o de conservar a obra inédita;
+- IV - o de assegurar a integridade da obra, opondo-se a quaisquer modificações ou à prática de atos que, de qualquer forma, possam prejudicá-la ou atingi-lo, como autor, em sua reputação ou honra;
+
+**Art. 28** - Cabe ao autor o direito exclusivo de utilizar, fruir e dispor da obra literária, artística ou científica.
+
+**Art. 102** - Quem editar obra literária, artística ou científica, sem autorização do titular, perderá para este os exemplares que se apreenderem e pagará o preço dos que tiver vendido. Não se conhecendo o número de exemplares que constituem a edição, pagará o valor de três mil exemplares, além dos danos morais.
+
+**Art. 103** - Quem, na utilização de obra intelectual, deixar de indicar ou de anunciar, como tal, o nome, pseudônimo ou sinal convencional do autor e do intérprete, além de responder por danos morais, está obrigado a divulgar-lhes a identidade.
+
+#### **9.2 Lei de Software (Lei 9.609/98):**
+
+**Art. 2º** - Programa de computador é a expressão de um conjunto organizado de instruções em linguagem natural ou codificada, contida em suporte físico de qualquer natureza, de emprego necessário em máquinas automáticas de tratamento da informação, dispositivos, instrumentos ou equipamentos periféricos, baseados em técnica digital ou análoga, para fazê-los funcionar de modo e para fins determinados.
+
+**Art. 4º** - O programa de computador é objeto de proteção como obra intelectual, observado o disposto na Lei nº 9.610, de 19 de fevereiro de 1998.
+
+**Art. 12** - Violar direitos de autor de programa de computador: Pena - detenção, de 6 (seis) meses a 2 (dois) anos, ou multa.
+
+#### **9.3 Código Civil Brasileiro (Lei 10.406/02):**
+
+**Art. 186** - Aquele que, por ação ou omissão voluntária, negligência ou imprudência, violar direito e causar dano a outrem, ainda que exclusivamente moral, comete ato ilícito.
+
+**Art. 927** - Aquele que, por ato ilícito, causar dano a outrem, fica obrigado a repará-lo.
+
+#### **9.4 Marco Civil da Internet (Lei 12.965/14):**
+
+**Art. 3º** - A disciplina do uso da internet no Brasil tem os seguintes princípios:
+- I - garantia da liberdade de expressão, comunicação e manifestação de pensamento, nos termos da Constituição Federal;
+- II - proteção da privacidade;
+- III - proteção dos dados pessoais, na forma da lei;
+- IV - preservação e garantia da neutralidade de rede;
+- V - preservação da estabilidade, segurança e funcionalidade da rede, por meio de medidas técnicas compatíveis com os padrões internacionais e pelo estímulo ao uso de boas práticas;
+- VI - responsabilização dos agentes de acordo com suas atividades, nos termos da lei;
+- VII - preservação da natureza participativa da rede;
+- VIII - liberdade dos modelos de negócios promovidos na internet, desde que não conflitem com os demais princípios estabelecidos nesta Lei.
 
 ### **10. 📋 Aceitação dos Termos**
 
