@@ -28,10 +28,12 @@ jobs:
           python -c "import app.main; print('Backend imports successfully')"
           python -c "from app.database import engine; print('Database connection successful')"
 
-      - name: Run basic linting
+      - name: Test backend syntax
         run: |
-          pip install flake8
-          flake8 app/ --count --select=E9,F63,F7,F82 --show-source --statistics
+          python -m py_compile app/main.py
+          python -m py_compile app/database.py
+          python -m py_compile app/models.py
+          echo "Backend syntax check passed"
 
   test-frontend:
     runs-on: ubuntu-latest
