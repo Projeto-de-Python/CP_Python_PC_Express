@@ -443,6 +443,7 @@ Para deploy em produção, considere:
 - Configurar variáveis de ambiente
 - Usar um servidor WSGI para o FastAPI
 
+
 ## 🤝 **Contribuição**
 
 1. Faça um fork do projeto
