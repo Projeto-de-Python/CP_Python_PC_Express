@@ -44,14 +44,14 @@ def get_purchase_orders_statistics(
     return crud.get_purchase_orders_statistics(db, current_user.id)
 
 
-@router.get("/{po_id}", response_model=schemas.PurchaseOrder)
+@router.get("/{po_id}", response_model=schemas.PurchaseOrderOut)
 def get_purchase_order(
     po_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user),
 ):
     """Get a specific purchase order by ID."""
-    po = crud.get_purchase_order(db, po_id, current_user.id)
+    po = crud.get_purchase_order_with_details(db, po_id, current_user.id)
     return po
 
 

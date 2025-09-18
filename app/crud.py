@@ -277,8 +277,14 @@ def create_purchase_order(
 
 
 def get_purchase_order(db: Session, po_id: int, user_id: int) -> models.PurchaseOrder:
+    from sqlalchemy.orm import joinedload
+    
     po = (
         db.query(models.PurchaseOrder)
+        .options(
+            joinedload(models.PurchaseOrder.items).joinedload(models.PurchaseOrderItem.produto),
+            joinedload(models.PurchaseOrder.fornecedor)
+        )
         .filter(
             models.PurchaseOrder.id == po_id, models.PurchaseOrder.user_id == user_id
         )
@@ -287,6 +293,53 @@ def get_purchase_order(db: Session, po_id: int, user_id: int) -> models.Purchase
     if not po:
         raise HTTPException(status_code=404, detail="Pedido de compra não encontrado.")
     return po
+
+
+def get_purchase_order_with_details(db: Session, po_id: int, user_id: int) -> dict:
+    """Get purchase order with product details for API response"""
+    from sqlalchemy.orm import joinedload
+    
+    po = (
+        db.query(models.PurchaseOrder)
+        .options(
+            joinedload(models.PurchaseOrder.items).joinedload(models.PurchaseOrderItem.produto),
+            joinedload(models.PurchaseOrder.fornecedor)
+        )
+        .filter(
+            models.PurchaseOrder.id == po_id, models.PurchaseOrder.user_id == user_id
+        )
+        .first()
+    )
+    if not po:
+        raise HTTPException(status_code=404, detail="Pedido de compra não encontrado.")
+    
+    # Build response with product details
+    items_with_details = []
+    for item in po.items:
+        items_with_details.append({
+            "id": item.id,
+            "produto_id": item.produto_id,
+            "quantidade_solicitada": item.quantidade_solicitada,
+            "quantidade_recebida": item.quantidade_recebida or 0,
+            "preco_unitario": item.preco_unitario,
+            "criado_em": item.criado_em,
+            "produto_nome": item.produto.nome if item.produto else "Produto não encontrado",
+            "produto_codigo": item.produto.codigo if item.produto else "N/A"
+        })
+    
+    return {
+        "id": po.id,
+        "fornecedor_id": po.fornecedor_id,
+        "status": po.status,
+        "total_value": po.total_value,
+        "observacoes": po.observacoes,
+        "criado_em": po.criado_em,
+        "aprovado_em": po.aprovado_em,
+        "rejeitado_em": po.rejeitado_em,
+        "motivo_rejeicao": po.motivo_rejeicao,
+        "fornecedor_nome": po.fornecedor.nome if po.fornecedor else "Fornecedor não encontrado",
+        "items": items_with_details
+    }
 
 
 def list_purchase_orders(
