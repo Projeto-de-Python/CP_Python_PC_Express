@@ -4,13 +4,30 @@ Um sistema completo de gerenciamento de inventário desenvolvido com FastAPI (ba
 
 ## ⚡ **Início Rápido**
 
-### **Um Comando Só:**
+### **Para Novos Usuários:**
 
+#### 🖥️ **Windows (Recomendado):**
+```cmd
+iniciar.bat
+```
+
+#### 🖥️ **Windows (PowerShell):**
 ```powershell
 .\start.ps1
 ```
 
-**O script faz tudo automaticamente:**
+#### 🐧 **Linux / 🍎 Mac:**
+```bash
+./start.sh
+```
+
+### **Se der erro de permissão no PowerShell:**
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+.\start.ps1
+```
+
+### **O que os scripts fazem automaticamente:**
 
 - ✅ Verifica dependências (Python, Node.js)
 - ✅ Instala se necessário (com instruções)
@@ -20,6 +37,12 @@ Um sistema completo de gerenciamento de inventário desenvolvido com FastAPI (ba
 - ✅ **Auto-reinicialização** se servidores pararem
 - ✅ **Monitoramento contínuo** de recursos
 - ✅ **Otimizações de performance** integradas
+
+### **📋 Pré-requisitos:**
+- **Python 3.8+** - [Download](https://www.python.org/downloads/)
+- **Node.js 16+** - [Download](https://nodejs.org/)
+
+> 💡 **Dica:** Se tiver problemas, consulte o arquivo [INICIO_RAPIDO.md](INICIO_RAPIDO.md) para soluções detalhadas!
 
 ### **Credenciais:**
 
