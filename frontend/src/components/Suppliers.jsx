@@ -26,10 +26,12 @@ import {
     Typography
 } from '@mui/material';
 import PropTypes from 'prop-types';
+import { TableSkeleton } from './common/Skeletons';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { suppliersAPI } from '../services/api';
+import { ScrollReveal } from './common';
 
 export default function Suppliers({ darkMode }) {
   const [suppliers, setSuppliers] = useState([]);
@@ -110,32 +112,30 @@ export default function Suppliers({ darkMode }) {
   };
 
   if (loading) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
-        <CircularProgress />
-      </Box>
-    );
+    return <TableSkeleton rows={6} />;
   }
 
   return (
     <Box>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Box display="flex" alignItems="center" gap={2}>
-          <Typography variant="h4" sx={{ color: darkMode ? '#ffffff' : '#000000' }}>
-            {t('suppliers.title')}
-          </Typography>
-          <IconButton
-            size="small"
-            title="Manage your supplier contacts. Add new suppliers, edit existing ones, and track their information for purchase order management."
-            sx={{ color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)' }}
-          >
-            <HelpIcon />
-          </IconButton>
+      <ScrollReveal direction="down" duration={0.5}>
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+          <Box display="flex" alignItems="center" gap={2}>
+            <Typography variant="h4" sx={{ color: darkMode ? '#ffffff' : '#000000' }}>
+              {t('suppliers.title')}
+            </Typography>
+            <IconButton
+              size="small"
+              title="Manage your supplier contacts. Add new suppliers, edit existing ones, and track their information for purchase order management."
+              sx={{ color: darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)' }}
+            >
+              <HelpIcon />
+            </IconButton>
+          </Box>
+          <Button variant="contained" startIcon={<AddIcon />} onClick={() => handleOpenDialog()}>
+            {t('suppliers.addSupplier')}
+          </Button>
         </Box>
-        <Button variant="contained" startIcon={<AddIcon />} onClick={() => handleOpenDialog()}>
-          {t('suppliers.addSupplier')}
-        </Button>
-      </Box>
+      </ScrollReveal>
 
       {error && (
         <Alert severity="error" sx={{ mb: 3 }} onClose={() => setError(null)}>
@@ -143,8 +143,9 @@ export default function Suppliers({ darkMode }) {
         </Alert>
       )}
 
-      <TableContainer component={Paper}>
-        <Table>
+      <ScrollReveal direction="up" delay={0.2}>
+        <TableContainer component={Paper}>
+          <Table>
           <TableHead>
             <TableRow>
               <TableCell>{t('suppliers.supplierName')}</TableCell>
@@ -184,8 +185,9 @@ export default function Suppliers({ darkMode }) {
               </TableRow>
             ))}
           </TableBody>
-        </Table>
-      </TableContainer>
+          </Table>
+        </TableContainer>
+      </ScrollReveal>
 
       {/* Supplier Dialog */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>

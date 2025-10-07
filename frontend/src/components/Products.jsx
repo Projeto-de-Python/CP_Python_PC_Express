@@ -49,6 +49,8 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { productsAPI, stockAPI, suppliersAPI } from '../services/api.jsx';
+import { TableSkeleton } from './common/Skeletons';
+import { ScrollReveal } from './common';
 
 export default function Products({ darkMode }) {
   const [products, setProducts] = useState([]);
@@ -293,55 +295,53 @@ return 1;
   const categories = [...new Set(products.map(p => p.categoria).filter(Boolean))];
 
   if (loading) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
-        <CircularProgress size={60} />
-      </Box>
-    );
+    return <TableSkeleton rows={8} />;
   }
 
   return (
     <Box>
       {/* Header */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography
-          variant="h4"
-          fontWeight="bold"
-          sx={{
-            background: 'linear-gradient(45deg, #1976d2, #42a5f5)',
-            backgroundClip: 'text',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent'
-          }}
-        >
-          {t('products.title')}
-        </Typography>
-        <Box display="flex" gap={2}>
-          <Tooltip title="Refresh Data">
-            <IconButton
-              onClick={fetchData}
+      <ScrollReveal direction="down" duration={0.5}>
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+          <Typography
+            variant="h4"
+            fontWeight="bold"
+            sx={{
+              background: 'linear-gradient(45deg, #1976d2, #42a5f5)',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent'
+            }}
+          >
+            {t('products.title')}
+          </Typography>
+          <Box display="flex" gap={2}>
+            <Tooltip title="Refresh Data">
+              <IconButton
+                onClick={fetchData}
+                sx={{
+                  background: 'linear-gradient(45deg, #1976d2, #42a5f5)',
+                  color: 'white',
+                  '&:hover': { background: 'linear-gradient(45deg, #1565c0, #1976d2)' }
+                }}
+              >
+                <RotateCcw size={20} />
+              </IconButton>
+            </Tooltip>
+            <Button
+              variant="contained"
+              startIcon={<Plus />}
+              onClick={() => handleOpenDialog()}
               sx={{
                 background: 'linear-gradient(45deg, #1976d2, #42a5f5)',
-                color: 'white',
                 '&:hover': { background: 'linear-gradient(45deg, #1565c0, #1976d2)' }
               }}
             >
-              <RotateCcw size={20} />
-            </IconButton>
-          </Tooltip>
-          <Button
-            variant="contained"
-            startIcon={<Plus />}
-            onClick={() => handleOpenDialog()}
-            sx={{
-              background: 'linear-gradient(45deg, #1976d2, #42a5f5)',
-              '&:hover': { background: 'linear-gradient(45deg, #1565c0, #1976d2)' }
-            }}
-          >
-            {t('products.addProduct')}
-          </Button>
+              {t('products.addProduct')}
+            </Button>
+          </Box>
         </Box>
-      </Box>
+      </ScrollReveal>
 
       {error && (
         <Alert severity="error" sx={{ mb: 3 }} onClose={() => setError(null)}>

@@ -15,8 +15,9 @@ Trabalho acadêmico original - Uso apenas para referência e estudo
 
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { useState } from 'react';
-import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Navigate, Route, BrowserRouter as Router, Routes, useLocation } from 'react-router-dom';
 
 import Alerts from './components/Alerts';
 import AutoRestock from './components/AutoRestock';
@@ -46,6 +47,196 @@ const SessionExpiredModalWrapper = () => {
       onClose={() => {}} // Não permite fechar manualmente
       onLogout={logout}
     />
+  );
+};
+
+// Page transition variants - Inspired by premium web experiences
+const pageVariants = {
+  initial: {
+    opacity: 0,
+    y: 20,
+    scale: 0.98
+  },
+  animate: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.4,
+      ease: [0.25, 0.46, 0.45, 0.94]
+    }
+  },
+  exit: {
+    opacity: 0,
+    y: -20,
+    scale: 0.98,
+    transition: {
+      duration: 0.3,
+      ease: [0.25, 0.46, 0.45, 0.94]
+    }
+  }
+};
+
+// Animated Routes wrapper
+const AnimatedRoutes = ({ darkMode, onToggleDarkMode }) => {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        {/* Public routes */}
+        <Route
+          path="/login"
+          element={
+            <motion.div
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              variants={pageVariants}
+            >
+              <Login darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <motion.div
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              variants={pageVariants}
+            >
+              <Register darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
+            </motion.div>
+          }
+        />
+
+        {/* Protected routes */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Layout darkMode={darkMode} onToggleDarkMode={onToggleDarkMode}>
+                <motion.div
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  variants={pageVariants}
+                >
+                  <Dashboard darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
+                </motion.div>
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/products"
+          element={
+            <ProtectedRoute>
+              <Layout darkMode={darkMode} onToggleDarkMode={onToggleDarkMode}>
+                <motion.div
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  variants={pageVariants}
+                >
+                  <Products darkMode={darkMode} />
+                </motion.div>
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/suppliers"
+          element={
+            <ProtectedRoute>
+              <Layout darkMode={darkMode} onToggleDarkMode={onToggleDarkMode}>
+                <motion.div
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  variants={pageVariants}
+                >
+                  <Suppliers darkMode={darkMode} />
+                </motion.div>
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/purchase-orders"
+          element={
+            <ProtectedRoute>
+              <Layout darkMode={darkMode} onToggleDarkMode={onToggleDarkMode}>
+                <motion.div
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  variants={pageVariants}
+                >
+                  <PurchaseOrders darkMode={darkMode} />
+                </motion.div>
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/insights"
+          element={
+            <ProtectedRoute>
+              <Layout darkMode={darkMode} onToggleDarkMode={onToggleDarkMode}>
+                <motion.div
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  variants={pageVariants}
+                >
+                  <Insights darkMode={darkMode} />
+                </motion.div>
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/alerts"
+          element={
+            <ProtectedRoute>
+              <Layout darkMode={darkMode} onToggleDarkMode={onToggleDarkMode}>
+                <motion.div
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  variants={pageVariants}
+                >
+                  <Alerts darkMode={darkMode} />
+                </motion.div>
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/auto-restock"
+          element={
+            <ProtectedRoute>
+              <Layout darkMode={darkMode} onToggleDarkMode={onToggleDarkMode}>
+                <motion.div
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  variants={pageVariants}
+                >
+                  <AutoRestock darkMode={darkMode} />
+                </motion.div>
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Redirect any unknown routes to dashboard */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </AnimatePresence>
   );
 };
 
@@ -104,92 +295,7 @@ function App() {
           <TourProvider>
             <Router>
               <SessionExpiredModalWrapper />
-              <Routes>
-                {/* Public routes */}
-                <Route
-                  path="/login"
-                  element={<Login darkMode={darkMode} onToggleDarkMode={handleToggleDarkMode} />}
-                />
-                <Route
-                  path="/register"
-                  element={<Register darkMode={darkMode} onToggleDarkMode={handleToggleDarkMode} />}
-                />
-
-                {/* Protected routes */}
-                <Route
-                  path="/"
-                  element={
-                    <ProtectedRoute>
-                      <Layout darkMode={darkMode} onToggleDarkMode={handleToggleDarkMode}>
-                        <Dashboard darkMode={darkMode} onToggleDarkMode={handleToggleDarkMode} />
-                      </Layout>
-                    </ProtectedRoute>
-                }
-                />
-                <Route
-                  path="/products"
-                  element={
-                    <ProtectedRoute>
-                      <Layout darkMode={darkMode} onToggleDarkMode={handleToggleDarkMode}>
-                        <Products darkMode={darkMode} />
-                      </Layout>
-                    </ProtectedRoute>
-                }
-                />
-                <Route
-                  path="/suppliers"
-                  element={
-                    <ProtectedRoute>
-                      <Layout darkMode={darkMode} onToggleDarkMode={handleToggleDarkMode}>
-                        <Suppliers darkMode={darkMode} />
-                      </Layout>
-                    </ProtectedRoute>
-                }
-                />
-                <Route
-                  path="/purchase-orders"
-                  element={
-                    <ProtectedRoute>
-                      <Layout darkMode={darkMode} onToggleDarkMode={handleToggleDarkMode}>
-                        <PurchaseOrders darkMode={darkMode} />
-                      </Layout>
-                    </ProtectedRoute>
-                }
-                />
-                <Route
-                  path="/insights"
-                  element={
-                    <ProtectedRoute>
-                      <Layout darkMode={darkMode} onToggleDarkMode={handleToggleDarkMode}>
-                        <Insights darkMode={darkMode} />
-                      </Layout>
-                    </ProtectedRoute>
-                }
-                />
-                <Route
-                  path="/alerts"
-                  element={
-                    <ProtectedRoute>
-                      <Layout darkMode={darkMode} onToggleDarkMode={handleToggleDarkMode}>
-                        <Alerts darkMode={darkMode} />
-                      </Layout>
-                    </ProtectedRoute>
-                }
-                />
-                <Route
-                  path="/auto-restock"
-                  element={
-                    <ProtectedRoute>
-                      <Layout darkMode={darkMode} onToggleDarkMode={handleToggleDarkMode}>
-                        <AutoRestock darkMode={darkMode} />
-                      </Layout>
-                    </ProtectedRoute>
-                }
-                />
-
-                {/* Redirect any unknown routes to dashboard */}
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
+              <AnimatedRoutes darkMode={darkMode} onToggleDarkMode={handleToggleDarkMode} />
             </Router>
           </TourProvider>
         </AuthProvider>

@@ -51,6 +51,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { useTour } from '../contexts/TourContext';
 
 import AppTour from './Tour/Tour';
+// Interactive cursor removido conforme solicitação
 
 
 const drawerWidth = 0; // No left sidebar
@@ -171,6 +172,25 @@ export default function Layout({ children, darkMode, onToggleDarkMode }) {
 
   return (
     <Box sx={{ display: 'flex' }}>
+      {/* Animated mesh gradient background */}
+      <Box
+        aria-hidden
+        sx={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: -1,
+          background:
+            darkMode
+              ? 'radial-gradient(1200px 600px at 0% 0%, rgba(0,255,255,0.06), transparent 60%), radial-gradient(1000px 500px at 100% 100%, rgba(138,43,226,0.06), transparent 60%), radial-gradient(800px 400px at 100% 0%, rgba(16,172,132,0.06), transparent 60%)'
+              : 'radial-gradient(1200px 600px at 0% 0%, rgba(0,120,255,0.08), transparent 60%), radial-gradient(1000px 500px at 100% 100%, rgba(255,0,120,0.08), transparent 60%), radial-gradient(800px 400px at 100% 0%, rgba(16,172,132,0.08), transparent 60%)',
+          animation: 'mesh-move 30s ease-in-out infinite',
+          '@keyframes mesh-move': {
+            '0%, 100%': { filter: 'hue-rotate(0deg)' },
+            '50%': { filter: 'hue-rotate(30deg)' }
+          }
+        }}
+      />
+      {/* Cursor customizado removido */}
       {/* Top Navigation Bar */}
       <AppBar
         position="fixed"

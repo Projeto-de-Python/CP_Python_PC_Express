@@ -150,6 +150,13 @@ class MLPredictor:
                 "predictions": [],
             }
         try:
+            # If an external model exists, use it
+            try:
+                from .model_registry import load_model
+                external = load_model(f"demand_{product_id}") or load_model("demand_global")
+            except Exception:
+                external = None
+
             # Get real historical sales data
             sales_df = self._get_sales_data(product_id, days=180)
 
@@ -217,9 +224,12 @@ class MLPredictor:
             X = daily_sales[features].values
             y = daily_sales["total_quantity"].values
 
-            # Train model
-            model = LinearRegression()
-            model.fit(X, y)
+            # Train or use external model
+            if external is not None:
+                model = external
+            else:
+                model = LinearRegression()
+                model.fit(X, y)
 
             # Generate future dates
             last_date = daily_sales["data"].max()
@@ -276,7 +286,11 @@ class MLPredictor:
                     current_rolling_14 = (current_rolling_14 * 13 + prediction) / 14
 
             # Calculate model performance
-            y_pred = model.predict(X)
+            try:
+                y_pred = model.predict(X)
+            except Exception:
+                # If external model has different interface, fallback to zeros
+                y_pred = np.zeros_like(y)
             mae = mean_absolute_error(y, y_pred)
             r2 = r2_score(y, y_pred)
 

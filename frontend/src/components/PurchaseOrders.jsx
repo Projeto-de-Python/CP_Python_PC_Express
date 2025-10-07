@@ -49,6 +49,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
 import { insightsAPI, purchaseOrdersAPI, simulationAPI, suppliersAPI } from '../services/api.jsx';
+import { ScrollReveal } from './common';
 
 export default function PurchaseOrders({ darkMode }) {
   const [purchaseOrders, setPurchaseOrders] = useState([]);
@@ -408,6 +409,7 @@ return;
       {/* Summary Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <ScrollReveal direction="up" delay={0.1}>
           <Card
             sx={{
               background: darkMode
@@ -440,8 +442,10 @@ return;
               </Box>
             </CardContent>
           </Card>
+          </ScrollReveal>
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <ScrollReveal direction="up" delay={0.2}>
           <Card
             sx={{
               background: darkMode
@@ -474,8 +478,10 @@ return;
               </Box>
             </CardContent>
           </Card>
+          </ScrollReveal>
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <ScrollReveal direction="up" delay={0.3}>
           <Card
             sx={{
               background: darkMode
@@ -508,8 +514,10 @@ return;
               </Box>
             </CardContent>
           </Card>
+          </ScrollReveal>
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <ScrollReveal direction="up" delay={0.4}>
           <Card
             sx={{
               background: darkMode
@@ -546,6 +554,7 @@ return;
               </Box>
             </CardContent>
           </Card>
+          </ScrollReveal>
         </Grid>
       </Grid>
 

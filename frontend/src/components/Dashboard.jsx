@@ -40,7 +40,8 @@ import {
 import { alertsAPI, productsAPI, salesAPI, suppliersAPI } from '../services/api.jsx';
 import { chartColors, formatCurrency } from '../utils/chartUtils';
 
-import { ChartWrapper, ErrorMessage, LoadingSpinner, StatCard } from './common';
+import { ChartWrapper, ErrorMessage, ScrollReveal, StatCard } from './common';
+import { DashboardSkeleton } from './common/Skeletons';
 
 export default function Dashboard({ darkMode }) {
   const [loading, setLoading] = useState(true);
@@ -149,7 +150,7 @@ export default function Dashboard({ darkMode }) {
   };
 
   if (loading) {
-    return <LoadingSpinner message="Loading dashboard data..." />;
+    return <DashboardSkeleton />;
   }
 
   // Calculate stats
@@ -312,115 +313,126 @@ export default function Dashboard({ darkMode }) {
   return (
     <Box>
       {/* Header */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Box display="flex" alignItems="center" gap={2}>
-          <Typography
-            variant="h4"
-            fontWeight="bold"
-            data-tour="dashboard-title"
-            sx={{
-              background: chartColors.gradientColors.primary,
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
-            }}
-          >
-            {t('dashboard.title')}
-          </Typography>
-          <Tooltip title="This dashboard provides real-time insights into your inventory performance, helping you make informed business decisions. Monitor stock levels, track sales trends, and identify opportunities for growth.">
-            <IconButton
+      <ScrollReveal direction="down" duration={0.5}>
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+          <Box display="flex" alignItems="center" gap={2}>
+            <Typography
+              variant="h4"
+              fontWeight="bold"
+              data-tour="dashboard-title"
               sx={{
-                color: chartColors.primary,
+                background: chartColors.gradientColors.primary,
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}
+            >
+              {t('dashboard.title')}
+            </Typography>
+            <Tooltip title="This dashboard provides real-time insights into your inventory performance, helping you make informed business decisions. Monitor stock levels, track sales trends, and identify opportunities for growth.">
+              <IconButton
+                sx={{
+                  color: chartColors.primary,
+                  '&:hover': {
+                    color: chartColors.secondary,
+                    transform: 'scale(1.1)'
+                  },
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                <HelpCircle size={20} />
+              </IconButton>
+            </Tooltip>
+          </Box>
+          <Tooltip title={t('common.loading')}>
+            <IconButton
+              onClick={handleRefresh}
+              sx={{
+                background: chartColors.gradientColors.primary,
+                color: 'white',
                 '&:hover': {
-                  color: chartColors.secondary,
-                  transform: 'scale(1.1)'
+                  background: chartColors.gradientColors.secondary,
+                  transform: 'rotate(180deg)'
                 },
                 transition: 'all 0.3s ease'
               }}
             >
-              <HelpCircle size={20} />
+              <RotateCcw size={20} />
             </IconButton>
           </Tooltip>
         </Box>
-        <Tooltip title={t('common.loading')}>
-          <IconButton
-            onClick={handleRefresh}
-            sx={{
-              background: chartColors.gradientColors.primary,
-              color: 'white',
-              '&:hover': {
-                background: chartColors.gradientColors.secondary,
-                transform: 'rotate(180deg)'
-              },
-              transition: 'all 0.3s ease'
-            }}
-          >
-            <RotateCcw size={20} />
-          </IconButton>
-        </Tooltip>
-      </Box>
+      </ScrollReveal>
 
       <ErrorMessage error={error} onRetry={fetchDashboardData} onClose={() => setError(null)} />
 
       {/* Stats Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }} data-tour="stats-cards" className="dashboard-kpi-cards">
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <StatCard
-            title={t('dashboard.totalProducts')}
-            value={stats.totalProducts}
-            icon={<Package size={24} color="white" />}
-            gradient={chartColors.gradientColors.primary}
-            trend={12}
-            subtitle="Active inventory items"
-            route="/products"
-          />
+          <ScrollReveal direction="up" delay={0.1}>
+            <StatCard
+              title={t('dashboard.totalProducts')}
+              value={stats.totalProducts}
+              icon={<Package size={24} color="white" />}
+              gradient={chartColors.gradientColors.primary}
+              trend={12}
+              subtitle="Active inventory items"
+              route="/products"
+            />
+          </ScrollReveal>
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <StatCard
-            title={t('dashboard.totalSuppliers')}
-            value={stats.totalSuppliers}
-            icon={<Users size={24} color="white" />}
-            gradient={chartColors.gradientColors.secondary}
-            trend={5}
-            subtitle="Business partners"
-            route="/suppliers"
-          />
+          <ScrollReveal direction="up" delay={0.2}>
+            <StatCard
+              title={t('dashboard.totalSuppliers')}
+              value={stats.totalSuppliers}
+              icon={<Users size={24} color="white" />}
+              gradient={chartColors.gradientColors.secondary}
+              trend={5}
+              subtitle="Business partners"
+              route="/suppliers"
+            />
+          </ScrollReveal>
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <StatCard
-            title={t('dashboard.lowStock')}
-            value={stats.lowStockProducts}
-            icon={<AlertTriangle size={24} color="white" />}
-            gradient={chartColors.gradientColors.warning}
-            trend={-8}
-            subtitle="Need attention"
-            route="/alerts"
-          />
+          <ScrollReveal direction="up" delay={0.3}>
+            <StatCard
+              title={t('dashboard.lowStock')}
+              value={stats.lowStockProducts}
+              icon={<AlertTriangle size={24} color="white" />}
+              gradient={chartColors.gradientColors.warning}
+              trend={-8}
+              subtitle="Need attention"
+              route="/alerts"
+            />
+          </ScrollReveal>
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <StatCard
-            title="Total Inventory Value"
-            value={formatCurrency(stats.totalInventoryValue)}
-            icon={<TrendingUp size={24} color="white" />}
-            gradient={chartColors.gradientColors.success}
-            subtitle="Current stock value"
-            route="/insights"
-          />
+          <ScrollReveal direction="up" delay={0.4}>
+            <StatCard
+              title="Total Inventory Value"
+              value={formatCurrency(stats.totalInventoryValue)}
+              icon={<TrendingUp size={24} color="white" />}
+              gradient={chartColors.gradientColors.success}
+              subtitle="Current stock value"
+              route="/insights"
+            />
+          </ScrollReveal>
         </Grid>
       </Grid>
 
       {/* Charts Grid */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid size={{ xs: 12, lg: 5 }}>
-          <ChartWrapper
-            title={t('dashboard.websiteTraffic')}
-            icon={<Activity size={20} style={{ marginRight: 8, verticalAlign: 'middle' }} />}
-            darkMode={darkMode}
-            tooltip="Monitor website traffic metrics including page views, unique visitors, session time, and bounce rate. Track your digital marketing performance and user engagement."
-            expanded={false}
-            onToggleExpand={() => {}}
-            data-tour="website-traffic"
-          >
+          <ScrollReveal direction="left" delay={0.2}>
+            <ChartWrapper
+              title={t('dashboard.websiteTraffic')}
+              icon={<Activity size={20} style={{ marginRight: 8, verticalAlign: 'middle' }} />}
+              darkMode={darkMode}
+              tooltip="Monitor website traffic metrics including page views, unique visitors, session time, and bounce rate. Track your digital marketing performance and user engagement."
+              expanded={false}
+              onToggleExpand={() => {}}
+              data-tour="website-traffic"
+            >
             <Box sx={{ p: 1 }}>
               <Grid container spacing={1}>
                 {websiteTrafficData.map((item) => (
@@ -506,18 +518,20 @@ export default function Dashboard({ darkMode }) {
               </Grid>
             </Box>
           </ChartWrapper>
+          </ScrollReveal>
         </Grid>
 
         <Grid size={{ xs: 12, lg: 3.5 }}>
-          <ChartWrapper
-            title={t('dashboard.productsByCategory')}
-            icon={<PieChart size={20} style={{ marginRight: 8, verticalAlign: 'middle' }} />}
-            darkMode={darkMode}
-            tooltip="Visualize your product distribution across categories. Click on segments to filter other charts. This helps you understand your product portfolio and identify category gaps."
-            expanded={false}
-            onToggleExpand={() => {}}
-            data-tour="category-chart"
-          >
+          <ScrollReveal direction="up" delay={0.3}>
+            <ChartWrapper
+              title={t('dashboard.productsByCategory')}
+              icon={<PieChart size={20} style={{ marginRight: 8, verticalAlign: 'middle' }} />}
+              darkMode={darkMode}
+              tooltip="Visualize your product distribution across categories. Click on segments to filter other charts. This helps you understand your product portfolio and identify category gaps."
+              expanded={false}
+              onToggleExpand={() => {}}
+              data-tour="category-chart"
+            >
             <ResponsiveContainer width="100%" height={300}>
               <BarChart>
                 <Pie
@@ -576,18 +590,20 @@ export default function Dashboard({ darkMode }) {
               </BarChart>
             </ResponsiveContainer>
           </ChartWrapper>
+          </ScrollReveal>
         </Grid>
 
         <Grid size={{ xs: 12, lg: 3.5 }}>
-          <ChartWrapper
-            title={t('dashboard.stockLevels')}
-            icon={<Package size={20} style={{ marginRight: 8, verticalAlign: 'middle' }} />}
-            darkMode={darkMode}
-            tooltip="Monitor current stock levels vs minimum requirements. Click on bars to see product details. This helps prevent stockouts and optimize inventory levels."
-            expanded={false}
-            onToggleExpand={() => {}}
-            data-tour="stock-levels"
-          >
+          <ScrollReveal direction="right" delay={0.4}>
+            <ChartWrapper
+              title={t('dashboard.stockLevels')}
+              icon={<Package size={20} style={{ marginRight: 8, verticalAlign: 'middle' }} />}
+              darkMode={darkMode}
+              tooltip="Monitor current stock levels vs minimum requirements. Click on bars to see product details. This helps prevent stockouts and optimize inventory levels."
+              expanded={false}
+              onToggleExpand={() => {}}
+              data-tour="stock-levels"
+            >
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={stockLevelsData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                 <CartesianGrid
@@ -663,15 +679,17 @@ export default function Dashboard({ darkMode }) {
               </BarChart>
             </ResponsiveContainer>
           </ChartWrapper>
+          </ScrollReveal>
         </Grid>
       </Grid>
 
       {/* Top Performing Products */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid size={{ xs: 12 }}>
-          <Box
-            data-tour="top-products"
-            sx={{
+          <ScrollReveal direction="up" delay={0.2}>
+            <Box
+              data-tour="top-products"
+              sx={{
               p: 3,
               borderRadius: 2,
               background: darkMode ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.8)',
@@ -798,13 +816,15 @@ export default function Dashboard({ darkMode }) {
               ))}
             </Grid>
           </Box>
+          </ScrollReveal>
         </Grid>
       </Grid>
 
       {/* Low Stock Alerts */}
       {(lowStockAlerts.length > 0 || stats.lowStockProducts > 0) && (
-        <Box
-          sx={{
+        <ScrollReveal direction="up" delay={0.3}>
+          <Box
+            sx={{
             mb: 3,
             p: 3,
             borderRadius: 2,
@@ -902,6 +922,7 @@ export default function Dashboard({ darkMode }) {
             ))}
           </Grid>
         </Box>
+        </ScrollReveal>
       )}
 
     </Box>

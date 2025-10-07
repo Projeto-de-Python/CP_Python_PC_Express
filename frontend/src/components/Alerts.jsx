@@ -22,6 +22,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { alertsAPI } from '../services/api';
+import { ScrollReveal } from './common';
 
 export default function Alerts() {
   const [lowStockProducts, setLowStockProducts] = useState([]);
@@ -125,7 +126,8 @@ return 'Critical';
         <>
           {/* Summary Cards */}
           <Grid container spacing={3} sx={{ mb: 4 }}>
-            <Grid size={{ xs: 12, sm: 4 }}>
+            <ScrollReveal direction="up" delay={0.1}>
+  <Grid size={{ xs: 12, sm: 4 }}>
               <Card>
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>
@@ -137,7 +139,9 @@ return 'Critical';
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={{ xs: 12, sm: 4 }}>
+</ScrollReveal>
+            <ScrollReveal direction="up" delay={0.2}>
+  <Grid size={{ xs: 12, sm: 4 }}>
               <Card>
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>
@@ -149,7 +153,9 @@ return 'Critical';
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={{ xs: 12, sm: 4 }}>
+</ScrollReveal>
+            <ScrollReveal direction="up" delay={0.3}>
+  <Grid size={{ xs: 12, sm: 4 }}>
               <Card>
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>
@@ -161,6 +167,7 @@ return 'Critical';
                 </CardContent>
               </Card>
             </Grid>
+</ScrollReveal>
           </Grid>
 
           {/* Alerts Table */}

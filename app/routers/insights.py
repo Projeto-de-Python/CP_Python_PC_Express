@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy import and_, func
 from sqlalchemy.orm import Session
 
@@ -10,8 +10,38 @@ from ..database import get_db
 from ..models import MovementType, Product, Sale, SaleItem, StockMovement, User
 from ..services.cash_flow_simulator import CashFlowSimulator
 from ..services.ml_predictor import MLPredictor
+from ..services.model_registry import list_models, load_model, save_uploaded_model
 
 router = APIRouter(prefix="/insights", tags=["insights"])
+@router.get("/ml/models")
+def get_available_models():
+    """List available uploaded models in the server registry"""
+    try:
+        return {"models": list_models()}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to list models: {str(e)}")
+
+
+@router.post("/ml/models/upload")
+async def upload_model(
+    name: str = Form(...),
+    file: UploadFile = File(...),
+):
+    """Upload a serialized model (joblib or pickle) trained externally (e.g., Colab)."""
+    try:
+        data = await file.read()
+        # Accept both joblib and pickle (joblib can load pickle files too)
+        path = save_uploaded_model(name, data)
+        # Quick sanity: try loading
+        model = load_model(name)
+        if model is None:
+            raise HTTPException(status_code=400, detail="Invalid model file or unsupported format")
+        return {"message": "Model uploaded", "name": name, "path": path}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to upload model: {str(e)}")
+
 
 
 @router.post("/generate-sales-data")

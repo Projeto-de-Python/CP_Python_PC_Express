@@ -40,6 +40,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
 import { insightsAPI } from '../services/api.jsx';
+import { ScrollReveal } from './common';
 
 export default function Insights() {
   const [loading, setLoading] = useState(true);
@@ -327,7 +328,8 @@ return null;
   }
 
   return (
-    <Box sx={{ p: 3 }}>
+    <Box sx={{ p: 3 }}>       <ScrollReveal direction="down" duration={0.5}>
+
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Typography variant="h4" component="h1">
           📊 Insights & Analytics
@@ -336,6 +338,7 @@ return null;
           Refresh
         </Button>
       </Box>
+       </ScrollReveal>
 
       {/* Generate Data Button */}
       <Card sx={{ mb: 3 }}>
@@ -371,6 +374,7 @@ return null;
       {activeTab === 0 && overview && (
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, md: 6 }}>
+            <ScrollReveal direction="up" delay={0.1}>
             <Card>
               <CardContent>
                 <Typography variant="h6" mb={2}>
@@ -412,9 +416,11 @@ return null;
                 </Box>
               </CardContent>
             </Card>
+            </ScrollReveal>
           </Grid>
 
           <Grid size={{ xs: 12, md: 6 }}>
+            <ScrollReveal direction="up" delay={0.2}>
             <Card>
               <CardContent>
                 <Typography variant="h6" mb={2}>
@@ -441,9 +447,11 @@ return null;
                 </Grid>
               </CardContent>
             </Card>
+            </ScrollReveal>
           </Grid>
 
           <Grid size={{ xs: 12 }}>
+            <ScrollReveal direction="up" delay={0.3}>
             <Card>
               <CardContent>
                 <Typography variant="h6" mb={2}>
@@ -463,6 +471,7 @@ return null;
                 ))}
               </CardContent>
             </Card>
+            </ScrollReveal>
           </Grid>
         </Grid>
       )}
@@ -516,6 +525,7 @@ return null;
 
           <Grid container spacing={2} mb={2}>
             <Grid size={{ xs: 4, md: 4 }}>
+              <ScrollReveal direction="up" delay={0.4}>
               <Card>
                 <CardContent>
                   <Typography variant="h4" color="error">
@@ -524,8 +534,10 @@ return null;
                   <Typography variant="body2">Total Low Stock</Typography>
                 </CardContent>
               </Card>
+              </ScrollReveal>
             </Grid>
             <Grid size={{ xs: 4, md: 4 }}>
+              <ScrollReveal direction="up" delay={0.5}>
               <Card>
                 <CardContent>
                   <Typography variant="h4" color="warning.main">
@@ -534,8 +546,10 @@ return null;
                   <Typography variant="body2">Critical</Typography>
                 </CardContent>
               </Card>
+              </ScrollReveal>
             </Grid>
             <Grid size={{ xs: 4, md: 4 }}>
+              <ScrollReveal direction="up" delay={0.6}>
               <Card>
                 <CardContent>
                   <Typography variant="h4" color="info.main">
@@ -544,6 +558,7 @@ return null;
                   <Typography variant="body2">High Priority</Typography>
                 </CardContent>
               </Card>
+              </ScrollReveal>
             </Grid>
           </Grid>
 
@@ -606,6 +621,7 @@ return null;
           {productInsights && (
             <Grid container spacing={2}>
               <Grid size={{ xs: 12 }}>
+                <ScrollReveal direction="up" delay={0.7}>
                 <Card>
                   <CardContent>
                     <Typography variant="h6">Product Information</Typography>
@@ -633,9 +649,11 @@ return null;
                     </Grid>
                   </CardContent>
                 </Card>
+                </ScrollReveal>
               </Grid>
 
               <Grid size={{ xs: 12 }}>
+                <ScrollReveal direction="up" delay={0.8}>
                 <Card>
                   <CardContent>
                     <Typography variant="h6">Sales Analysis (30 days)</Typography>
@@ -666,9 +684,11 @@ return null;
                     </Grid>
                   </CardContent>
                 </Card>
+                </ScrollReveal>
               </Grid>
 
               <Grid size={{ xs: 12 }}>
+                <ScrollReveal direction="up" delay={0.9}>
                 <Card>
                   <CardContent>
                     <Typography variant="h6">Price Analysis</Typography>
@@ -687,9 +707,11 @@ return null;
                     )}
                   </CardContent>
                 </Card>
+                </ScrollReveal>
               </Grid>
 
               <Grid size={{ xs: 12 }}>
+                <ScrollReveal direction="up" delay={1.0}>
                 <Card>
                   <CardContent>
                     <Typography variant="h6">Recommendations</Typography>
@@ -713,6 +735,7 @@ return null;
                     ))}
                   </CardContent>
                 </Card>
+                </ScrollReveal>
               </Grid>
             </Grid>
           )}

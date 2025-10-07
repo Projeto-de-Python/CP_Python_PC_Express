@@ -4,6 +4,23 @@
 
 O sistema PCexpress agora inclui funcionalidades avançadas de Machine Learning que trabalham exclusivamente com dados reais do seu banco SQLite. **Não há mais aleatoriedade** - todos os algoritmos analisam dados históricos reais para fornecer insights acionáveis.
 
+### 🔁 Nova Arquitetura (Modelos Externos)
+
+- Treinamento acontece fora do app (Colab/Jupyter/cloud)
+- O backend apenas carrega modelos serializados (`.joblib`/pickle) da pasta `ml_models/`
+- Sem modelos hardcoded em produção; há fallback leve apenas para não quebrar
+
+Endpoints novos:
+
+```http
+GET  /insights/ml/models               # lista modelos disponíveis
+POST /insights/ml/models/upload        # upload (multipart/form: name, file)
+```
+
+Convenções de nomes:
+- `demand_global.joblib` (modelo global)
+- `demand_<product_id>.joblib` (modelo específico por produto)
+
 ## 🚀 Funcionalidades Implementadas
 
 ### 1. **Previsão de Demanda** 📈

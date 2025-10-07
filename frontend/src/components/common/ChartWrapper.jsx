@@ -1,6 +1,7 @@
 import { Box, Chip, IconButton, Tooltip, Typography } from '@mui/material';
 import { HelpCircle } from 'lucide-react';
 import PropTypes from 'prop-types';
+import { motion } from 'framer-motion';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -92,7 +93,9 @@ export const ChartWrapper = ({
         )}
       </Box>
 
-      <Box sx={{ position: 'relative' }}>{children}</Box>
+      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+        <Box sx={{ position: 'relative' }}>{children}</Box>
+      </motion.div>
     </Box>
   );
 };

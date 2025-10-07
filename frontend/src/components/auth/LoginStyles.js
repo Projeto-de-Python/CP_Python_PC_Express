@@ -22,6 +22,13 @@ export const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
   }
+
+  @keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+  }
 `;
 
 // Styled Components - Layout moderno para widescreen
@@ -312,7 +319,6 @@ export const LoginCard = styled.div`
   }
 
   &:hover {
-    transform: translateY(-5px);
     box-shadow: ${props =>
       props.$isDark
         ? '0 12px 40px rgba(0, 255, 255, 0.15), 0 0 0 1px rgba(0, 255, 255, 0.1)'
@@ -395,6 +401,7 @@ export const StyledTextField = styled.div`
     background: ${props => (props.$isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)')};
     border-radius: 12px;
     transition: all 0.3s ease;
+    box-shadow: 0 0 0 0 rgba(0,255,255,0);
 
     &:hover {
       background: ${props => (props.$isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)')};
@@ -402,6 +409,7 @@ export const StyledTextField = styled.div`
 
     &.Mui-focused {
       background: ${props => (props.$isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.06)')};
+      box-shadow: 0 0 0 4px ${props => (props.$isDark ? 'rgba(0,255,255,0.12)' : 'rgba(0,255,255,0.12)')};
     }
   }
 
@@ -421,6 +429,15 @@ export const StyledTextField = styled.div`
 
   .MuiInputBase-input {
     color: ${props => (props.$isDark ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.9)')};
+  }
+
+  /* Autofill styling */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: ${props => (props.$isDark ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)')};
+    -webkit-box-shadow: 0 0 0px 1000px ${props => (props.$isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.02)')} inset;
+    box-shadow: 0 0 0px 1000px ${props => (props.$isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.02)')} inset;
   }
 `;
 
@@ -471,6 +488,23 @@ export const GradientButton = styled.button`
 
   &:hover::before {
     left: 100%;
+  }
+
+  /* progress underline during loading */
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 100%;
+    bottom: 0;
+    height: 3px;
+    background: rgba(255,255,255,0.6);
+    transition: right 1.2s ease;
+  }
+  &:disabled {
+    &::after {
+      right: 0; /* animate full width while disabled/loading */
+    }
   }
 `;
 

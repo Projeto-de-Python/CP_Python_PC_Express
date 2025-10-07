@@ -34,6 +34,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { autoRestockAPI } from '../services/api.jsx';
+import { ScrollReveal } from './common';
 
 export default function AutoRestock({ darkMode }) {
   const [loading, setLoading] = useState(true);
@@ -146,7 +147,8 @@ export default function AutoRestock({ darkMode }) {
 
   return (
     <Box>
-      {/* Header */}
+      {/* Header */}       <ScrollReveal direction="down" duration={0.5}>
+
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Typography
           variant="h4"
@@ -188,6 +190,7 @@ export default function AutoRestock({ darkMode }) {
           </Button>
         </Box>
       </Box>
+       </ScrollReveal>
 
       {error && (
         <Alert severity="error" sx={{ mb: 3 }} onClose={() => setError(null)}>
@@ -199,6 +202,7 @@ export default function AutoRestock({ darkMode }) {
       {stockAnalysis && (
         <Grid container spacing={3} mb={3}>
           <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <ScrollReveal direction="up" delay={0.1}>
             <Card
               sx={{
                 background: darkMode
@@ -239,9 +243,11 @@ export default function AutoRestock({ darkMode }) {
                 </Box>
               </CardContent>
             </Card>
+            </ScrollReveal>
           </Grid>
 
           <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <ScrollReveal direction="up" delay={0.2}>
             <Card
               sx={{
                 background: darkMode
@@ -282,9 +288,11 @@ export default function AutoRestock({ darkMode }) {
                 </Box>
               </CardContent>
             </Card>
+            </ScrollReveal>
           </Grid>
 
           <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <ScrollReveal direction="up" delay={0.3}>
             <Card
               sx={{
                 background: darkMode
@@ -325,9 +333,11 @@ export default function AutoRestock({ darkMode }) {
                 </Box>
               </CardContent>
             </Card>
+            </ScrollReveal>
           </Grid>
 
           <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <ScrollReveal direction="up" delay={0.4}>
             <Card
               sx={{
                 background: darkMode
@@ -368,9 +378,11 @@ export default function AutoRestock({ darkMode }) {
                 </Box>
               </CardContent>
             </Card>
+            </ScrollReveal>
           </Grid>
 
           <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <ScrollReveal direction="up" delay={0.5}>
             <Card
               sx={{
                 background: darkMode
@@ -411,6 +423,7 @@ export default function AutoRestock({ darkMode }) {
                 </Box>
               </CardContent>
             </Card>
+            </ScrollReveal>
           </Grid>
         </Grid>
       )}
