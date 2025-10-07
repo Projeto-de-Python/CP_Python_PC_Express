@@ -514,6 +514,40 @@ npm run dev
 
 ## 🚨 **Solução de Problemas**
 
+### **⚠️ "Senha Incorreta" após clonar o projeto (MAIS COMUM)**
+
+**Problema:** Após clonar o projeto em outro PC, login falha com "senha incorreta".
+
+**Causa:** O banco de dados `inventory.db` não é commitado no Git (por segurança), então não existe usuário admin.
+
+**Solução Automática (Recomendada):**
+
+```cmd
+# 1. Execute o inicializador (cria o banco automaticamente)
+iniciar.bat
+```
+
+**Solução Manual (se a automática falhar):**
+
+```cmd
+# 1. Ative o ambiente virtual
+.venv\Scripts\activate
+
+# 2. Execute o setup do banco de dados
+python scripts/setup_db.py
+
+# 3. Inicie o sistema
+iniciar.bat
+```
+
+**Credenciais criadas:**
+- Email: `admin@pc-express.com`
+- Senha: `admin123`
+
+> 💡 **Dica:** O script `iniciar.bat` detecta automaticamente se o banco não existe e o cria. Se você deletou o `inventory.db` por engano, basta executar `iniciar.bat` novamente!
+
+---
+
 ### **"Execution Policy" no PowerShell:**
 
 ```powershell

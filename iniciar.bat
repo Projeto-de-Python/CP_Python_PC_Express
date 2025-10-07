@@ -102,10 +102,17 @@ echo    [OK] Ambiente Python configurado
 
 if not exist "inventory.db" (
     echo    Configurando banco de dados...
-    .venv\Scripts\python.exe scripts/setup_db.py >nul 2>&1
+    echo    (Criando tabelas e usuario admin)
+    .venv\Scripts\python.exe scripts/setup_db.py
     if errorlevel 1 (
-        echo    [AVISO] Falha ao configurar banco (sera criado automaticamente)
+        echo    [ERRO] Falha ao configurar banco de dados
+        echo    Tente executar manualmente: .venv\Scripts\python.exe scripts/setup_db.py
+        pause
+        exit /b 1
     )
+    echo    [OK] Banco de dados criado com sucesso!
+) else (
+    echo    [OK] Banco de dados ja existe
 )
 
 if not exist "frontend\node_modules" (

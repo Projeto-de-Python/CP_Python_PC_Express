@@ -1,5 +1,23 @@
 # 🚀 Início Rápido - PC Express
 
+## 🆕 Clonou o Projeto Agora?
+
+**IMPORTANTE:** Se você acabou de clonar o projeto do GitHub, use:
+
+```cmd
+iniciar.bat
+```
+
+Este script irá:
+1. ✅ Verificar dependências
+2. ✅ Instalar tudo que for necessário
+3. ✅ **Criar o banco de dados com usuário admin**
+4. ✅ Iniciar os servidores automaticamente
+
+> 💡 **Nota:** O banco de dados `inventory.db` não é versionado no Git, então o script cria automaticamente na primeira execução.
+
+---
+
 ## Para Novos Usuários
 
 ### 📋 Pré-requisitos
@@ -8,9 +26,14 @@
 
 ### 🖥️ Windows
 
-#### Opção 1: Script Simples (Recomendado)
+#### Opção 1: Script Principal (Recomendado)
 ```cmd
-start.bat
+iniciar.bat
+```
+
+#### Opção 2: Script Alternativo
+```cmd
+bin\start\start.bat
 ```
 
 #### Opção 2: PowerShell (Se tiver permissões)
@@ -66,6 +89,21 @@ Após iniciar, acesse:
 - **Senha**: admin123
 
 ### ❓ Problemas Comuns
+
+#### ⚠️ Senha Incorreta no Login (MAIS COMUM)
+**Sintoma:** Login falha com "senha incorreta" mesmo usando `admin@pc-express.com / admin123`
+
+**Causa:** O banco de dados não existe (foi clonado do Git sem o arquivo `inventory.db`)
+
+**Solução:**
+```cmd
+# Opção 1: Execute o inicializador (cria automaticamente)
+iniciar.bat
+
+# Opção 2: Crie o banco manualmente
+.venv\Scripts\activate
+python scripts/setup_db.py
+```
 
 #### Erro de Permissão no PowerShell (Windows)
 ```
